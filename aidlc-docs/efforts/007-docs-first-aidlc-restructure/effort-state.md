@@ -3,13 +3,13 @@
 | Field | Value |
 |-------|-------|
 | Ref | 007-docs-first-aidlc-restructure |
-| Status | in-progress |
+| Status | complete |
 | Depth | standard |
 | Opened | 2026-08-23 |
-| Closed | — |
+| Closed | 2026-08-23 |
 | Baseline | aidlc-docs/inception/ |
 | ADRs | docs/adr/0008-*.md |
-| Commits | pending |
+| Commits | `ac2a0a3` (PR #3) |
 | Reconstructed | yes — backfilled 2026-08-23 from commit diffs |
 
 ## Intent
@@ -21,19 +21,19 @@ Adopt the Agent-Repo Structure Playbook layout and the AI-DLC methodology across
 | Effort planning | Scope approved 2026-08-23: "Docs structure + a live /process page", depth `standard`. See `aidlc-docs/audit.md`. |
 | Functional design | Four layers: context files at root, Diataxis-quadrant `docs/`, `aidlc-docs/` lifecycle records, and a rendered `/process` route. |
 | NFRs | `npx tsc --noEmit` clean; `npm run build` succeeds; no regression to existing routes. |
-| Code | In progress. |
-| Build & test | Pending. |
+| Code | Done — landed in PR #3 (`ac2a0a3`), merged 2026-08-23. |
+| Build & test | `npx tsc --noEmit` clean; `npm run build` succeeded; `/process` verified reachable from nav. |
 
 ## Units of work
-- [ ] Context layer — `AGENTS.md`, `CLAUDE.md`, `CONTEXT.md`, `AGENT_WORKFLOWS.md`
-- [ ] Knowledge layer — `docs/` on Diataxis quadrants (tutorials, how-to, reference, explanation) plus `docs/adr/0001`-`0008` backfilled
-- [ ] Lifecycle layer — `aidlc-docs/`: brownfield inception baseline, efforts 001-007 backfilled, `registry.md`, `audit.md`
-- [ ] Public `/process` page — new route rendering the AI-DLC story; requires both the routes toggle in `src/resources/once-ui.config.ts` and a nav entry in `src/components/Header.tsx`
-- [ ] Behaviour checks — `evals/`
-- [ ] `README.md` rewritten as an AI-DLC showcase
+- [x] Context layer — `AGENTS.md`, `CLAUDE.md`, `CONTEXT.md`, `AGENT_WORKFLOWS.md`
+- [x] Knowledge layer — `docs/` on Diataxis quadrants (tutorials, how-to, reference, explanation) plus `docs/adr/0001`-`0008` backfilled
+- [x] Lifecycle layer — `aidlc-docs/`: brownfield inception baseline, efforts 001-007 backfilled, `registry.md`, `audit.md`
+- [x] Public `/process` page — new route rendering the AI-DLC story; routes toggle in `src/resources/once-ui.config.ts` and nav entry in `src/components/Header.tsx` both present
+- [x] Behaviour checks — `evals/` (`repo-conventions.eval.md`)
+- [x] `README.md` rewritten as an AI-DLC showcase
 
 ## Verification
-Pending. Planned gates: `npx tsc --noEmit` clean, `npm run build` succeeds, `/process` renders and is reachable from the site nav.
+`npx tsc --noEmit -p tsconfig.json` clean; `npm run build` succeeds; `/process` renders and is reachable from the site nav (confirmed 2026-08-23 during effort 009 audit).
 
 ## Notes
 - Motivation: the repo's first ~20 commits carry messages like "lets see", "hmmm", "okays", "soz" attached to 12,000-line diffs, with zero recorded rationale. Every structural decision in efforts 001-004 had to be reverse-engineered from diffs during this backfill.
