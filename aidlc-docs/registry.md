@@ -13,23 +13,24 @@
 | 007 | 007-docs-first-aidlc-restructure | Docs-first AI-DLC restructure | complete | 2026-08-23 | 2026-08-23 | 0008 | `ac2a0a3` (PR #3) |
 | 008 | 008-achievements-iitm-branddiffusion | Achievements section, IIT Madras experience, BrandDiffusion project | complete | 2026-08-23 | 2026-08-23 | none | `953ac4f` (PR #4) |
 | 009 | 009-recap-net-publication-cleanup | RECAP-Net publication link fix and content reshuffle | complete | 2026-08-23 | 2026-08-23 | none | `1f71772` (PR #5) |
+| 010 | 010-enforce-aidlc-recording | CI-enforced AI-DLC recording | complete | 2026-08-23 | 2026-08-23 | 0009 | PR "Enforce AI-DLC recording in CI" |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 9 |
+| complete | 10 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **9** |
+| **Total** | **10** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
 - **001-004** — reconstructed from commit diffs alone. The commits (`lets see`, `hmmm`, `okays`, `soz`) recorded no rationale, so intent was inferred from what the code does.
 - **005-006, 008** — reconstructed from PR #1, #2, and #4, which do carry written rationale. These are the more reliable records.
 
-Effort 007 was recorded as it happened (planning gate logged live) but its registry/audit entries fell out of sync with the merged PR until effort 009's cleanup. Effort 009 is the first effort recorded start-to-finish with no drift between the work and the docs.
+Effort 007 was recorded as it happened (planning gate logged live) but its registry/audit entries fell out of sync with the merged PR until effort 009's cleanup. Effort 009 was the first recorded start-to-finish with no drift; effort 010 makes that mandatory — the `aidlc-check` CI gate (ADR 0009) now fails any PR whose substantive diff ships without an `aidlc-docs/` update.
 
-Next effort number: 010
+Next effort number: 011

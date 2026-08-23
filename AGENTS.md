@@ -82,6 +82,28 @@ const FILE_MAP = {
 
 To change anything under those paths, change its source: the drop-zone, the script, or `content.tsx`.
 
+## Change lifecycle — applies to every AI tool, not just Claude
+
+This repo runs **AI-DLC**: the record of a change ships *in the same PR* as the change. CI
+(`.github/workflows/aidlc-check.yml` → `scripts/check-aidlc-sync.mjs`) fails any PR that
+touches substantive paths (`src/`, `scripts/`, configs, workflows) without touching
+`aidlc-docs/`. Do this **before opening the PR**, not after being asked:
+
+1. **Effort record** — `aidlc-docs/efforts/NNN-<ref>/effort-state.md` (intent, stages, units
+   of work, verification). Procedure: `docs/how-to/run-an-aidlc-effort.md`.
+2. **Registry** — regenerate `aidlc-docs/registry.md` from the effort-state files (it is a
+   derived view; never hand-patch it).
+3. **Audit** — add this effort's gate rows to `aidlc-docs/audit.md`.
+4. **ADR** — *only if* the change makes an architectural or IA decision → `docs/adr/NNNN-*.md`
+   + a row in `docs/adr/README.md`.
+5. **Docs sync** — *only if* facts stated in `CONTEXT.md`, `README.md`, or `docs/` drifted
+   (route counts, IA table, pipeline diagram, glossary). Don't touch them otherwise.
+
+**Trivial escape hatch** (narrow, defined in ADR 0009): a typo or a one-line copy tweak that
+deletes nothing, adds no route, and changes no structure. Mark the PR title `[trivial]`.
+Deleting a file, moving content between sections, or changing a link target is **not** trivial
+— those get an effort record, even a short one (`depth: minimal`).
+
 ## Definition of done
 
 1. `npx tsc --noEmit -p tsconfig.json` — clean.
@@ -90,3 +112,6 @@ To change anything under those paths, change its source: the drop-zone, the scri
 4. New/changed copy lives in `content.tsx` or an MDX file, not hardcoded in a component.
 5. New route: `routes` toggle **and** `Header.tsx` link both present.
 6. No edits under the boundaries table.
+7. **Change lifecycle complete** — effort record + registry + audit in the same PR; ADR and
+   CONTEXT.md/docs sync done *iff* needed (see above). `node scripts/check-aidlc-sync.mjs`
+   passes locally.

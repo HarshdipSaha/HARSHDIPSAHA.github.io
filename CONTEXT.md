@@ -17,10 +17,10 @@ Harshdip Saha's personal portfolio and public research surface. It is both a CV-
 |---|---|---|
 | `/` | `home` in `src/resources/content.tsx`, `src/app/page.tsx` | Live — intro, accent-span headline, featured work |
 | `/about` | `about` in `content.tsx` + `src/components/about/*` | Live — TableOfContents, TechStackStrip, ResearchInterestsBlock |
-| `/work` | 17 MDX files in `src/app/work/projects/` | Live — index + one page per project |
+| `/work` | 18 MDX files in `src/app/work/projects/` | Live — index + one page per project |
 | `/gallery` | `src/data/gallery.json` (generated) | Live |
 | `/blog` | `src/app/blog/posts/*.mdx` | **Disabled** — route toggled off; posts retained |
-| `/process` | planned | Being added — the AI-DLC / how-the-work-is-made page |
+| `/process` | `process` in `content.tsx`, `src/app/process/page.tsx` | Live — the AI-DLC / how-the-work-is-made page |
 | 404 | `src/app/not-found.tsx` | Live |
 
 A route is live only when it is enabled in the `routes` map of `src/resources/once-ui.config.ts` **and** linked from `src/components/Header.tsx`.
@@ -61,3 +61,4 @@ All three sync scripts run automatically on `predev` and `prebuild`. That is why
 | Route toggle | The `routes` map entry in `src/resources/once-ui.config.ts` that enables a path; needs a matching Header link. |
 | FILE_MAP | The explicit source-name-to-kebab-destination map at the top of `scripts/sync-project-images.mjs`. |
 | Accent span | A `.intro-*` class in `src/resources/custom.css` (cyan/amber/violet/emerald/coral) used to color headline words. |
+| aidlc-check | The CI gate (`.github/workflows/aidlc-check.yml` → `scripts/check-aidlc-sync.mjs`) that fails a PR whose substantive diff ships without an `aidlc-docs/` update. `[trivial]` in the PR title is the only escape hatch (ADR 0009). |
