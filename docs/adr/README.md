@@ -10,6 +10,7 @@
 | [0006](0006-prune-template-demo-content.md) | Delete the template's demo content and dark the `/blog` route | Accepted | 2026-01-28 |
 | [0007](0007-mdx-per-project-content-model.md) | One MDX file per project | Accepted | 2026-01-27 |
 | [0008](0008-adopt-ai-dlc-and-docs-first-structure.md) | Adopt AI-DLC and a docs-first repo structure | Accepted | 2026-08-23 |
+| [0009](0009-ci-enforced-aidlc-recording.md) | CI-enforced AI-DLC recording | Accepted | 2026-08-23 |
 
 Every record uses the same four-part shape — a `Status / Date / Supersedes` line, then
 `Context`, `Decision`, `Consequences`, and an optional `Evidence` section citing the commits

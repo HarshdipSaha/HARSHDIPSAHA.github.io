@@ -27,7 +27,9 @@ aidlc-docs/efforts/008-add-search/
   requirements-delta.md  NEW / CHANGED requirements vs the baseline
 ```
 
-The baseline lives in `aidlc-docs/inception/`. Record the approval gate in `aidlc-docs/audit.md`, then rebuild `aidlc-docs/registry.md` — it is a derived view, so regenerate it from the per-effort state files rather than hand-editing. Full procedure: [`docs/how-to/run-an-aidlc-effort.md`](./docs/how-to/run-an-aidlc-effort.md). Trivial changes (typo, one-line copy fix in `content.tsx`) skip the effort — edit, type-check, done.
+The baseline lives in `aidlc-docs/inception/`. Record the approval gate in `aidlc-docs/audit.md`, then rebuild `aidlc-docs/registry.md` — it is a derived view, so regenerate it from the per-effort state files rather than hand-editing. Full procedure: [`docs/how-to/run-an-aidlc-effort.md`](./docs/how-to/run-an-aidlc-effort.md).
+
+**Invoke the `ai-dlc` skill at the start of the change, not at the end.** The effort record ships in the same PR as the code — CI (`aidlc-check`) rejects the PR otherwise. The only exemption is the narrow `[trivial]` escape hatch defined in AGENTS.md → "Change lifecycle" and ADR 0009: a typo-level edit that deletes nothing and changes no structure. When in doubt, it's an effort — a `depth: minimal` record takes two minutes.
 
 ## Rules of engagement
 
