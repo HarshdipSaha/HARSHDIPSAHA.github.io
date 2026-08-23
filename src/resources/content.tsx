@@ -111,14 +111,59 @@ const about: About = {
     ),
   },
   work: {
-    display: false,
+    display: true,
     title: "Work Experience",
-    experiences: [],
+    experiences: [
+      {
+        company: "Optum (UnitedHealth Group)",
+        timeframe: "Jun 2026 – Aug 2026",
+        role: "AI Engineer Intern — AI-DLC Pilot Team",
+        achievements: [
+          <>
+            Joined Optum's newly formed AI Team, a pilot group set up to drive adoption of{" "}
+            <span className="intro-amber">AI-DLC (AI-Driven Development Lifecycle)</span> across the organization.
+          </>,
+          <>
+            Built a <span className="intro-cyan">deterministic Judge LLM</span> for an internal AI-DLC hackathon,
+            evaluating participants on how well they adopted AI-DLC practices in their projects — the model
+            supported the human judges with insightful, consistent scoring.
+          </>,
+          <>
+            Interviewed <span className="intro-violet">7 top SME roles</span> at Optum — AI/ML Engineers, TPMs,
+            Software Engineers, Data Engineers, and more (up to 6 SMEs per role) — to deeply understand
+            role-specific workflows and pain points.
+          </>,
+          <>
+            Translated those interviews into reusable <span className="intro-emerald">workflows, skills, prompts,
+            and safety guardrails</span> tailored to each role.
+          </>,
+          <>
+            Completed <span className="intro-amber">Codex 101 and 201</span>, a deep dive into the Codex CLI.
+          </>,
+          <>
+            Built a library for storing skills for upcoming new roles/pods at Optum.
+          </>,
+          <>
+            Built an <span className="intro-coral">AI Enablement Agent</span>, starting with Codex, to help up to{" "}
+            <span className="intro-coral">35,000 Optum employees</span> discover which governed AI patterns to use —
+            specific to their role and identity. Built on Optum's internal Mesh agents framework and TypeScript.
+          </>,
+          <>
+            Worked hands-on with Claude Code subagents and skills — Wayfinder, Superpowers, AI-DLC, LLM Council, and
+            more — alongside GitHub Spec Kit.
+          </>,
+        ],
+      },
+    ],
   },
   studies: {
     display: true,
     title: "Studies",
     institutions: [
+      {
+        name: "Amazon ML Summer School — Jul 2026 – Aug 2026",
+        description: <>Selected for Amazon's ML Summer School program.</>,
+      },
       {
         name: "Netaji Subhas University of Technology, New Delhi — 2027",
         description: <>B.Tech CSE, GPA 8.78. Data Structures, Algorithms, AI, ML.</>,
