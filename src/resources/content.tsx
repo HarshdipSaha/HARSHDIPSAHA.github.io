@@ -117,6 +117,34 @@ const about: About = {
     title: "Work Experience",
     experiences: [
       {
+        company: "IIT Madras",
+        timeframe: "Jan 2026 – Present",
+        role: "Research Intern — Scientific Computing (Remote)",
+        achievements: [
+          <>
+            Developing <span className="intro-cyan">PyAMorph</span> (formerly pySdf), a Python
+            library for 2D/3D signed distance functions enabling simulation-ready geometric
+            representations from images, CAD models, and analytical inputs.
+          </>,
+          <>
+            Selected for oral presentation at{" "}
+            <span className="intro-violet">INCAM 2026, IIT Kanpur</span>, with the work to be
+            published in a Scopus-indexed journal.
+          </>,
+          <>
+            Built a scalable geometry processing engine with{" "}
+            <span className="intro-amber">CSG operations</span> and STL-to-SDF conversion,
+            integrated with AMReX MultiFab for high-performance simulations using
+            GPU-accelerated bindings.
+          </>,
+          <>
+            Applied <span className="intro-emerald">Chan-Vese segmentation</span> and 3D
+            morphometric analysis to extract simulation-ready structures from volumetric medical
+            data for biomedical imaging workflows.
+          </>,
+        ],
+      },
+      {
         company: "Optum (UnitedHealth Group)",
         timeframe: "Jun 2026 – Aug 2026",
         role: "AI Engineer Intern — AI-DLC Pilot Team",
@@ -252,6 +280,62 @@ const about: About = {
       "Time series analysis",
       "LLM Safety",
       "Alignment",
+    ],
+  },
+  achievements: {
+    display: true,
+    title: "Achievements",
+    items: [
+      {
+        title: "Top open-source contributor, BrainGlobe ecosystem",
+        description: (
+          <>
+            Merged <span className="intro-emerald">15+ pull requests</span> across the{" "}
+            BrainGlobe ecosystem's repositories, and a leading contributor to{" "}
+            <span className="intro-emerald">brainglobe-registration</span>, improving
+            neuroscience image registration pipelines.
+          </>
+        ),
+        links: [
+          { label: "BrainGlobe", href: "https://brainglobe.info" },
+          {
+            label: "brainglobe-registration",
+            href: "https://github.com/brainglobe/brainglobe-registration",
+          },
+        ],
+      },
+      {
+        title: "All India Rank 14 — BRAINDEAD (Unstop), Feb 2025",
+        description: (
+          <>
+            Secured <span className="intro-amber">AIR 14</span> by building two projects: one on{" "}
+            EDA and ML, and another on an LLM-based hybrid summarizer.
+          </>
+        ),
+        links: [
+          { label: "GitHub", href: "https://github.com/HARSHDIPSAHA/braindead_1-2" },
+          {
+            label: "Certificate",
+            href: "https://drive.google.com/file/d/1kDRfsyYErCT-J7_8d0_rdLWOL7X_8H4J/view?usp=sharing",
+          },
+        ],
+      },
+      {
+        title: "Top 30 of 150+ teams — AI4Humanity Summit (with the Israel Embassy)",
+        description: (
+          <>
+            Selected to pitch offline at the AI4Humanity Summit hackathon for{" "}
+            <span className="intro-violet">Accurate Precise Timely</span>, an AI-powered
+            hospital scheduling system.
+          </>
+        ),
+        links: [
+          {
+            label: "Certificate",
+            href: "https://drive.google.com/file/d/1xgNv2tibjxkWbEkRg_CV44nZ4n5n1-4I/view",
+          },
+        ],
+      },
     ],
   },
 };

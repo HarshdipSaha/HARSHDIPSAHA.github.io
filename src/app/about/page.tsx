@@ -36,6 +36,7 @@ export default function About() {
     { title: about.studies.title, display: about.studies.display, items: about.studies.institutions.map((i) => i.name) },
     { title: about.technical.title, display: about.technical.display, items: about.technical.skills.map((s) => s.title) },
     { title: about.researchInterests?.title ?? "Research interests", display: about.researchInterests?.display ?? false, items: [] },
+    { title: about.achievements?.title ?? "Achievements", display: about.achievements?.display ?? false, items: [] },
     { title: "Publications", display: true, items: [] },
   ];
   return (
@@ -346,6 +347,62 @@ export default function About() {
                 {about.researchInterests.title}
               </Heading>
               <ResearchInterestsBlock items={about.researchInterests.items} />
+            </>
+          )}
+
+          {about.achievements?.display && about.achievements.items.length > 0 && (
+            <>
+              <Heading
+                as="h2"
+                id={about.achievements.title}
+                variant="display-strong-s"
+                marginTop="40"
+                marginBottom="m"
+              >
+                {about.achievements.title}
+              </Heading>
+              <Column fillWidth gap="l" marginBottom="40">
+                {about.achievements.items.map((achievement, index) => (
+                  <Column
+                    key={`${achievement.title}-${index}`}
+                    fillWidth
+                    gap="8"
+                    padding="l"
+                    style={{
+                      border: "1px solid var(--neutral-alpha-weak)",
+                      borderRadius: "var(--static-radius-l)",
+                      background: "var(--neutral-alpha-weak)",
+                    }}
+                  >
+                    <Row gap="12" vertical="center">
+                      <Icon name="trophy" onBackground="brand-medium" />
+                      <Text variant="heading-strong-l" wrap="balance">
+                        {achievement.title}
+                      </Text>
+                    </Row>
+                    <Text variant="body-default-m" onBackground="neutral-weak" wrap="balance">
+                      {achievement.description}
+                    </Text>
+                    {achievement.links && achievement.links.length > 0 && (
+                      <Row wrap gap="8" paddingTop="4">
+                        {achievement.links.map((link) => (
+                          <Button
+                            key={link.href}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener"
+                            variant="secondary"
+                            size="s"
+                            prefixIcon="arrowUpRightFromSquare"
+                          >
+                            {link.label}
+                          </Button>
+                        ))}
+                      </Row>
+                    )}
+                  </Column>
+                ))}
+              </Column>
             </>
           )}
 

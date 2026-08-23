@@ -13,6 +13,7 @@ const destDir = path.join(root, "public", "images", "projects");
  */
 const FILE_MAP = {
   "agentic loan.png": "agentic-loan.png",
+  "branddiffusion.png": "branddiffusion.png",
   "ai generated text detector.jpg": "ai-generated-text-detector.jpg",
   "ai helathcare diagonistics.jpg": "ai-healthcare.jpg",
   "aline invasion pygame.png": "alien-invasion-pygame.png",

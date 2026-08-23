@@ -217,6 +217,22 @@ export interface About extends BasePageConfig {
     title: string;
     items: string[];
   };
+  /** Achievements section (after Research interests) */
+  achievements?: {
+    display: boolean;
+    title: string;
+    items: Array<{
+      /** Achievement headline */
+      title: string;
+      /** Supporting detail */
+      description: React.ReactNode;
+      /** Optional link buttons, e.g. GitHub / Certificate */
+      links?: Array<{
+        label: string;
+        href: string;
+      }>;
+    }>;
+  };
 }
 
 /**
