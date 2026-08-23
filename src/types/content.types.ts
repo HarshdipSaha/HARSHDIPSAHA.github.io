@@ -232,6 +232,54 @@ export interface Blog extends BasePageConfig {}
 export interface Work extends BasePageConfig {}
 
 /**
+ * Process page configuration.
+ * @description Configuration for the /process page — the public AI-DLC build story:
+ * how this site is built, the layers of the repo, the effort log, and the decision log.
+ */
+export interface Process extends BasePageConfig {
+  /** Short lead paragraph rendered under the page title */
+  headline: React.ReactNode;
+  /** Headline stats rendered as a strip */
+  stats: Array<{
+    /** The figure itself, e.g. "8" */
+    value: string;
+    /** What the figure counts, e.g. "ADRs recorded" */
+    label: string;
+  }>;
+  /** The repo's structural layers (context / capabilities / knowledge / product / quality) */
+  layers: Array<{
+    /** Layer name */
+    name: string;
+    /** What this layer answers */
+    purpose: string;
+    /** Real paths that make up this layer */
+    paths: string[];
+  }>;
+  /** The AI-DLC effort log, newest last */
+  efforts: Array<{
+    /** Zero-padded effort number, e.g. "001" */
+    id: string;
+    /** Effort title */
+    title: string;
+    /** Effort status: complete | in-progress | blocked | abandoned */
+    status: string;
+    /** Date or range the effort ran */
+    date: string;
+    /** One-line description of what changed */
+    summary: string;
+  }>;
+  /** The decision log surfaced from docs/adr/ */
+  decisions: Array<{
+    /** Zero-padded ADR number, e.g. "0001" */
+    id: string;
+    /** ADR title */
+    title: string;
+    /** ADR status: Accepted | Proposed | Superseded */
+    status: string;
+  }>;
+}
+
+/**
  * Gallery page configuration.
  * @description Configuration for the Gallery page, including metadata, navigation label, and image list.
  */

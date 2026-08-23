@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
 
-import { routes, display, person, about, blog, work, gallery } from "@/resources";
+import { routes, display, person, about, blog, work, gallery, process } from "@/resources";
 import { ThemeToggle } from "./ThemeToggle";
 import styles from "./Header.module.scss";
 
@@ -73,7 +73,9 @@ export const Header = () => {
         }}
       >
         <Row paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
-          <a href="/" style={{ color: "inherit", textDecoration: "none" }}>Harshdip Saha</a>
+          <a href="/" style={{ color: "inherit", textDecoration: "none" }}>
+            Harshdip Saha
+          </a>
         </Row>
         <Row fillWidth horizontal="center">
           <Row
@@ -162,6 +164,25 @@ export const Header = () => {
                       prefixIcon="gallery"
                       href="/gallery"
                       selected={pathname.startsWith("/gallery")}
+                    />
+                  </Row>
+                </>
+              )}
+              {routes["/process"] && (
+                <>
+                  <Row s={{ hide: true }}>
+                    <ToggleButton
+                      prefixIcon="rocket"
+                      href="/process"
+                      label={process.label}
+                      selected={pathname.startsWith("/process")}
+                    />
+                  </Row>
+                  <Row hide s={{ hide: false }}>
+                    <ToggleButton
+                      prefixIcon="rocket"
+                      href="/process"
+                      selected={pathname.startsWith("/process")}
                     />
                   </Row>
                 </>
