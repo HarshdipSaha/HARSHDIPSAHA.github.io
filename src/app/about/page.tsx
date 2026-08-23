@@ -32,11 +32,31 @@ export async function generateMetadata() {
 export default function About() {
   const structure = [
     { title: about.intro.title, display: about.intro.display, items: [] },
-    { title: about.work.title, display: about.work.display, items: about.work.experiences.map((e) => e.company) },
-    { title: about.studies.title, display: about.studies.display, items: about.studies.institutions.map((i) => i.name) },
-    { title: about.technical.title, display: about.technical.display, items: about.technical.skills.map((s) => s.title) },
-    { title: about.researchInterests?.title ?? "Research interests", display: about.researchInterests?.display ?? false, items: [] },
-    { title: about.achievements?.title ?? "Achievements", display: about.achievements?.display ?? false, items: [] },
+    {
+      title: about.work.title,
+      display: about.work.display,
+      items: about.work.experiences.map((e) => e.company),
+    },
+    {
+      title: about.studies.title,
+      display: about.studies.display,
+      items: about.studies.institutions.map((i) => i.name),
+    },
+    {
+      title: about.technical.title,
+      display: about.technical.display,
+      items: about.technical.skills.map((s) => s.title),
+    },
+    {
+      title: about.researchInterests?.title ?? "Research interests",
+      display: about.researchInterests?.display ?? false,
+      items: [],
+    },
+    {
+      title: about.achievements?.title ?? "Achievements",
+      display: about.achievements?.display ?? false,
+      items: [],
+    },
     { title: "Publications", display: true, items: [] },
   ];
   return (
@@ -96,12 +116,7 @@ export default function About() {
         )}
 
         <Column fillWidth gap="l" style={{ maxWidth: "36rem" }}>
-          <Column
-            id={about.intro.title}
-            fillWidth
-            vertical="center"
-            marginBottom="8"
-          >
+          <Column id={about.intro.title} fillWidth vertical="center" marginBottom="8">
             {about.calendar.display && (
               <Row
                 fitWidth
@@ -175,7 +190,7 @@ export default function About() {
                             />
                           </Row>
                         </React.Fragment>
-                      )
+                      ),
                   )}
               </Row>
             )}
@@ -207,17 +222,11 @@ export default function About() {
                       {experience.role}
                     </Text>
                     <Column as="ul" gap="16">
-                      {experience.achievements.map(
-                        (achievement: React.ReactNode, i: number) => (
-                          <Text
-                            as="li"
-                            variant="body-default-m"
-                            key={`${experience.company}-${i}`}
-                          >
-                            {achievement}
-                          </Text>
-                        )
-                      )}
+                      {experience.achievements.map((achievement: React.ReactNode, i: number) => (
+                        <Text as="li" variant="body-default-m" key={`${experience.company}-${i}`}>
+                          {achievement}
+                        </Text>
+                      ))}
                     </Column>
                     {experience.images && experience.images.length > 0 && (
                       <Row fillWidth paddingTop="m" paddingLeft="40" gap="12" wrap>
@@ -406,7 +415,13 @@ export default function About() {
             </>
           )}
 
-          <Heading as="h2" id="Publications" variant="display-strong-s" marginTop="48" marginBottom="24">
+          <Heading
+            as="h2"
+            id="Publications"
+            variant="display-strong-s"
+            marginTop="48"
+            marginBottom="24"
+          >
             Publications
           </Heading>
           <Column fillWidth gap="l" marginBottom="40" className="journey-block publications-block">
@@ -437,8 +452,8 @@ export default function About() {
                   Tumor Progression Challenge, with a paper accepted for{" "}
                   <span className="intro-emerald">Oral Presentation at MICCAI 2025</span>. We
                   proposed an end-to-end pipeline for longitudinal glioblastoma response
-                  classification (RANO criteria), combining Swin UNETR segmentation with 3D CNNs
-                  and GAN-based class balancing.
+                  classification (RANO criteria), combining Swin UNETR segmentation with 3D CNNs and
+                  GAN-based class balancing.
                 </Text>
                 <Row wrap gap="8" paddingTop="4">
                   <Button
@@ -452,7 +467,7 @@ export default function About() {
                     BraTS response project
                   </Button>
                   <Button
-                    href="https://www.overleaf.com/read/mdzxqfqbsyfc#696149"
+                    href="https://link.springer.com/10.1007/978-3-032-16370-7_23"
                     target="_blank"
                     rel="noopener"
                     variant="secondary"

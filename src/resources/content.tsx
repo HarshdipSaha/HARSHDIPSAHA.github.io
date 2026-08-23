@@ -134,8 +134,8 @@ const about: About = {
           <>
             Built a scalable geometry processing engine with{" "}
             <span className="intro-amber">CSG operations</span> and STL-to-SDF conversion,
-            integrated with AMReX MultiFab for high-performance simulations using
-            GPU-accelerated bindings.
+            integrated with AMReX MultiFab for high-performance simulations using GPU-accelerated
+            bindings.
           </>,
           <>
             Applied <span className="intro-emerald">Chan-Vese segmentation</span> and 3D
@@ -143,6 +143,12 @@ const about: About = {
             data for biomedical imaging workflows.
           </>,
         ],
+      },
+      {
+        company: "Amazon",
+        timeframe: "Jul 2026 – Aug 2026",
+        role: "Amazon ML Summer School",
+        achievements: [<>Selected for Amazon's ML Summer School program.</>],
       },
       {
         company: "Optum (UnitedHealth Group)",
@@ -193,10 +199,6 @@ const about: About = {
     display: true,
     title: "Studies",
     institutions: [
-      {
-        name: "Amazon ML Summer School — Jul 2026 – Aug 2026",
-        description: <>Selected for Amazon's ML Summer School program.</>,
-      },
       {
         name: "Netaji Subhas University of Technology, New Delhi — 2027",
         description: <>B.Tech CSE, GPA 8.78. Data Structures, Algorithms, AI, ML.</>,
@@ -290,10 +292,10 @@ const about: About = {
         title: "Top open-source contributor, BrainGlobe ecosystem",
         description: (
           <>
-            Merged <span className="intro-emerald">15+ pull requests</span> across the{" "}
-            BrainGlobe ecosystem's repositories, and a leading contributor to{" "}
-            <span className="intro-emerald">brainglobe-registration</span>, improving
-            neuroscience image registration pipelines.
+            Merged <span className="intro-emerald">15+ pull requests</span> across the BrainGlobe
+            ecosystem's repositories, and a leading contributor to{" "}
+            <span className="intro-emerald">brainglobe-registration</span>, improving neuroscience
+            image registration pipelines.
           </>
         ),
         links: [
@@ -308,8 +310,8 @@ const about: About = {
         title: "All India Rank 14 — BRAINDEAD (Unstop), Feb 2025",
         description: (
           <>
-            Secured <span className="intro-amber">AIR 14</span> by building two projects: one on{" "}
-            EDA and ML, and another on an LLM-based hybrid summarizer.
+            Secured <span className="intro-amber">AIR 14</span> by building two projects: one on EDA
+            and ML, and another on an LLM-based hybrid summarizer.
           </>
         ),
         links: [
@@ -325,8 +327,8 @@ const about: About = {
         description: (
           <>
             Selected to pitch offline at the AI4Humanity Summit hackathon for{" "}
-            <span className="intro-violet">Accurate Precise Timely</span>, an AI-powered
-            hospital scheduling system.
+            <span className="intro-violet">Accurate Precise Timely</span>, an AI-powered hospital
+            scheduling system.
           </>
         ),
         links: [
