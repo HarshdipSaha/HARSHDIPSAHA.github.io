@@ -254,6 +254,8 @@ const about: About = {
       "Neuroimaging",
       "Cloud computing",
       "Time series analysis",
+      "LLM Safety",
+      "Alignment",
     ],
   },
 };
