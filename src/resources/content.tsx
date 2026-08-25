@@ -146,40 +146,6 @@ const about: About = {
     title: "Work Experience",
     experiences: [
       {
-        company: "IIT Madras",
-        timeframe: "Jan 2026 – Present",
-        role: "Research Intern — Scientific Computing (Remote)",
-        achievements: [
-          <>
-            Developing <span className="intro-cyan">PyAMorph</span> (formerly pySdf), a Python
-            library for 2D/3D signed distance functions enabling simulation-ready geometric
-            representations from images, CAD models, and analytical inputs.
-          </>,
-          <>
-            Selected for oral presentation at{" "}
-            <span className="intro-violet">INCAM 2026, IIT Kanpur</span>, with the work to be
-            published in a Scopus-indexed journal.
-          </>,
-          <>
-            Built a scalable geometry processing engine with{" "}
-            <span className="intro-amber">CSG operations</span> and STL-to-SDF conversion,
-            integrated with AMReX MultiFab for high-performance simulations using GPU-accelerated
-            bindings.
-          </>,
-          <>
-            Applied <span className="intro-emerald">Chan-Vese segmentation</span> and 3D
-            morphometric analysis to extract simulation-ready structures from volumetric medical
-            data for biomedical imaging workflows.
-          </>,
-        ],
-      },
-      {
-        company: "Amazon",
-        timeframe: "Jul 2026 – Aug 2026",
-        role: "Amazon ML Summer School",
-        achievements: [<>Selected for Amazon's ML Summer School program.</>],
-      },
-      {
         company: "Optum (UnitedHealth Group)",
         timeframe: "Jun 2026 – Aug 2026",
         role: "AI Engineer Intern — AI-DLC Pilot Team",
@@ -221,6 +187,40 @@ const about: About = {
             LLM Council, and more — alongside GitHub Spec Kit.
           </>,
         ],
+      },
+      {
+        company: "IIT Madras",
+        timeframe: "Jan 2026 – Present",
+        role: "Research Intern — Scientific Computing (Remote)",
+        achievements: [
+          <>
+            Developing <span className="intro-cyan">PyAMorph</span> (formerly pySdf), a Python
+            library for 2D/3D signed distance functions enabling simulation-ready geometric
+            representations from images, CAD models, and analytical inputs.
+          </>,
+          <>
+            Selected for oral presentation at{" "}
+            <span className="intro-violet">INCAM 2026, IIT Kanpur</span>, with the work to be
+            published in a Scopus-indexed journal.
+          </>,
+          <>
+            Built a scalable geometry processing engine with{" "}
+            <span className="intro-amber">CSG operations</span> and STL-to-SDF conversion,
+            integrated with AMReX MultiFab for high-performance simulations using GPU-accelerated
+            bindings.
+          </>,
+          <>
+            Applied <span className="intro-emerald">Chan-Vese segmentation</span> and 3D
+            morphometric analysis to extract simulation-ready structures from volumetric medical
+            data for biomedical imaging workflows.
+          </>,
+        ],
+      },
+      {
+        company: "Amazon",
+        timeframe: "Jul 2026 – Aug 2026",
+        role: "Amazon ML Summer School",
+        achievements: [<>Selected for Amazon's ML Summer School program.</>],
       },
     ],
   },
@@ -380,7 +380,10 @@ const blog: Blog = {
 
 const work: Work = {
   path: "/work",
-  label: "Work",
+  // Labelled "Projects" in the nav: "Work" reads as employment, and this
+  // section is project case studies. The /work path is unchanged so existing
+  // links, the sitemap, and every /work/<slug> URL keep resolving.
+  label: "Projects",
   title: `Projects – ${person.name}`,
   description: `ML, computer vision, healthcare & hackathon projects — with code and case studies.`,
 };

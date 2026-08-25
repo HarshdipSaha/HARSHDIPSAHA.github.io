@@ -30,7 +30,7 @@ export default function Work() {
         }}
       />
       <Heading marginBottom="8" variant="heading-strong-xl" align="center">
-        {work.title}
+        {work.label}
       </Heading>
       <Text
         variant="body-default-m"

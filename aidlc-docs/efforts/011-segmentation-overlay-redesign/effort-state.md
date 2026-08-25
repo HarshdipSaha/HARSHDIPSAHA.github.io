@@ -38,6 +38,9 @@ as evidence and anti-reference, with thine.com and lexsi.ai captured as craft re
 - [x] Publications moved from a hardcoded component block into `content.tsx`
 - [x] `RouteGuard` — renders children during prerender instead of gating on mount
 - [x] Light-mode fixes, `--radius-l` fix, dead SCSS deleted
+- [x] Experience reordered — Optum, then IIT Madras, then Amazon (user request)
+- [x] Nav label "Work" → "Projects" (user request); `/work` path unchanged so URLs still resolve
+- [x] `/work` and `/gallery` visible headings switched from the meta title to the label
 - [x] ADR 0010, registry, audit, `CONTEXT.md`
 
 ## Verification
@@ -80,4 +83,9 @@ Measured on the built export, before vs after:
 - `.intro-cyan/amber/coral/emerald/violet` are retained as live selectors because `content.tsx`
   uses them heavily, but they now all resolve to one tonal emphasis. Migrating that copy to
   `.ink-strong` is follow-up work, not done here.
+- The home headline was briefly rewritten to a research-first line and then restored, at the
+  user's request, to "Building ML pipelines & enjoying life through backpropagation". The research
+  now leads via the label plate and the publication section rather than the headline.
+- `/work` and `/gallery` were rendering their **meta** titles as the visible `<h1>`, so the pages
+  read "Projects – Harshdip Saha" and "Gallery – Harshdip Saha". They now render `label`.
 - impeccable itself is gitignored (153 files, 3.5 MB); reinstall with `npx impeccable install`.

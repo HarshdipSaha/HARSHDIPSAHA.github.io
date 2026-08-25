@@ -31,7 +31,7 @@ export default function Gallery() {
       />
       <Column horizontal="center" gap="8" marginBottom="8">
         <Heading variant="heading-strong-xl" align="center">
-          {gallery.title}
+          {gallery.label}
         </Heading>
         <Text
           variant="body-default-m"
