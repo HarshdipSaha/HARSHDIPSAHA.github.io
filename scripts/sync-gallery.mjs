@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import sharp from "sharp";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
@@ -11,7 +12,25 @@ const galleryJsonPath = path.join(dataDir, "gallery.json");
 
 const IMG_EXT = new Set([".jpeg", ".jpg", ".png", ".webp", ".gif"]);
 
-function syncGallery() {
+/**
+ * Read the real orientation off the file.
+ *
+ * Every entry used to be hardcoded `"horizontal"`, but 7 of the 8 photos are
+ * portrait (1200x1600 and similar). GalleryView renders horizontal at 16/9 and
+ * vertical at 3/4, so those seven were being cropped into landscape boxes.
+ */
+async function orientationOf(filePath) {
+  try {
+    const { width, height } = await sharp(filePath).metadata();
+    if (!width || !height) return "horizontal";
+    return height > width ? "vertical" : "horizontal";
+  } catch {
+    // Never fail the build over a metadata read; fall back to the old default.
+    return "horizontal";
+  }
+}
+
+async function syncGallery() {
   if (!fs.existsSync(gallerySource)) {
     fs.mkdirSync(galleryDest, { recursive: true });
     fs.mkdirSync(dataDir, { recursive: true });
@@ -29,7 +48,7 @@ function syncGallery() {
   fs.mkdirSync(dataDir, { recursive: true });
 
   const images = [];
-  files.forEach((file, i) => {
+  for (const [i, file] of files.entries()) {
     const ext = path.extname(file).toLowerCase();
     const destName = `gallery-${i + 1}${ext}`;
     const srcPath = path.join(gallerySource, file);
@@ -38,12 +57,12 @@ function syncGallery() {
     images.push({
       src: `/images/gallery/${destName}`,
       alt: "Gallery",
-      orientation: "horizontal",
+      orientation: await orientationOf(srcPath),
     });
-  });
+  }
 
   fs.writeFileSync(galleryJsonPath, JSON.stringify(images, null, 2));
   console.log(`Synced ${images.length} gallery images from gallery/ → public/images/gallery, wrote gallery.json`);
 }
 
-syncGallery();
+await syncGallery();

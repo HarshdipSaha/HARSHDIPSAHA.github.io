@@ -90,3 +90,31 @@ load-bearing, sharp turns palette quantisation on implicitly at high `effort`) o
   the manifest `sources`, plus explicit `width`/`height` for CLS).
 - Consider a `gallery.json` orientation field derived from real intrinsic dimensions — the sync
   script currently hardcodes `"horizontal"` for every gallery image.
+
+## Follow-up landed in the same PR (component wiring)
+
+The pipeline deliberately stopped at the manifest; consuming it was done
+separately to avoid two agents editing the same components.
+
+- `src/components/ResponsiveImage.tsx` reads the manifest and emits `<picture>`
+  with AVIF/WebP sources, the correct `sizes`, and intrinsic `width`/`height`
+  so the box is reserved before the bytes land (CLS stays at 0). Sources absent
+  from the manifest fall through to a plain `<img>`.
+- Wired into `ProjectCard` and the `/about` publications card.
+- **Gallery orientation bug fixed.** `sync-gallery.mjs` hardcoded
+  `orientation: "horizontal"` for every image, but 7 of the 8 photos are
+  portrait (1200x1600 and similar). `GalleryView` renders horizontal at 16/9
+  and vertical at 3/4, so those seven had been cropped into landscape boxes.
+  The script now reads real dimensions via sharp: 7 vertical, 1 horizontal.
+- `public/images/responsive/**` is gitignored. It is 126 files / ~7.7 MB of
+  build output that `prebuild` regenerates, and CI runs `npm run build` before
+  deploying. The manifest itself stays committed so `tsc` passes in a fresh
+  clone before any build has run.
+
+Measured after wiring: 561 `srcset` attributes and 76 `<picture>` elements
+across `out/`, up from zero. Homepage image payload 0.06 MB.
+
+**Still unwired:** `GalleryView` uses Once UI `<Media enlarge>` for its
+lightbox, which `ResponsiveImage` does not provide. Kept the lightbox rather
+than trade a working feature for bytes; the gallery originals are optimised in
+place, so it is improved but not fully responsive. Noted as follow-up.

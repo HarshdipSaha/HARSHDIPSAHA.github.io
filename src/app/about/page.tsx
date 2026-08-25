@@ -15,6 +15,7 @@ import { baseURL, about, person, social, home, publications } from "@/resources"
 import TableOfContents from "@/components/about/TableOfContents";
 import TechStackStrip from "@/components/about/TechStackStrip";
 import ResearchInterestsBlock from "@/components/about/ResearchInterestsBlock";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 import styles from "@/components/about/about.module.scss";
 import React from "react";
 import { generateMeta } from "@/utils/meta";
@@ -445,11 +446,10 @@ export default function About() {
                     }}
                   >
                     {item.image && (
-                      <Media
+                      <ResponsiveImage
                         src={item.image}
                         alt={item.venue}
                         aspectRatio="16 / 9"
-                        radius="m"
                         sizes="(max-width: 768px) 100vw, 640px"
                       />
                     )}
