@@ -33,9 +33,9 @@ The baseline lives in `aidlc-docs/inception/`. Record the approval gate in `aidl
 
 ## Rules of engagement
 
-- Never claim done without pasting real output of `npx tsc --noEmit -p tsconfig.json` and `npm run build`. `verification-before-completion` enforces this.
+- Never claim done without pasting real output of `npm run typecheck` and `npm run build`. `verification-before-completion` enforces this.
 - Architectural or IA decisions get an ADR in `docs/adr/NNNN-*.md` and a `CONTEXT.md` update — not a comment in code.
-- Prefer editing `src/resources/content.tsx` over any component. If a change forces a component edit, say why in the effort.
+- Prefer editing `src/content/site.ts` (or a `content/projects/*.mdx` file) over any component. If a change forces a component edit, say why in the effort.
 - Read `CONTEXT.md` for domain vocabulary before writing an effort or ADR.
 
 ## Named recipes

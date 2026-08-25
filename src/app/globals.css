@@ -1,0 +1,227 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+@theme {
+  /* One tinted near-black, one warm paper, one accent. Every other neutral on
+     the site is paper at an alpha — there is deliberately no grey ramp. */
+  --color-ink: #171519;
+  --color-ink-2: #211e23;
+  --color-ink-3: #2f2b31;
+  --color-paper: #ebe5e1;
+  --color-tangerine: #f49752;
+  --color-sunny: #f4e382;
+  --color-seafoam: #8ad7b6;
+  --color-cerulean: #9bc8d6;
+
+  --font-sans: var(--font-commissioner), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-instrument), "Iowan Old Style", Georgia, serif;
+
+  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "kern", "liga", "calt";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-tangerine);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-tangerine);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Display type: the serif, always italic, tight, with a leading under 1 so
+   two lines read as one shape. Fluid — it never snaps at a breakpoint. */
+.display {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+/* 14px caps with 0.2em tracking at 40% — the section label. */
+.label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-paper) 45%, transparent);
+}
+
+/* Unprefixed last: the CSS minifier (Lightning CSS) keeps only the last of a
+   prefixed/unprefixed pair, and it used to keep -webkit-, which Chromium and
+   Firefox ignore. */
+.glass {
+  background: color-mix(in oklab, white 8%, transparent);
+  border: 1px solid color-mix(in oklab, white 14%, transparent);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+.hairline {
+  border-color: color-mix(in oklab, white 10%, transparent);
+}
+
+.measure {
+  max-width: 40rem;
+}
+
+/* Titles set over photographs, on the sticky cards. Two layers, not four:
+   text-shadow blur is rasterised per layer and per radius, and these cards
+   re-raster whenever they scale. */
+.over-photo {
+  text-shadow:
+    0 2px 12px rgb(0 0 0 / 0.9),
+    0 6px 40px rgb(0 0 0 / 0.75);
+}
+
+/* Long-form copy: case studies, the story page, process notes. */
+.prose {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: color-mix(in oklab, var(--color-paper) 82%, transparent);
+  letter-spacing: -0.005em;
+}
+.prose > * + * {
+  margin-top: 1.25em;
+}
+.prose h1,
+.prose h2,
+.prose h3 {
+  color: var(--color-paper);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin-top: 2.2em;
+}
+.prose h1 {
+  font-size: 2rem;
+}
+.prose h2 {
+  font-size: 1.5rem;
+}
+.prose h3 {
+  font-size: 1.2rem;
+}
+.prose strong {
+  color: var(--color-paper);
+  font-weight: 600;
+}
+.prose em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.08em;
+  letter-spacing: -0.01em;
+}
+.prose a {
+  color: var(--color-paper);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--color-tangerine) 70%, transparent);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 200ms;
+}
+.prose a:hover {
+  text-decoration-color: var(--color-tangerine);
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li + li {
+  margin-top: 0.5em;
+}
+.prose li::marker {
+  color: var(--color-tangerine);
+}
+.prose blockquote {
+  border-left: 2px solid color-mix(in oklab, var(--color-paper) 40%, transparent);
+  padding-left: 1.25rem;
+  font-size: 1.35rem;
+  line-height: 1.5;
+  color: var(--color-paper);
+}
+.prose code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.875em;
+  background: color-mix(in oklab, white 8%, transparent);
+  padding: 0.15em 0.4em;
+  border-radius: 0.35em;
+}
+.prose pre {
+  background: var(--color-ink-2);
+  border: 1px solid color-mix(in oklab, white 8%, transparent);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+.prose img {
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in oklab, white 10%, transparent);
+}
+.prose hr {
+  border: 0;
+  border-top: 1px solid color-mix(in oklab, white 10%, transparent);
+  margin: 3em 0;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.6em 0.8em;
+  border-bottom: 1px solid color-mix(in oklab, white 10%, transparent);
+}
+.prose th {
+  color: var(--color-paper);
+  font-weight: 500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@keyframes scroll-hint {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(100%); }
+}
+.scroll-hint {
+  animation: scroll-hint 1.8s var(--ease-out-cubic) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint { animation: none; }
+}

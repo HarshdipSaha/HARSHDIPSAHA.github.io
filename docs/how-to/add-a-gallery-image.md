@@ -4,33 +4,33 @@ Goal: a new image on `/gallery`.
 
 ## Steps
 
-1. Copy the image into the `gallery/` folder at the repo root. Recognised extensions: `.jpeg` `.jpg` `.png` `.webp` `.gif`.
+1. Copy the image into the `gallery/` folder at the repo root. Recognised extensions: `.jpeg` `.jpg` `.png` `.webp`.
 
-2. Run the sync:
+2. Run the image build:
 
    ```
-   node scripts/sync-gallery.mjs
+   npm run images
    ```
 
    or `npm run dev`, whose `predev` step runs it.
 
-The script sorts `gallery/` by filename (natural/numeric sort), copies each file to `public/images/gallery/gallery-N.<ext>` and rewrites `src/data/gallery.json` from scratch.
+The script sorts `gallery/` by filename, encodes each file with sharp to `public/img/gallery/NN.webp` (max 1600px, q80) and a thumbnail `public/img/gallery/NN-s.webp` (max 640px, q74), and rewrites the `gallery` array in `src/data/images.json` from scratch.
 
 ## Verify
 
 ```
-node scripts/sync-gallery.mjs
-# Synced 9 gallery images from gallery/ → public/images/gallery, wrote gallery.json
+npm run images
+# images: 9 gallery, 19 projects, 2 encoded
 ```
 
-The count should be one higher than before (8 at time of writing). Then open `http://localhost:3000/gallery`.
+The gallery count should be one higher than before (8 at time of writing) and `encoded` should be 2 (full + thumb). Then open `http://localhost:3000/gallery`.
 
 ## Notes
 
-- **`src/data/gallery.json` is generated. Do not hand-edit it** — the next `predev` or `prebuild` overwrites the file wholesale. Same for `public/images/gallery/`.
-- Each generated entry is `{ "src": "/images/gallery/gallery-N.ext", "alt": "Gallery", "orientation": "horizontal" }`. The script writes `orientation: "horizontal"` for every image; it does not inspect image dimensions. If a specific image needs `"vertical"`, that requires changing `scripts/sync-gallery.mjs`, not the JSON.
-- Filenames are positional: inserting a file that sorts earlier renumbers everything after it. Nothing links to `gallery-N` by name, so this is safe.
-- `/gallery` is on in the `routes` object of `src/resources/once-ui.config.ts`. If it is off, the page will not render regardless of the JSON.
+- **`src/data/images.json` and `public/img/gallery/` are generated. Do not hand-edit them** — the next `predev`, `prebuild` or `npm run images` overwrites them. `public/img/` is gitignored; the manifest is committed.
+- Each manifest entry is `{ "src": "/img/gallery/NN.webp", "thumb": "/img/gallery/NN-s.webp", "w": <px>, "h": <px> }`. Width and height are the real encoded dimensions, so the masonry grid reserves the right aspect ratio before the image loads. There is no `alt` field — `Gallery.tsx` writes `Photograph N`.
+- Numbering is positional (`01`, `02`, …): inserting a file that sorts earlier renumbers everything after it. One thing references gallery images by number — `threads.cards[].image` in `src/content/site.ts` (`"gallery:5"`, `"gallery:1"`), which feeds the home-page card stack. Check those still point at the photo you meant.
+- Encoding is cached by source mtime in `.cache/images.json`; a warm run re-encodes nothing.
 
 ## See also
 

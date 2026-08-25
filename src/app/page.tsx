@@ -1,172 +1,72 @@
-import {
-  Heading,
-  Text,
-  Button,
-  Avatar,
-  RevealFx,
-  Column,
-  Badge,
-  Row,
-  Schema,
-  Line,
-} from "@once-ui-system/core";
-import { home, about, person, baseURL, routes, social } from "@/resources";
-import { Mailchimp } from "@/components";
-import { Projects } from "@/components/work/Projects";
-import { Posts } from "@/components/blog/Posts";
-import { generateMeta } from "@/utils/meta";
+import Link from "next/link";
+import { BrainSequence } from "@/components/home/BrainSequence";
+import { CardStack } from "@/components/home/CardStack";
+import { Closing } from "@/components/home/Closing";
+import { Experience } from "@/components/home/Experience";
+import { Hero } from "@/components/home/Hero";
+import { Reveal } from "@/components/motion/Reveal";
+import { ScrollWords } from "@/components/motion/ScrollWords";
+import { ProjectGrid } from "@/components/ProjectGrid";
+import { Arrow, Container, Label } from "@/components/ui";
+import { passage, selectedProjects, sequence, threads } from "@/content/site";
+import { gallery, getProjectsBySlugs, projectImages } from "@/lib/projects";
 
-export async function generateMetadata() {
-  return generateMeta({
-    title: home.title,
-    description: home.description,
-    baseURL: baseURL,
-    path: home.path,
-    image: home.image,
-  });
+function resolveImage(ref: string): string {
+  const [kind, key] = ref.split(":");
+  if (kind === "gallery") return gallery[Number(key) - 1]?.src ?? gallery[0].src;
+  return projectImages[key]?.src ?? gallery[0].src;
 }
 
 export default function Home() {
-  const resumeLink = social.find((item) => item.name === "Resume")?.link;
+  const selected = getProjectsBySlugs(selectedProjects.slugs);
+  const cards = threads.cards.map(({ image, ...c }) => ({ ...c, src: resolveImage(image) }));
 
   return (
-    <Column maxWidth="m" gap="xl" paddingY="12" horizontal="center">
-      <Schema
-        as="webPage"
-        baseURL={baseURL}
-        path={home.path}
-        title={home.title}
-        description={home.description}
-        image={home.image}
-        author={{
-          name: person.name,
-          url: `${baseURL}${about.path}`,
-          image: `${baseURL}${person.avatar}`,
-        }}
-      />
-      <Column fillWidth horizontal="center" gap="m">
-        <Column maxWidth="s" horizontal="center" align="center">
-          {home.featured.display && (
-            <RevealFx
-              fillWidth
-              horizontal="center"
-              paddingTop="16"
-              paddingBottom="32"
-              paddingLeft="12"
-            >
-              <Badge
-                background="brand-alpha-weak"
-                paddingX="12"
-                paddingY="4"
-                onBackground="neutral-strong"
-                textVariant="label-default-s"
-                arrow={false}
-                href={home.featured.href}
-              >
-                <Row paddingY="2">{home.featured.title}</Row>
-              </Badge>
-            </RevealFx>
-          )}
-          <RevealFx
-            translateY="4"
-            fillWidth
-            horizontal="center"
-            paddingBottom="16"
-          >
-            <Heading wrap="balance" variant="display-strong-l">
-              {home.headline}
-            </Heading>
-          </RevealFx>
-          <RevealFx
-            translateY="8"
-            delay={0.2}
-            fillWidth
-            horizontal="center"
-            paddingBottom="32"
-          >
-            <Text
-              wrap="balance"
-              onBackground="neutral-weak"
-              variant="heading-default-xl"
-            >
-              {home.subline}
-            </Text>
-          </RevealFx>
-          <RevealFx
-            paddingTop="12"
-            delay={0.4}
-            horizontal="center"
-            paddingLeft="12"
-          >
-            <Row gap="12" vertical="center" s={{ direction: "column" }}>
-              <Button
-                id="about"
-                data-border="rounded"
-                href={about.path}
-                variant="secondary"
-                size="m"
-                weight="default"
-                arrowIcon
-              >
-                <Row gap="8" vertical="center" paddingRight="4">
-                  {about.avatar.display && (
-                    <Avatar
-                      marginRight="8"
-                      style={{ marginLeft: "-0.75rem" }}
-                      src={person.avatar}
-                      size="m"
-                    />
-                  )}
-                  {about.title}
-                </Row>
-              </Button>
-              {resumeLink && (
-                <Button
-                  id="resume"
-                  data-border="rounded"
-                  href={resumeLink}
-                  variant="secondary"
-                  size="m"
-                  weight="default"
-                  arrowIcon
-                >
-                  Resume
-                </Button>
-              )}
-            </Row>
-          </RevealFx>
-        </Column>
-      </Column>
-      <RevealFx translateY="16" delay={0.6}>
-        <Projects range={[1, 1]} />
-      </RevealFx>
-      <Row fillWidth horizontal="center" paddingY="l" paddingX="l">
-        <Line maxWidth={48} />
-      </Row>
-      {routes["/blog"] && (
-        <Column fillWidth gap="24" marginBottom="l">
-          <Row fillWidth paddingRight="64">
-            <Line maxWidth={48} />
-          </Row>
-          <Row fillWidth gap="24" marginTop="40" s={{ direction: "column" }}>
-            <Row flex={1} paddingLeft="l" paddingTop="24">
-              <Heading as="h2" variant="display-strong-xs" wrap="balance">
-                Latest from the blog
-              </Heading>
-            </Row>
-            <Row flex={3} paddingX="20">
-              <Posts range={[1, 2]} columns="2" />
-            </Row>
-          </Row>
-          <Row fillWidth paddingLeft="64" horizontal="end">
-            <Line maxWidth={48} />
-          </Row>
-        </Column>
-      )}
-      <RevealFx translateY="8" delay={0.1}>
-        <Projects range={[2]} />
-      </RevealFx>
-      <Mailchimp />
-    </Column>
+    <>
+      <Hero />
+
+      <BrainSequence stages={sequence.stages} eyebrow={sequence.eyebrow} />
+
+      <section className="py-36 md:py-52">
+        <Container wide>
+          <ScrollWords
+            text={passage}
+            className="mx-auto max-w-[1180px] text-[2.1rem] font-medium leading-[1.12] tracking-[-0.02em] sm:text-[3rem] md:text-[3.9rem] lg:text-[4.9rem]"
+          />
+        </Container>
+      </section>
+
+      <section className="pb-8 pt-8 text-center">
+        <Container>
+          <Reveal variant="blur-up">
+            <Label>{threads.label}</Label>
+            <h2 className="mx-auto mt-6 max-w-[16ch] text-[clamp(2.4rem,6vw,4.6rem)] font-medium leading-[1.02] tracking-tight text-paper">{threads.title}</h2>
+            <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-paper/70">{threads.body}</p>
+          </Reveal>
+        </Container>
+      </section>
+
+      <CardStack cards={cards} />
+
+      <Experience />
+
+      <section className="pb-28 md:pb-40">
+        <Container>
+          <Reveal>
+            <div className="flex items-end justify-between gap-6">
+              <Label>{selectedProjects.label}</Label>
+              <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-paper/60 transition-colors hover:text-paper">
+                {selectedProjects.allLabel} <Arrow />
+              </Link>
+            </div>
+          </Reveal>
+          <div className="mt-12">
+            <ProjectGrid projects={selected} />
+          </div>
+        </Container>
+      </section>
+
+      <Closing />
+    </>
   );
 }

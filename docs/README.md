@@ -15,19 +15,19 @@ Docs in this folder follow [Diataxis](https://diataxis.fr/). Four quadrants, fou
 | Path | What it's for |
 | --- | --- |
 | [tutorials/01-local-setup.md](tutorials/01-local-setup.md) | Clone, install, run the dev server, type-check, build. Start here. |
-| [tutorials/02-add-your-first-project.md](tutorials/02-add-your-first-project.md) | Add one project (image + MDX) end to end, with explanation at each step. |
+| [tutorials/02-add-your-first-project.md](tutorials/02-add-your-first-project.md) | Add one project (image + `PROJECT_MAP` + MDX) end to end, with explanation at each step. |
 | [how-to/add-a-project.md](how-to/add-a-project.md) | Terse recipe for adding a project MDX and its image. |
 | [how-to/add-a-gallery-image.md](how-to/add-a-gallery-image.md) | Drop an image into `gallery/` and get it onto `/gallery`. |
-| [how-to/add-a-route.md](how-to/add-a-route.md) | The two-place edit: `routes` toggle plus `Header.tsx` nav entry. |
-| [how-to/update-site-content.md](how-to/update-site-content.md) | Edit copy, work experience, studies, tech stack in `src/resources/content.tsx`. |
+| [how-to/add-a-route.md](how-to/add-a-route.md) | The two-place edit: `src/app/<route>/page.tsx` plus a `nav` entry in `src/content/site.ts`. |
+| [how-to/update-site-content.md](how-to/update-site-content.md) | Edit copy, experience, story, process stats in `src/content/site.ts`. |
 | [how-to/run-an-aidlc-effort.md](how-to/run-an-aidlc-effort.md) | Open, approve, execute and close an AI-DLC effort under `aidlc-docs/efforts/`. |
-| [reference/content-schema.md](reference/content-schema.md) | Every field of every content object, plus the project MDX frontmatter contract. |
-| [reference/build-scripts.md](reference/build-scripts.md) | The four `scripts/*.mjs` files: reads, writes, when they run. |
-| [reference/commands.md](reference/commands.md) | Every npm script, the type-check, and the CI pipeline steps. |
+| [reference/content-schema.md](reference/content-schema.md) | Every export of `site.ts`, the image manifest, and the project MDX frontmatter contract. |
+| [reference/build-scripts.md](reference/build-scripts.md) | `build-images.mjs`, `render-brain-frames.py`, `check-aidlc-sync.mjs`: reads, writes, when they run. |
+| [reference/commands.md](reference/commands.md) | Every npm script and the CI pipeline steps. |
 | [explanation/why-static-export.md](explanation/why-static-export.md) | Why `output: "export"` on GitHub Pages, and what it forecloses. |
-| [explanation/content-as-code.md](explanation/content-as-code.md) | Why site copy is a typed TSX module and not a CMS. |
+| [explanation/content-as-code.md](explanation/content-as-code.md) | Why site copy is a TypeScript module plus MDX, and not a CMS. |
 | [explanation/ai-dlc-in-this-repo.md](explanation/ai-dlc-in-this-repo.md) | Why this repo adopted AI-DLC, and which records are reconstructions. |
-| [adr/](adr/) | Numbered architecture decision records, `0001`–`0008`. The why-log. |
+| [adr/](adr/) | Numbered architecture decision records, `0001`–`0011`. The why-log. |
 
 ## Where else to look
 

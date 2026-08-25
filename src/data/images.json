@@ -1,0 +1,154 @@
+{
+  "gallery": [
+    {
+      "src": "/img/gallery/01.webp",
+      "thumb": "/img/gallery/01-s.webp",
+      "w": 1200,
+      "h": 1600
+    },
+    {
+      "src": "/img/gallery/02.webp",
+      "thumb": "/img/gallery/02-s.webp",
+      "w": 1200,
+      "h": 1600
+    },
+    {
+      "src": "/img/gallery/03.webp",
+      "thumb": "/img/gallery/03-s.webp",
+      "w": 1280,
+      "h": 1120
+    },
+    {
+      "src": "/img/gallery/04.webp",
+      "thumb": "/img/gallery/04-s.webp",
+      "w": 780,
+      "h": 1040
+    },
+    {
+      "src": "/img/gallery/05.webp",
+      "thumb": "/img/gallery/05-s.webp",
+      "w": 1200,
+      "h": 1600
+    },
+    {
+      "src": "/img/gallery/06.webp",
+      "thumb": "/img/gallery/06-s.webp",
+      "w": 780,
+      "h": 1040
+    },
+    {
+      "src": "/img/gallery/07.webp",
+      "thumb": "/img/gallery/07-s.webp",
+      "w": 1200,
+      "h": 1600
+    },
+    {
+      "src": "/img/gallery/08.webp",
+      "thumb": "/img/gallery/08-s.webp",
+      "w": 960,
+      "h": 1280
+    }
+  ],
+  "projects": {
+    "agentic-loan": {
+      "src": "/img/projects/agentic-loan.webp",
+      "w": 989,
+      "h": 496
+    },
+    "ai-generated-text-detector": {
+      "src": "/img/projects/ai-generated-text-detector.webp",
+      "w": 300,
+      "h": 168
+    },
+    "ai-healthcare": {
+      "src": "/img/projects/ai-healthcare.webp",
+      "w": 1200,
+      "h": 630
+    },
+    "alien-invasion-pygame": {
+      "src": "/img/projects/alien-invasion-pygame.webp",
+      "w": 1202,
+      "h": 806
+    },
+    "anime-recommender": {
+      "src": "/img/projects/anime-recommender.webp",
+      "w": 300,
+      "h": 225
+    },
+    "apt": {
+      "src": "/img/projects/apt.webp",
+      "w": 1025,
+      "h": 800
+    },
+    "aquila": {
+      "src": "/img/projects/aquila.webp",
+      "w": 1400,
+      "h": 788
+    },
+    "atomnet": {
+      "src": "/img/projects/atomnet.webp",
+      "w": 762,
+      "h": 402
+    },
+    "branddiffusion": {
+      "src": "/img/projects/branddiffusion.webp",
+      "w": 337,
+      "h": 380
+    },
+    "brats-response": {
+      "src": "/img/projects/brats-response.webp",
+      "w": 793,
+      "h": 464
+    },
+    "gui-cansat": {
+      "src": "/img/projects/gui-cansat.webp",
+      "w": 1400,
+      "h": 774
+    },
+    "missing-person": {
+      "src": "/img/projects/missing-person.webp",
+      "w": 920,
+      "h": 533
+    },
+    "museum-ticketing-chatbot": {
+      "src": "/img/projects/museum-ticketing-chatbot.webp",
+      "w": 750,
+      "h": 469
+    },
+    "object-tennis-tracker": {
+      "src": "/img/projects/object-tennis-tracker.webp",
+      "w": 752,
+      "h": 423
+    },
+    "pysdf": {
+      "src": "/img/projects/pysdf.webp",
+      "w": 322,
+      "h": 157
+    },
+    "tinysafetynet": {
+      "src": "/img/projects/tinysafetynet.webp",
+      "w": 544,
+      "h": 1000
+    },
+    "tomato-disease": {
+      "src": "/img/projects/tomato-disease.webp",
+      "w": 862,
+      "h": 595
+    },
+    "youtube-langchain": {
+      "src": "/img/projects/youtube-langchain.webp",
+      "w": 686,
+      "h": 386
+    },
+    "zombies-learning": {
+      "src": "/img/projects/zombies-learning.webp",
+      "w": 791,
+      "h": 553
+    }
+  },
+  "me": {
+    "src": "/img/me.webp",
+    "w": 780,
+    "h": 736
+  }
+}

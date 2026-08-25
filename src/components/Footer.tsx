@@ -1,52 +1,63 @@
-import { Row, IconButton, Text } from "@once-ui-system/core";
-import { person, social } from "@/resources";
-import styles from "./Footer.module.scss";
+import Link from "next/link";
+import { footer, nav, person } from "@/content/site";
+import { Container } from "./ui";
 
-export const Footer = () => {
-  const currentYear = new Date().getFullYear();
+const elsewhere = [
+  { label: "GitHub", href: person.github },
+  { label: "LinkedIn", href: person.linkedin },
+  { label: "Email", href: `mailto:${person.email}` },
+  { label: "Résumé", href: person.resume },
+];
 
+export function Footer() {
   return (
-    <Row
-      as="footer"
-      fillWidth
-      padding="8"
-      horizontal="center"
-      s={{ direction: "column" }}
-    >
-      <Row
-        className={styles.mobile}
-        maxWidth="m"
-        paddingY="8"
-        paddingX="16"
-        gap="16"
-        horizontal="between"
-        vertical="center"
-        s={{
-          direction: "column",
-          horizontal: "center",
-          align: "center",
-        }}
-      >
-        <Text variant="body-default-s" onBackground="neutral-strong">
-          <Text onBackground="neutral-weak">© {currentYear}</Text>
-          <Text paddingX="4">{person.name}</Text>
-        </Text>
-        <Row gap="16">
-          {social.map((item) =>
-            item.essential && item.link ? (
-              <IconButton
-                key={item.name}
-                href={item.link}
-                icon={item.icon}
-                tooltip={item.name}
-                size="s"
-                variant="ghost"
-              />
-            ) : null
-          )}
-        </Row>
-      </Row>
-      <Row height="80" hide s={{ hide: false }} />
-    </Row>
+    <footer className="hairline border-t">
+      <Container className="grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr] md:py-24">
+        <div>
+          <p className="display text-4xl text-paper">
+            {person.firstName}
+            <span className="text-paper/45"> Saha</span>
+          </p>
+          <p className="mt-4 max-w-xs text-paper/60">{person.role}. Open to SDE and research internships.</p>
+        </div>
+        <div>
+          <p className="label mb-5">Site</p>
+          <ul className="flex flex-col gap-3 text-paper/80">
+            <li>
+              <Link href="/" className="hover:text-paper">Home</Link>
+            </li>
+            {nav.map((n) => (
+              <li key={n.href}>
+                <Link href={n.href} className="hover:text-paper">
+                  {n.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="label mb-5">Elsewhere</p>
+          <ul className="flex flex-col gap-3 text-paper/80">
+            {elsewhere.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-paper">
+                  {l.label} <span aria-hidden="true" className="text-paper/40">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Container>
+      <Container className="pb-12">
+        <div className="hairline mx-auto w-[97%] border-t pt-8">
+          {footer.colophon.map((line) => (
+            <p key={line} className="mt-2 max-w-3xl text-[13px] leading-relaxed text-paper/40">
+              {line}
+            </p>
+          ))}
+          <p className="mt-6 text-[13px] text-paper/40">© {new Date().getFullYear()} {person.name}</p>
+        </div>
+      </Container>
+    </footer>
   );
-};
+}

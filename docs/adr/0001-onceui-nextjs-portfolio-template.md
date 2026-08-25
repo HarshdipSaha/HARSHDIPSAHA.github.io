@@ -1,6 +1,6 @@
 # 0001 — Adopt the Once UI "Magic Portfolio" Next.js template
 
-Status: Accepted   Date: 2026-01-27   Supersedes: —
+Status: Superseded by [ADR 0011](0011-rebuild-from-scratch-on-thine-model.md)   Date: 2026-01-27   Supersedes: —
 
 ## Context
 The repo sat dormant for over two years behind a single empty `gittt.html`. Restarting it meant

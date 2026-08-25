@@ -1,15 +1,15 @@
-import { Column, Heading, Text } from "@once-ui-system/core";
+import { Pill } from "@/components/ui";
 
 export default function NotFound() {
   return (
-    <Column as="section" fill center paddingBottom="160">
-      <Text marginBottom="s" variant="display-strong-xl">
-        404
-      </Text>
-      <Heading marginBottom="l" variant="display-default-xs">
-        Page Not Found
-      </Heading>
-      <Text onBackground="neutral-weak">The page you are looking for does not exist.</Text>
-    </Column>
+    <section className="flex min-h-[80svh] flex-col items-center justify-center px-6 text-center">
+      <p className="label">404</p>
+      <h1 className="display mt-5 text-[clamp(3rem,9vw,7rem)] text-paper">Nothing on this slice.</h1>
+      <div className="mt-10">
+        <Pill href="/" variant="accent">
+          Back home
+        </Pill>
+      </div>
+    </section>
   );
 }
