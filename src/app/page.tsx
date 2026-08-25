@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion/Reveal";
+import { ProbeText } from "@/components/motion/ProbeText";
 import { ScanReveal } from "@/components/motion/ScanReveal";
 import { Projects } from "@/components/work/Projects";
 import { about, baseURL, home, person, publications, work } from "@/resources";
@@ -114,7 +115,7 @@ export default function Home() {
                 onBackground="neutral-weak"
                 style={{ maxWidth: "68ch", lineHeight: 1.7 }}
               >
-                {lead.summary}
+                {lead.summaryText ? <ProbeText text={lead.summaryText} /> : lead.summary}
               </Text>
               <Row gap="24" wrap paddingTop="4">
                 {lead.links.map((link) => (

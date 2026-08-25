@@ -788,9 +788,11 @@ header a:active {
   padding-bottom: 3rem;
   display: flex;
   flex-direction: column;
-  /* Must exceed the within-paragraph line spacing, or wrapped lines sit
-     further apart than separate paragraphs and the hierarchy reads inverted. */
-  gap: 1.35rem;
+  /* Must EXCEED the within-paragraph line spacing, or wrapped lines sit further
+     apart than separate paragraphs and the block reads as loose fragments.
+     Line spacing below is 0.875rem x 1.55 = 21.7px, so the gap is set clear of
+     it at 30px rather than merely close to it. */
+  gap: 1.875rem;
   align-items: flex-start;
 }
 
@@ -805,18 +807,181 @@ header a:active {
 
 .colophon p {
   margin: 0;
-  max-width: var(--measure, 34rem);
-  font-size: 0.9375rem;
-  line-height: 1.6;
+  /* Narrower than the body measure: a colophon is a dense production note, and
+     short lines are what make it read as one rather than as leftover prose. */
+  max-width: 30rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
   color: var(--scan-07);
+  text-wrap: pretty;
 }
 
 .colophon .colophon-ipa {
   font-family: var(--font-code), ui-monospace, monospace;
-  color: var(--scan-08);
-  letter-spacing: 0.02em;
+  font-size: 0.8125rem;
+  color: var(--scan-06);
+  letter-spacing: 0.04em;
 }
 
-.colophon .colophon-ipa {
-  margin-bottom: 0.25rem;
+
+
+/* ============================================================================
+   PROGRESSIVE BLUR — the nav's ramped focus falloff.
+
+   Straight from the thine.com teardown, where it was identified as the single
+   cheapest "expensive" effect on the site. Eight stacked layers, each with
+   double the blur of the one before, each masked to its own 12.5% window. The
+   result is a blur that RAMPS instead of terminating at a hard edge, which is
+   what separates it from a plain frosted bar.
+   ========================================================================= */
+
+.progressive-blur {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 7rem;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.progressive-blur > span {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.progressive-blur > span:nth-child(1) { backdrop-filter: blur(0.5px); -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 12.5%, transparent 25%); mask-image: linear-gradient(to bottom, #000 0%, #000 12.5%, transparent 25%); }
+.progressive-blur > span:nth-child(2) { backdrop-filter: blur(1px);   -webkit-mask-image: linear-gradient(to bottom, transparent 12.5%, #000 25%, #000 37.5%, transparent 50%); mask-image: linear-gradient(to bottom, transparent 12.5%, #000 25%, #000 37.5%, transparent 50%); }
+.progressive-blur > span:nth-child(3) { backdrop-filter: blur(2px);   -webkit-mask-image: linear-gradient(to bottom, transparent 25%, #000 37.5%, #000 50%, transparent 62.5%); mask-image: linear-gradient(to bottom, transparent 25%, #000 37.5%, #000 50%, transparent 62.5%); }
+.progressive-blur > span:nth-child(4) { backdrop-filter: blur(4px);   -webkit-mask-image: linear-gradient(to bottom, transparent 37.5%, #000 50%, #000 62.5%, transparent 75%); mask-image: linear-gradient(to bottom, transparent 37.5%, #000 50%, #000 62.5%, transparent 75%); }
+.progressive-blur > span:nth-child(5) { backdrop-filter: blur(8px);   -webkit-mask-image: linear-gradient(to bottom, transparent 50%, #000 62.5%, #000 75%, transparent 87.5%); mask-image: linear-gradient(to bottom, transparent 50%, #000 62.5%, #000 75%, transparent 87.5%); }
+.progressive-blur > span:nth-child(6) { backdrop-filter: blur(16px);  -webkit-mask-image: linear-gradient(to bottom, transparent 62.5%, #000 75%, #000 87.5%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 62.5%, #000 75%, #000 87.5%, transparent 100%); }
+
+/* A scrim so text passing under the ramp keeps its contrast. */
+.progressive-blur::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--scan-00) 0%, transparent 100%);
+  opacity: 0.55;
+}
+
+/* Backdrop-filter layers are genuinely expensive on low-end mobile. One plain
+   frosted bar there instead of six composited ones. */
+@media (max-width: 768px) {
+  .progressive-blur > span:nth-child(n + 2) {
+    display: none;
+  }
+  .progressive-blur > span:nth-child(1) {
+    backdrop-filter: blur(6px);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ============================================================================
+   BLUR-DIAGONAL REVEAL — thine.com's actual signature.
+
+   Its variant catalog runs to 30 entries and the site uses five, all of them
+   blur. Things do not slide in; they resolve out of depth of field. Replacing
+   the plain lift with the real thing: a diagonal offset plus a 4px blur, which
+   reads as a camera finding focus rather than a div arriving.
+   ========================================================================= */
+
+[data-motion="on"] [data-reveal] {
+  opacity: 0;
+  transform: translate3d(-14px, 16px, 0);
+  filter: blur(5px);
+  transition:
+    opacity var(--dur-slice) var(--ease-settle),
+    transform var(--dur-slice) var(--ease-settle),
+    filter var(--dur-slice) var(--ease-settle);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-motion="on"] [data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-motion="on"] [data-reveal] {
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ============================================================================
+   PROBE SWEEP — scroll-linked word illumination.
+
+   The one place a SCRUBBED animation is correct rather than a one-shot: the
+   research warned that `animation-timeline: view()` reverses on scroll-up,
+   which is a defect for an entrance but exactly the desired behaviour here.
+   Words brighten as the section crosses the viewport and dim as it leaves, so
+   the reader's scroll position is the probe.
+
+   Firefox has not shipped scroll-driven animations, so this sits behind
+   @supports and simply renders at full brightness there.
+   ========================================================================= */
+
+.probe-text .pw {
+  display: inline-block;
+  color: var(--scan-09);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .probe-text .pw {
+      color: var(--scan-06);
+      animation: probe-lift linear both;
+      animation-timeline: view();
+      animation-range: entry 18% cover 46%;
+      animation-delay: calc(var(--w, 0) * -1ms);
+    }
+
+    @keyframes probe-lift {
+      to {
+        color: var(--scan-10);
+      }
+    }
+  }
+}
+
+/* ============================================================================
+   CARD PRESENCE — group hover driven by one boolean custom property.
+
+   lexsi.ai's trick: a parent sets --on/--off on hover and arbitrarily deep
+   descendants read it through color-mix() and calc(). One rule drives colour
+   AND geometry across the whole card, with no `.parent:hover .child` selector
+   explosion and no JS.
+   ========================================================================= */
+
+.probe-row {
+  --on: 0;
+  --off: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .probe-row:hover,
+  .probe-row:focus-within {
+    --on: 1;
+    --off: 0;
+  }
+}
+
+.probe-row img {
+  transition:
+    transform var(--dur-state) var(--ease-slice),
+    filter var(--dur-state) var(--ease-slice);
+  transform: scale(calc(1 + 0.018 * var(--on)));
+  filter: saturate(calc(0.82 + 0.18 * var(--on)));
+}
+
+.probe-row h3 {
+  transition: color var(--dur-state) var(--ease-probe);
+  color: color-mix(
+    in oklab,
+    var(--scan-10) calc(100% * var(--off)),
+    var(--mask) calc(100% * var(--on))
+  );
 }

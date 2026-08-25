@@ -154,6 +154,14 @@ export default async function RootLayout({
             style={{ display: "none" }}
             dangerouslySetInnerHTML={{ __html: DIRECTION_CONTRACT }}
           />
+          <div className="progressive-blur" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
           <div className="page-gutter" aria-hidden="true">
             <span />
           </div>

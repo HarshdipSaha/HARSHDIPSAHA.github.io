@@ -136,6 +136,8 @@ export interface Publication {
   result?: string;
   year: string;
   summary: React.ReactNode;
+  /** Plain-text twin of `summary`, for the scroll-illuminated rendering. */
+  summaryText?: string;
   image?: string;
   links: Array<{ label: string; href: string }>;
 }

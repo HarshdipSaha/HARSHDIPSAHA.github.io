@@ -554,6 +554,10 @@ const publications: Publications = {
       // The venue line and the result plate above already state MICCAI, the oral
       // presentation and the rank. The summary describes the METHOD and nothing
       // that has already been said.
+      // Plain string: the home page renders it through <ProbeText>, which needs
+      // to split it per word for the scroll-linked sweep.
+      summaryText:
+        "An end-to-end pipeline for longitudinal glioblastoma response classification under RANO criteria — Swin UNETR segmentation, 3D CNNs, and GAN-based class balancing — entered in the BraTS Lighthouse 2025 Tumor Progression Challenge.",
       summary: (
         <>
           An end-to-end pipeline for longitudinal glioblastoma response classification under{" "}
