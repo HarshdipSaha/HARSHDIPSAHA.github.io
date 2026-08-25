@@ -101,6 +101,53 @@ export interface Home extends BasePageConfig {
   };
   /** The sub text which appears below the headline */
   subline: React.ReactNode;
+  /** The single verified result that leads the first viewport.
+   *
+   * Rendered as a mono label plate. This is the one place the mask accent is
+   * spent on the home page, so it must be a peer-reviewed or externally
+   * checkable claim — never a self-assessment.
+   */
+  plate?: {
+    /** Short metric or rank, e.g. "World Rank 3" */
+    metric: string;
+    /** The venue or context, e.g. "BraTS-PRO 2025 · MICCAI oral" */
+    context: string;
+    /** Where the claim can be verified */
+    href: string;
+  };
+  /** Primary actions in the first viewport, in priority order. */
+  actions?: Array<{
+    label: string;
+    href: string;
+    /** External links open in a new tab and get rel=noopener. */
+    external?: boolean;
+  }>;
+  /** How many project cards the home page shows before deferring to /work. */
+  selectedWorkCount?: number;
+}
+
+/**
+ * A published or accepted piece of research.
+ */
+export interface Publication {
+  title: string;
+  venue: string;
+  /** Short verified outcome, e.g. "World Rank 3". Rendered as a mask plate. */
+  result?: string;
+  year: string;
+  summary: React.ReactNode;
+  image?: string;
+  links: Array<{ label: string; href: string }>;
+}
+
+/**
+ * Publications block — previously hardcoded inside the About page component,
+ * which broke the repo's content-as-code rule.
+ */
+export interface Publications {
+  display: boolean;
+  title: string;
+  items: Publication[];
 }
 
 /**

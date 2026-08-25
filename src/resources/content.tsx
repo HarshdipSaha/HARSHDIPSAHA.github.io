@@ -1,4 +1,15 @@
-import { About, Blog, Gallery, Home, Newsletter, Person, Process, Social, Work } from "@/types";
+import {
+  About,
+  Blog,
+  Gallery,
+  Home,
+  Newsletter,
+  Person,
+  Process,
+  Publications,
+  Social,
+  Work,
+} from "@/types";
 import { Row, Text } from "@once-ui-system/core";
 import galleryImages from "@/data/gallery.json";
 
@@ -54,7 +65,7 @@ const home: Home = {
   description: `Portfolio of ${person.name} — UG researcher @ NexGenLab NSUT. ML, computer vision, neuroimaging. Open to SDE & research internships.`,
   headline: <>Building ML pipelines & enjoying life through backpropagation</>,
   featured: {
-    display: true,
+    display: false,
     title: (
       <Row gap="8" vertical="center">
         <Text onBackground="brand-medium">Featured work</Text>
@@ -65,10 +76,28 @@ const home: Home = {
   },
   subline: (
     <>
-      UG researcher @ NexGenLab NSUT · CSE @ NSUT. <br />
-      ML, computer vision, neuroimaging — open to SDE & research internships.
+      Undergraduate researcher at <span className="ink-strong">NexGenLab NSUT</span> and{" "}
+      <span className="ink-strong">IIT Madras</span>. I work on neuro-oncology imaging and
+      scientific computing — and I build and ship the systems around the research.
     </>
   ),
+  // The one verified claim that leads the page. Spends the mask accent.
+  plate: {
+    metric: "World Rank 3",
+    context: "BraTS-PRO 2025 · MICCAI oral",
+    href: "https://link.springer.com/10.1007/978-3-032-16370-7_23",
+  },
+  actions: [
+    {
+      label: "Read the paper",
+      href: "https://link.springer.com/10.1007/978-3-032-16370-7_23",
+      external: true,
+    },
+    { label: "Research & work", href: "/about" },
+  ],
+  // The home page shows a short selection and defers the catalogue to /work.
+  // It previously rendered all 18 projects, duplicating /work exactly.
+  selectedWorkCount: 3,
 };
 
 const about: About = {
@@ -488,4 +517,34 @@ const process: Process = {
   ],
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery, process };
+// Publications previously lived hardcoded inside src/app/about/page.tsx, which
+// broke the content-as-code rule in AGENTS.md. Moved here so it can be rendered
+// on both /about and the home page from one source.
+const publications: Publications = {
+  display: true,
+  title: "Publications",
+  items: [
+    {
+      title: "RECAP-Net: longitudinal glioblastoma response classification",
+      venue: "MICCAI 2025, South Korea — oral presentation",
+      result: "World Rank 3",
+      year: "2025",
+      image: "/images/publications/miccai.jpg",
+      summary: (
+        <>
+          Our team placed <span className="ink-strong">third worldwide</span> in the BraTS
+          Lighthouse 2025 Tumor Progression Challenge, with the paper accepted for{" "}
+          <span className="ink-strong">oral presentation at MICCAI 2025</span>. We proposed an
+          end-to-end pipeline for longitudinal glioblastoma response classification under RANO
+          criteria, combining Swin UNETR segmentation with 3D CNNs and GAN-based class balancing.
+        </>
+      ),
+      links: [
+        { label: "Paper", href: "https://link.springer.com/10.1007/978-3-032-16370-7_23" },
+        { label: "Code", href: "https://github.com/HARSHDIPSAHA/brats_response_project" },
+      ],
+    },
+  ],
+};
+
+export { person, social, newsletter, home, about, blog, work, gallery, process, publications };

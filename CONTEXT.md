@@ -15,7 +15,7 @@ Harshdip Saha's personal portfolio and public research surface. It is both a CV-
 
 | Route | Source | State |
 |---|---|---|
-| `/` | `home` in `src/resources/content.tsx`, `src/app/page.tsx` | Live — intro, accent-span headline, featured work |
+| `/` | `home` in `src/resources/content.tsx`, `src/app/page.tsx` | Live — thesis viewport (result plate, positioning, actions), lead publication, 3-project selection |
 | `/about` | `about` in `content.tsx` + `src/components/about/*` | Live — TableOfContents, TechStackStrip, ResearchInterestsBlock |
 | `/work` | 18 MDX files in `src/app/work/projects/` | Live — index + one page per project |
 | `/gallery` | `src/data/gallery.json` (generated) | Live |
@@ -60,5 +60,9 @@ All three sync scripts run automatically on `predev` and `prebuild`. That is why
 | Project MDX | A file in `src/app/work/projects/` with frontmatter `title, publishedAt, summary, images[], link`. |
 | Route toggle | The `routes` map entry in `src/resources/once-ui.config.ts` that enables a path; needs a matching Header link. |
 | FILE_MAP | The explicit source-name-to-kebab-destination map at the top of `scripts/sync-project-images.mjs`. |
-| Accent span | A `.intro-*` class in `src/resources/custom.css` (cyan/amber/violet/emerald/coral) used to color headline words. |
+| Accent span | Legacy `.intro-*` classes in `src/resources/custom.css`. They no longer carry colour — all five resolve to one tonal emphasis. Retained because `content.tsx` uses them heavily; new copy should use `.ink-strong`. |
+| Scan ramp | `--scan-00`..`--scan-10` in `custom.css` — the ONLY tonal values in the system. Inverted for light theme. No ad-hoc greys. |
+| Mask | `--mask`, the single accent. Means exactly one thing: a peer-reviewed or externally verifiable claim. Never decoration. See ADR 0010. |
+| Slice reveal | The site's one entrance motion — a clip-path wipe driven by `src/components/motion/Reveal.tsx`. Hidden start state is scoped to `[data-motion="on"]`, set only by an inline script, so content is never hidden behind animation timing. |
+| Direction contract | The HTML comment emitted first inside `<body>` from `src/app/layout.tsx`, recording the design thesis so a build can be audited against it. Greppable in `out/`. |
 | aidlc-check | The CI gate (`.github/workflows/aidlc-check.yml` → `scripts/check-aidlc-sync.mjs`) that fails a PR whose substantive diff ships without an `aidlc-docs/` update. `[trivial]` in the PR title is the only escape hatch (ADR 0009). |

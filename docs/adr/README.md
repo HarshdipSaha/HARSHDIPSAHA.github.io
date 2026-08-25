@@ -11,6 +11,7 @@
 | [0007](0007-mdx-per-project-content-model.md) | One MDX file per project | Accepted | 2026-01-27 |
 | [0008](0008-adopt-ai-dlc-and-docs-first-structure.md) | Adopt AI-DLC and a docs-first repo structure | Accepted | 2026-08-23 |
 | [0009](0009-ci-enforced-aidlc-recording.md) | CI-enforced AI-DLC recording | Accepted | 2026-08-23 |
+| [0010](0010-segmentation-overlay-design-system.md) | Segmentation-overlay design system, and a home page that is not the catalogue | Accepted | 2026-08-25 |
 
 Every record uses the same four-part shape — a `Status / Date / Supersedes` line, then
 `Context`, `Decision`, `Consequences`, and an optional `Evidence` section citing the commits

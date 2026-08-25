@@ -1,14 +1,4 @@
-"use client";
-
-import {
-  AvatarGroup,
-  Carousel,
-  Column,
-  Flex,
-  Heading,
-  SmartLink,
-  Text,
-} from "@once-ui-system/core";
+import { Column, Heading, Media, Row, SmartLink, Text } from "@once-ui-system/core";
 
 interface ProjectCardProps {
   href: string;
@@ -19,72 +9,100 @@ interface ProjectCardProps {
   description: string;
   avatars: { src: string }[];
   link: string;
+  /** Zero-based position in the list, used for the slice index readout. */
+  index?: number;
 }
 
+/**
+ * A project entry, read as a specimen in the overlay system: a scan plate on
+ * the left, the label block on the right, a slice index in the gutter.
+ *
+ * Two things changed from the previous version:
+ *  - It is no longer `"use client"`. It wrapped every project in a `<Carousel>`
+ *    to show a single image (all 18 projects have exactly one), which shipped a
+ *    client component and a slide machine per card for nothing.
+ *  - `priority` was declared and passed but never destructured, so image
+ *    priority was silently dropped. It is honoured now.
+ */
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   href,
   images = [],
   title,
   content,
   description,
-  avatars,
   link,
+  priority,
+  index = 0,
 }) => {
+  const cover = images[0];
+
   return (
-    <Column fillWidth gap="m">
-      <Carousel
-        sizes="(max-width: 960px) 100vw, 960px"
-        items={images.map((image) => ({
-          slide: image,
-          alt: title,
-        }))}
-      />
-      <Flex
-        s={{ direction: "column" }}
-        fillWidth
-        paddingX="s"
-        paddingTop="12"
-        paddingBottom="24"
-        gap="l"
-      >
+    <Row
+      fillWidth
+      gap="32"
+      s={{ direction: "column", gap: "16" }}
+      className="probe-row"
+      vertical="start"
+    >
+      {cover && (
+        <Row flex={4} fillWidth>
+          <SmartLink href={href} style={{ display: "block", width: "100%", margin: 0 }}>
+            <Media
+              src={cover}
+              alt={title}
+              aspectRatio="16 / 10"
+              radius="m"
+              priority={priority}
+              sizes="(max-width: 768px) 100vw, 420px"
+              border="neutral-alpha-weak"
+            />
+          </SmartLink>
+        </Row>
+      )}
+
+      <Column flex={6} gap="12" fillWidth>
+        <Text className="readout">{String(index + 1).padStart(2, "0")}</Text>
+
         {title && (
-          <Flex flex={5}>
-            <Heading as="h2" wrap="balance" variant="heading-strong-xl">
+          <Heading as="h3" wrap="balance" variant="heading-strong-l">
+            <SmartLink href={href} style={{ margin: 0, color: "inherit" }}>
               {title}
-            </Heading>
-          </Flex>
+            </SmartLink>
+          </Heading>
         )}
-        {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
-          <Column flex={7} gap="16">
-            {avatars?.length > 0 && <AvatarGroup avatars={avatars} size="m" reverse />}
-            {description?.trim() && (
-              <Text wrap="balance" variant="body-default-s" onBackground="neutral-weak">
-                {description}
-              </Text>
-            )}
-            <Flex gap="24" wrap>
-              {content?.trim() && (
-                <SmartLink
-                  suffixIcon="arrowRight"
-                  style={{ margin: "0", width: "fit-content" }}
-                  href={href}
-                >
-                  <Text variant="body-default-s">Read case study</Text>
-                </SmartLink>
-              )}
-              {link && (
-                <SmartLink
-                  suffixIcon="arrowUpRightFromSquare"
-                  style={{ margin: "0", width: "fit-content" }}
-                  href={link}
-                >
-                  <Text variant="body-default-s">View project</Text>
-                </SmartLink>
-              )}
-            </Flex>
-          </Column>
+
+        {description?.trim() && (
+          <Text
+            wrap="balance"
+            variant="body-default-m"
+            onBackground="neutral-weak"
+            style={{ lineHeight: 1.65 }}
+          >
+            {description}
+          </Text>
         )}
-      </Flex>
-    </Column>
+
+        <Row gap="24" wrap paddingTop="4">
+          {content?.trim() && (
+            <SmartLink
+              suffixIcon="arrowRight"
+              style={{ margin: "0", width: "fit-content" }}
+              href={href}
+            >
+              <Text variant="body-default-s">Case study</Text>
+            </SmartLink>
+          )}
+          {link && (
+            <SmartLink
+              suffixIcon="arrowUpRightFromSquare"
+              style={{ margin: "0", width: "fit-content" }}
+              href={link}
+            >
+              <Text variant="body-default-s">Source</Text>
+            </SmartLink>
+          )}
+        </Row>
+      </Column>
+    </Row>
   );
 };

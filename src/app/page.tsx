@@ -1,20 +1,8 @@
-import {
-  Heading,
-  Text,
-  Button,
-  Avatar,
-  RevealFx,
-  Column,
-  Badge,
-  Row,
-  Schema,
-  Line,
-} from "@once-ui-system/core";
-import { home, about, person, baseURL, routes, social } from "@/resources";
-import { Mailchimp } from "@/components";
+import { Reveal } from "@/components/motion/Reveal";
 import { Projects } from "@/components/work/Projects";
-import { Posts } from "@/components/blog/Posts";
+import { about, baseURL, home, person, publications, work } from "@/resources";
 import { generateMeta } from "@/utils/meta";
+import { Column, Heading, Row, Schema, Text } from "@once-ui-system/core";
 
 export async function generateMetadata() {
   return generateMeta({
@@ -27,10 +15,10 @@ export async function generateMetadata() {
 }
 
 export default function Home() {
-  const resumeLink = social.find((item) => item.name === "Resume")?.link;
+  const lead = publications.items[0];
 
   return (
-    <Column maxWidth="m" gap="xl" paddingY="12" horizontal="center">
+    <Column maxWidth="m" fillWidth gap="0" paddingY="12">
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -44,129 +32,154 @@ export default function Home() {
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Column fillWidth horizontal="center" gap="m">
-        <Column maxWidth="s" horizontal="center" align="center">
-          {home.featured.display && (
-            <RevealFx
-              fillWidth
-              horizontal="center"
-              paddingTop="16"
-              paddingBottom="32"
-              paddingLeft="12"
+
+      {/* ---- FIRST VIEWPORT ------------------------------------------------
+          The thesis: who, the verified result, the positioning, two actions.
+          Deliberately no project cards above the fold — that is the catalogue
+          homepage this design refuses.                                      */}
+      <Column as="section" fillWidth gap="24" paddingY="64" s={{ paddingY: "32" }}>
+        <Reveal index={0}>
+          <Text className="readout">
+            {person.name} — {person.role.split("·")[0].trim()}
+          </Text>
+        </Reveal>
+
+        <Reveal index={1}>
+          <Heading
+            wrap="balance"
+            variant="display-strong-l"
+            className="hero-display"
+            style={{ maxWidth: "20ch" }}
+          >
+            {home.headline}
+          </Heading>
+        </Reveal>
+
+        {home.plate && (
+          <Reveal index={2}>
+            <a
+              href={home.plate.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mask-plate"
+              aria-label={`${home.plate.metric}, ${home.plate.context} — opens the published paper`}
             >
-              <Badge
-                background="brand-alpha-weak"
-                paddingX="12"
-                paddingY="4"
-                onBackground="neutral-strong"
-                textVariant="label-default-s"
-                arrow={false}
-                href={home.featured.href}
-              >
-                <Row paddingY="2">{home.featured.title}</Row>
-              </Badge>
-            </RevealFx>
-          )}
-          <RevealFx
-            translateY="4"
-            fillWidth
-            horizontal="center"
-            paddingBottom="16"
+              <span>{home.plate.metric}</span>
+              <span aria-hidden="true">·</span>
+              <span>{home.plate.context}</span>
+            </a>
+          </Reveal>
+        )}
+
+        <Reveal index={3}>
+          <Text
+            wrap="balance"
+            variant="heading-default-l"
+            onBackground="neutral-weak"
+            style={{ maxWidth: "56ch" }}
           >
-            <Heading wrap="balance" variant="display-strong-l">
-              {home.headline}
-            </Heading>
-          </RevealFx>
-          <RevealFx
-            translateY="8"
-            delay={0.2}
-            fillWidth
-            horizontal="center"
-            paddingBottom="32"
-          >
-            <Text
-              wrap="balance"
-              onBackground="neutral-weak"
-              variant="heading-default-xl"
-            >
-              {home.subline}
-            </Text>
-          </RevealFx>
-          <RevealFx
-            paddingTop="12"
-            delay={0.4}
-            horizontal="center"
-            paddingLeft="12"
-          >
-            <Row gap="12" vertical="center" s={{ direction: "column" }}>
-              <Button
-                id="about"
-                data-border="rounded"
-                href={about.path}
-                variant="secondary"
-                size="m"
-                weight="default"
-                arrowIcon
-              >
-                <Row gap="8" vertical="center" paddingRight="4">
-                  {about.avatar.display && (
-                    <Avatar
-                      marginRight="8"
-                      style={{ marginLeft: "-0.75rem" }}
-                      src={person.avatar}
-                      size="m"
-                    />
-                  )}
-                  {about.title}
-                </Row>
-              </Button>
-              {resumeLink && (
-                <Button
-                  id="resume"
-                  data-border="rounded"
-                  href={resumeLink}
-                  variant="secondary"
-                  size="m"
-                  weight="default"
-                  arrowIcon
+            {home.subline}
+          </Text>
+        </Reveal>
+
+        {home.actions && home.actions.length > 0 && (
+          <Reveal index={4}>
+            <Row gap="24" wrap vertical="center" paddingTop="8">
+              {home.actions.map((action) => (
+                <a
+                  key={action.href}
+                  href={action.href}
+                  {...(action.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  style={{
+                    color: "var(--scan-10)",
+                    textDecoration: "none",
+                    borderBottom: "1px solid var(--scan-06)",
+                    paddingBottom: "2px",
+                    fontWeight: 500,
+                  }}
                 >
-                  Resume
-                </Button>
-              )}
+                  {action.label} <span aria-hidden="true">→</span>
+                </a>
+              ))}
             </Row>
-          </RevealFx>
-        </Column>
+          </Reveal>
+        )}
       </Column>
-      <RevealFx translateY="16" delay={0.6}>
-        <Projects range={[1, 1]} />
-      </RevealFx>
-      <Row fillWidth horizontal="center" paddingY="l" paddingX="l">
-        <Line maxWidth={48} />
-      </Row>
-      {routes["/blog"] && (
-        <Column fillWidth gap="24" marginBottom="l">
-          <Row fillWidth paddingRight="64">
-            <Line maxWidth={48} />
-          </Row>
-          <Row fillWidth gap="24" marginTop="40" s={{ direction: "column" }}>
-            <Row flex={1} paddingLeft="l" paddingTop="24">
-              <Heading as="h2" variant="display-strong-xs" wrap="balance">
-                Latest from the blog
+
+      <hr className="rule-h" />
+
+      {/* ---- RESEARCH LEADS ------------------------------------------------ */}
+      {publications.display && lead && (
+        <Column as="section" fillWidth gap="16" paddingY="48" s={{ paddingY: "32" }}>
+          <Reveal index={0}>
+            <Text className="readout">{publications.title}</Text>
+          </Reveal>
+          <Reveal index={1}>
+            <Column gap="12" className="probe-row">
+              <Heading as="h2" variant="heading-strong-xl" wrap="balance">
+                {lead.title}
               </Heading>
-            </Row>
-            <Row flex={3} paddingX="20">
-              <Posts range={[1, 2]} columns="2" />
-            </Row>
-          </Row>
-          <Row fillWidth paddingLeft="64" horizontal="end">
-            <Line maxWidth={48} />
-          </Row>
+              <Row gap="12" wrap vertical="center">
+                <Text variant="body-default-m" onBackground="neutral-weak">
+                  {lead.venue}
+                </Text>
+                {lead.result && <span className="mask-plate">{lead.result}</span>}
+              </Row>
+              <Text
+                variant="body-default-m"
+                onBackground="neutral-weak"
+                style={{ maxWidth: "68ch", lineHeight: 1.7 }}
+              >
+                {lead.summary}
+              </Text>
+              <Row gap="24" wrap paddingTop="4">
+                {lead.links.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      color: "var(--scan-09)",
+                      textDecoration: "none",
+                      borderBottom: "1px solid var(--scan-05)",
+                      paddingBottom: "2px",
+                      fontSize: "0.9375rem",
+                    }}
+                  >
+                    {link.label} <span aria-hidden="true">→</span>
+                  </a>
+                ))}
+              </Row>
+            </Column>
+          </Reveal>
         </Column>
       )}
-      <RevealFx translateY="8" delay={0.1}>
-        <Projects range={[2]} />
-      </RevealFx>
-      <Mailchimp />
+
+      <hr className="rule-h" />
+
+      {/* ---- SELECTED WORK -------------------------------------------------
+          A selection, not the catalogue. /work owns the full index.        */}
+      <Column as="section" fillWidth gap="24" paddingY="48" s={{ paddingY: "32" }}>
+        <Reveal index={0}>
+          <Row fillWidth horizontal="between" vertical="center" gap="16" wrap>
+            <Text className="readout">Selected work</Text>
+            <a
+              href={work.path}
+              style={{
+                color: "var(--scan-08)",
+                textDecoration: "none",
+                fontSize: "0.875rem",
+              }}
+            >
+              All projects <span aria-hidden="true">→</span>
+            </a>
+          </Row>
+        </Reveal>
+        <Reveal index={1}>
+          <Projects range={[1, home.selectedWorkCount ?? 3]} />
+        </Reveal>
+      </Column>
     </Column>
   );
 }

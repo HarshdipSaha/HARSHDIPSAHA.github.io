@@ -32,29 +32,33 @@ const display: DisplayConfig = {
 
 const protectedRoutes: ProtectedRoutesConfig = {};
 
-// Import and set font for each variant
-import { Geist } from "next/font/google";
-import { Geist_Mono } from "next/font/google";
+// Fonts for the segmentation-overlay system.
+//   Archivo      — a grotesque with real width authority and tabular figures,
+//                  which this site needs: ranks, metrics and dates are content.
+//   JetBrains Mono — the viewer's readout face: slice indices, labels, plates.
+// Deliberately not Geist (the harness default it replaced) and not the
+// Inter/Space/Plex family, which is where this category always lands.
+import { Archivo, JetBrains_Mono } from "next/font/google";
 
-const heading = Geist({
+const heading = Archivo({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
 });
 
-const body = Geist({
+const body = Archivo({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
 });
 
-const label = Geist({
+const label = Archivo({
   variable: "--font-label",
   subsets: ["latin"],
   display: "swap",
 });
 
-const code = Geist_Mono({
+const code = JetBrains_Mono({
   variable: "--font-code",
   subsets: ["latin"],
   display: "swap",

@@ -1,114 +1,231 @@
-/* :root {
-  /*
-  /* Example setup for custom colors */
-/* Generate at: https://once-ui.com/customize */
-/*
-  --scheme-brand-100: #08002f;
-  --scheme-brand-200:  #04025c;
-  --scheme-brand-300:  #1f398e;
-  --scheme-brand-400:  #3856ae;
-  --scheme-brand-500:  #5071cc;
-  --scheme-brand-600:  #6f94f1;
-  --scheme-brand-700:  #8db3ff;
-  --scheme-brand-800:  #b2dbff;
-  --scheme-brand-900:  #bfe8ff;
-  --scheme-brand-1000: #ccf6ff;
-  --scheme-brand-1100: #d2fcff;
-  --scheme-brand-1200: #d2fcff;
-  --scheme-brand-600-10: rgba(111,148,241,0.1);
-  --scheme-brand-600-30: rgba(111,148,241,0.3);
-  --scheme-brand-600-50: rgba(111,148,241,0.5);
+/* ============================================================================
+   SEGMENTATION OVERLAY — the site's visual system.
 
-  --scheme-accent-100:  #030b10;
-  --scheme-accent-200:  #0d181d;
-  --scheme-accent-300:  #364248;
-  --scheme-accent-400:  #505d64;
-  --scheme-accent-500:  #69777e;
-  --scheme-accent-600:  #8a989f;
-  --scheme-accent-700:  #a8b7bf;
-  --scheme-accent-800:  #c8d7df;
-  --scheme-accent-900:  #d5e4ec;
-  --scheme-accent-1000: #e2f1f9;
-  --scheme-accent-1100: #e9f8ff;
-  --scheme-accent-1200: #efffff;
-  --scheme-accent-600-10: rgba(138,152,159,0.1);
-  --scheme-accent-600-30: rgba(138,152,159,0.3);
-  --scheme-accent-600-50: rgba(138,152,159,0.5);
+   The world: a grayscale volume (the "scan") with a labelled mask riding over
+   it. Content is ground truth; navigation and emphasis are the overlay layer.
 
-  --scheme-neutral-100:  #020b10;
-  --scheme-neutral-200:  #0b181d;
-  --scheme-neutral-300:  #344248;
-  --scheme-neutral-400:  #4f5d64;
-  --scheme-neutral-500:  #68777e;
-  --scheme-neutral-600:  #89989f;
-  --scheme-neutral-700:  #a7b7be;
-  --scheme-neutral-800:  #c7d7df;
-  --scheme-neutral-900:  #d4e4ec;
-  --scheme-neutral-1000: #e1f2f9;
-  --scheme-neutral-1100: #e7f8ff;
-  --scheme-neutral-1200: #eeffff;
-  --scheme-neutral-600-10: rgba(137,152,159,0.1);
-  --scheme-neutral-600-30: rgba(137,152,159,0.3);
-  --scheme-neutral-600-50: rgba(137,152,159,0.5);
-  /*
-}*/
+   Two disciplines this system is held to:
+   1. ELEVEN-STEP RAMP. --scan-00..10 are the ONLY tonal values. No ad-hoc
+      greys, no literal hex outside this block. Light theme is the same volume
+      re-windowed, not a different palette.
+   2. ONE MASK, ONE MEANING. --mask marks exactly one thing: a peer-reviewed or
+      externally verifiable claim. It is never decoration. If you are reaching
+      for the mask to make something "pop", use a ramp step instead.
+   ========================================================================= */
 
-/* About intro — paragraphs & colored highlights (dark-theme friendly) */
+:root {
+  /* ---- the scan: 11-step tonal ramp (dark window) ---------------------- */
+  --scan-00: #060708;
+  --scan-01: #0c0e11;
+  --scan-02: #14171c;
+  --scan-03: #1d2127;
+  --scan-04: #272c34;
+  --scan-05: #343a44;
+  --scan-06: #4a515d;
+  --scan-07: #868f9c;
+  --scan-08: #949cab;
+  --scan-09: #c4cad4;
+  --scan-10: #f4f6f8;
+
+  /* ---- the mask: one accent, one meaning (verified / peer-reviewed) ---- */
+  --mask: #ffb020;
+  --mask-ink: #060708; /* text ON a solid mask fill */
+  --mask-a12: rgba(255, 176, 32, 0.12);
+  --mask-a24: rgba(255, 176, 32, 0.24);
+  --mask-a40: rgba(255, 176, 32, 0.4);
+
+  /* ---- motion: the viewer's own grammar --------------------------------
+     Easings measured off the reference sites, not invented.               */
+  --ease-slice: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-probe: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-probe: 120ms;
+  --dur-state: 240ms;
+  --dur-slice: 420ms;
+  --dur-sweep: 640ms;
+  --stagger: 60ms;
+
+  /* ---- instrument rules ------------------------------------------------ */
+  --rule-hair: 1px;
+  --rule-color: var(--scan-04);
+}
+
+[data-theme="light"] {
+  /* The same volume, re-windowed. Ramp inverts; the mask darkens to hold
+     AA contrast on a light ground. */
+  --scan-00: #ffffff;
+  --scan-01: #f6f7f9;
+  --scan-02: #eceef1;
+  --scan-03: #dfe3e8;
+  --scan-04: #cbd1d9;
+  --scan-05: #aab2bd;
+  --scan-06: #858e9b;
+  --scan-07: #626b78;
+  --scan-08: #434b56;
+  --scan-09: #232931;
+  --scan-10: #0a0c0f;
+
+  --mask: #9a5b00;
+  --mask-ink: #ffffff;
+  --mask-a12: rgba(154, 91, 0, 0.1);
+  --mask-a24: rgba(154, 91, 0, 0.2);
+  --mask-a40: rgba(154, 91, 0, 0.34);
+
+  --rule-color: var(--scan-04);
+}
+
+/* ============================================================================
+   MASK — the overlay layer. Reserved for verified claims.
+   ========================================================================= */
+
+a.mask-claim,
+.mask-claim {
+  color: var(--mask);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* A verified figure rendered as a label plate, the way a segmentation viewer
+   labels a region. Mono, because the viewer's readouts are always mono. */
+a.mask-plate,
+a.mask-plate:hover,
+a.mask-plate:visited,
+.mask-plate {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  padding: 0.15em 0.5em;
+  border: var(--rule-hair) solid var(--mask-a40);
+  border-radius: 0.25rem;
+  background: var(--mask-a12);
+  color: var(--mask);
+  font-family: var(--font-code), ui-monospace, monospace;
+  font-size: 0.82em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* ============================================================================
+   EMPHASIS — tonal, not chromatic.
+
+   The five .intro-* classes predate this system and are used throughout
+   content.tsx. They are kept as working selectors so no copy breaks, but they
+   now all resolve to the SAME tonal emphasis: brightest ramp step, medium
+   weight. Colour is no longer how this site emphasises — the mask is reserved.
+   New copy should use .ink-strong directly.
+   ========================================================================= */
+
+.ink-strong,
+.intro-cyan,
+.intro-amber,
+.intro-coral,
+.intro-emerald,
+.intro-violet {
+  color: var(--scan-10);
+  font-weight: 500;
+}
+
 .about-intro-p {
   margin: 0;
-  line-height: 1.75;
-  font-size: 1.05rem;
+  line-height: 1.7;
+  font-size: 1.0625rem;
+  color: var(--scan-09);
 }
 
 .about-intro-p + .about-intro-p {
   margin-top: 1em;
 }
 
-.intro-cyan {
-  color: #22d3ee;
-  font-weight: 600;
+/* ============================================================================
+   MOTION — the slice reveal.
+
+   A section does not fade in; it is sliced in, the way a volume is scrubbed.
+   Driven by [data-reveal] + IntersectionObserver in src/components/motion.
+   ========================================================================= */
+
+/* Progressive enhancement: the hidden start state is scoped to
+   [data-motion="on"], which an inline script in the root layout sets only when
+   JS is running. If that script never runs, or hydration is slow, or the
+   transition stalls, content is simply visible. Never hide content behind
+   animation timing — a hero that waits on hydration reads as a missing hero. */
+[data-motion="on"] [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  clip-path: inset(0 0 100% 0);
+  transition: opacity var(--dur-slice) var(--ease-slice), transform var(--dur-slice)
+    var(--ease-slice), clip-path var(--dur-sweep) var(--ease-slice);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
-.intro-amber {
-  color: #fbbf24;
-  font-weight: 600;
+[data-motion="on"] [data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
 }
 
-.intro-coral {
-  color: #fb7185;
-  font-weight: 600;
+/* The probe: a hairline that tracks the active row, like a crosshair. */
+.probe-row {
+  position: relative;
+  transition: color var(--dur-state) var(--ease-probe);
 }
 
-.intro-emerald {
-  color: #34d399;
-  font-weight: 600;
+.probe-row::before {
+  content: "";
+  position: absolute;
+  left: -1rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--mask);
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  transition: transform var(--dur-state) var(--ease-slice);
 }
 
-.intro-violet {
-  color: #a78bfa;
-  font-weight: 600;
+@media (hover: hover) {
+  .probe-row:hover::before,
+  .probe-row:focus-within::before {
+    transform: scaleY(1);
+  }
 }
 
-/* Journey / timeline — Studies */
+/* ============================================================================
+   INSTRUMENT CHROME — rules, plates, readouts.
+   ========================================================================= */
+
+.rule-h {
+  border: 0;
+  border-top: var(--rule-hair) solid var(--rule-color);
+  margin: 0;
+}
+
+/* Mono readout used for metrics, dates, ranks, slice indices. */
+.readout {
+  font-family: var(--font-code), ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--scan-07);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   ABOUT-PAGE CARRYOVERS — retained selectors, re-expressed in the ramp.
+   Previously these were literal cyan hexes that broke in light mode.
+   ========================================================================= */
+
 .journey-timeline {
   position: relative;
-  padding-left: 0;
 }
 
 .journey-timeline::before {
   content: "";
   position: absolute;
   left: 7px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    var(--scheme-brand-500, #22d3ee),
-    var(--scheme-accent-500, #94a3b8)
-  );
-  border-radius: 1px;
-  opacity: 0.6;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  width: var(--rule-hair);
+  background: var(--rule-color);
 }
 
 .journey-timeline-item {
@@ -116,71 +233,113 @@
 }
 
 .journey-dot {
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  background: var(--scheme-brand-500, #22d3ee);
-  border: 3px solid var(--page-background, #0f172a);
-  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.3);
-  margin-left: 0;
-  z-index: 1;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--scan-00);
+  border: var(--rule-hair) solid var(--scan-06);
+  box-shadow: 0 0 0 3px var(--scan-00);
+  transition: border-color var(--dur-state) var(--ease-probe), background var(--dur-state)
+    var(--ease-probe);
 }
 
 .journey-timeline-item:hover .journey-dot {
-  transform: scale(1.15);
-  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.5);
+  border-color: var(--mask);
+  background: var(--mask-a24);
 }
 
-.journey-block {
-  animation: journey-fade 0.5s ease-out;
-}
-
-/* About avatar — large, prominent, no collision */
 .about-avatar-lg {
   width: 192px;
   height: 192px;
-  min-width: 192px;
-  min-height: 192px;
-  flex-shrink: 0;
   border-radius: 50%;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
 }
+
 .about-avatar-lg > *,
 .about-avatar-lg img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover;
 }
+
 .about-avatar-lg > * {
   border-radius: 50%;
 }
 
-/* Publications — left-aligned, no right deviation */
 .publications-block {
   align-self: stretch;
   width: 100%;
   max-width: 100%;
 }
 
-@keyframes journey-fade {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+/* ============================================================================
+   TECH STACK — was a hardcoded dark panel that stayed dark in light theme.
+   Now rides the ramp, so it re-windows with everything else.
+   ========================================================================= */
+
+:root {
+  --tech-stack-bg: var(--scan-02);
+  --tech-stack-icon: var(--scan-09);
+  --tech-stack-label: var(--scan-10);
+}
+
+/* ============================================================================
+   REDUCED MOTION — the site had none of this before.
+   ========================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
-  to {
+
+  [data-motion="on"] [data-reveal],
+  [data-motion="on"] [data-reveal="in"] {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+
+  .probe-row::before {
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-/* Tech stack strip — dark panel, works in both themes */
-:root {
-  --tech-stack-bg: #1a1d24;
-  --tech-stack-icon: #e2e8f0;
-  --tech-stack-label: #f1f5f9;
+/* ============================================================================
+   RESPONSIVE — the two things that break first at 390px.
+   ========================================================================= */
+
+/* The hero must not set 64px type against a 390px viewport: "segmentation"
+   alone overflows. Fluid down to 2rem, tightened as it grows. */
+.hero-display {
+  font-size: clamp(2rem, 6.5vw, 4rem) !important;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 640px) {
+  /* The plate carries "World Rank 3 · BraTS-PRO 2025 · MICCAI oral", which
+     cannot hold one line on a phone. Let it wrap rather than overflow. */
+  a.mask-plate,
+  .mask-plate {
+    white-space: normal;
+  }
+
+  /* The probe rail sits at -1rem, outside the viewport padding on mobile. */
+  .probe-row::before {
+    left: -0.5rem;
+  }
 }

@@ -37,3 +37,10 @@ next-env.d.ts
 
 # generated at build (sync-gallery)
 /src/data/gallery.json
+# impeccable (design skill) — vendored by `npx impeccable install`, not committed.
+# 153 files / 3.5MB of third-party skill code that drifts with upstream.
+# Reinstall with: npx impeccable install
+.github/skills/impeccable/
+.github/agents/impeccable-*
+.github/hooks/
+.impeccable/

@@ -1,18 +1,17 @@
+/* Research-interest pills.
+   Previously a hardcoded dark gradient panel with five literal accent hexes,
+   which stayed dark in light theme and duplicated the .intro-* palette.
+   Now rides the --scan ramp, so it re-windows with the rest of the site. */
+
 .wrap {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem 0.75rem;
   padding: 1.25rem 1.5rem;
-  background: linear-gradient(
-    135deg,
-    rgba(26, 29, 36, 0.95) 0%,
-    rgba(30, 35, 48, 0.92) 50%,
-    rgba(22, 25, 35, 0.96) 100%
-  );
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: var(--scan-01);
+  border: 1px solid var(--rule-color);
   border-radius: 1rem;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
 }
 
 .pill {
@@ -20,42 +19,32 @@
   align-items: center;
   padding: 0.4rem 0.85rem;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
   border-radius: 9999px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--scan-03);
+  color: var(--scan-09);
+  border: 1px solid var(--scan-04);
+  transition:
+    border-color var(--dur-state) var(--ease-probe),
+    color var(--dur-state) var(--ease-probe);
 }
 
-.pill:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+@media (hover: hover) {
+  .pill:hover {
+    border-color: var(--scan-07);
+    color: var(--scan-10);
+  }
 }
 
-.cyan {
-  background: rgba(34, 211, 238, 0.18);
-  color: #22d3ee;
-  border: 1px solid rgba(34, 211, 238, 0.35);
-}
-
-.amber {
-  background: rgba(251, 191, 36, 0.18);
-  color: #fbbf24;
-  border: 1px solid rgba(251, 191, 36, 0.35);
-}
-
-.coral {
-  background: rgba(251, 113, 133, 0.18);
-  color: #fb7185;
-  border: 1px solid rgba(251, 113, 133, 0.35);
-}
-
-.emerald {
-  background: rgba(52, 211, 153, 0.18);
-  color: #34d399;
-  border: 1px solid rgba(52, 211, 153, 0.35);
-}
-
+/* The five colour classes are retained as selectors because
+   ResearchInterestsBlock.tsx cycles through them, but they no longer carry
+   colour — this system emphasises tonally and reserves the mask accent. */
+.cyan,
+.amber,
+.coral,
+.emerald,
 .violet {
-  background: rgba(167, 139, 250, 0.18);
-  color: #a78bfa;
-  border: 1px solid rgba(167, 139, 250, 0.35);
+  background: var(--scan-03);
+  color: var(--scan-09);
+  border: 1px solid var(--scan-04);
 }

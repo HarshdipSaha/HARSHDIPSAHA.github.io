@@ -11,7 +11,7 @@ import {
   Schema,
   Row,
 } from "@once-ui-system/core";
-import { baseURL, about, person, social, home } from "@/resources";
+import { baseURL, about, person, social, home, publications } from "@/resources";
 import TableOfContents from "@/components/about/TableOfContents";
 import TechStackStrip from "@/components/about/TechStackStrip";
 import ResearchInterestsBlock from "@/components/about/ResearchInterestsBlock";
@@ -379,7 +379,7 @@ export default function About() {
                     padding="l"
                     style={{
                       border: "1px solid var(--neutral-alpha-weak)",
-                      borderRadius: "var(--static-radius-l)",
+                      borderRadius: "var(--radius-l)",
                       background: "var(--neutral-alpha-weak)",
                     }}
                   >
@@ -415,71 +415,78 @@ export default function About() {
             </>
           )}
 
-          <Heading
-            as="h2"
-            id="Publications"
-            variant="display-strong-s"
-            marginTop="48"
-            marginBottom="24"
-          >
-            Publications
-          </Heading>
-          <Column fillWidth gap="l" marginBottom="40" className="journey-block publications-block">
-            <Column
-              fillWidth
-              gap="m"
-              padding="l"
-              style={{
-                border: "1px solid var(--neutral-alpha-weak)",
-                borderRadius: "var(--static-radius-l)",
-                background: "var(--neutral-alpha-weak)",
-              }}
-            >
-              <Media
-                src="/images/publications/miccai.jpg"
-                alt="MICCAI 2025 South Korea"
-                aspectRatio="16 / 9"
-                radius="m"
-                sizes="(max-width: 768px) 100vw, 640px"
-              />
-              <Column fillWidth gap="8">
-                <Text variant="heading-strong-l" wrap="balance">
-                  RECAP-Net: BraTS-PRO 2025 — MICCAI 2025, South Korea
-                </Text>
-                <Text variant="body-default-m" onBackground="neutral-weak" wrap="balance">
-                  Went to South Korea to represent our college. Our team secured{" "}
-                  <span className="intro-emerald">World Rank 3</span> in the BraTS Lighthouse 2025
-                  Tumor Progression Challenge, with a paper accepted for{" "}
-                  <span className="intro-emerald">Oral Presentation at MICCAI 2025</span>. We
-                  proposed an end-to-end pipeline for longitudinal glioblastoma response
-                  classification (RANO criteria), combining Swin UNETR segmentation with 3D CNNs and
-                  GAN-based class balancing.
-                </Text>
-                <Row wrap gap="8" paddingTop="4">
-                  <Button
-                    href="https://github.com/HARSHDIPSAHA/brats_response_project"
-                    target="_blank"
-                    rel="noopener"
-                    variant="secondary"
-                    size="s"
-                    prefixIcon="arrowUpRightFromSquare"
+          {publications.display && (
+            <>
+              <Heading
+                as="h2"
+                id="Publications"
+                variant="display-strong-s"
+                marginTop="48"
+                marginBottom="24"
+              >
+                {publications.title}
+              </Heading>
+              <Column
+                fillWidth
+                gap="l"
+                marginBottom="40"
+                className="journey-block publications-block"
+              >
+                {publications.items.map((item) => (
+                  <Column
+                    key={item.title}
+                    fillWidth
+                    gap="m"
+                    padding="l"
+                    className="probe-row"
+                    style={{
+                      border: "1px solid var(--rule-color)",
+                      borderRadius: "var(--radius-l)",
+                    }}
                   >
-                    BraTS response project
-                  </Button>
-                  <Button
-                    href="https://link.springer.com/10.1007/978-3-032-16370-7_23"
-                    target="_blank"
-                    rel="noopener"
-                    variant="secondary"
-                    size="s"
-                    prefixIcon="arrowUpRightFromSquare"
-                  >
-                    Publication
-                  </Button>
-                </Row>
+                    {item.image && (
+                      <Media
+                        src={item.image}
+                        alt={item.venue}
+                        aspectRatio="16 / 9"
+                        radius="m"
+                        sizes="(max-width: 768px) 100vw, 640px"
+                      />
+                    )}
+                    <Column fillWidth gap="8">
+                      <Text variant="heading-strong-l" wrap="balance">
+                        {item.title}
+                      </Text>
+                      <Row gap="12" wrap vertical="center">
+                        <Text variant="body-default-s" onBackground="neutral-weak">
+                          {item.venue}
+                        </Text>
+                        {item.result && <span className="mask-plate">{item.result}</span>}
+                      </Row>
+                      <Text variant="body-default-m" onBackground="neutral-weak" wrap="balance">
+                        {item.summary}
+                      </Text>
+                      <Row wrap gap="8" paddingTop="4">
+                        {item.links.map((link) => (
+                          <Button
+                            key={link.href}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener"
+                            variant="secondary"
+                            size="s"
+                            prefixIcon="arrowUpRightFromSquare"
+                          >
+                            {link.label}
+                          </Button>
+                        ))}
+                      </Row>
+                    </Column>
+                  </Column>
+                ))}
               </Column>
-            </Column>
-          </Column>
+            </>
+          )}
         </Column>
       </Column>
     </Column>

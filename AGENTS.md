@@ -69,6 +69,12 @@ const FILE_MAP = {
 
 **Theme/config** lives in `src/resources/once-ui.config.ts` (theme, routes, schema, fonts, baseURL); icons in `src/resources/icons.ts`; bespoke CSS in `src/resources/custom.css` (includes `.intro-cyan` / `.intro-amber` / `.intro-violet` / `.intro-emerald` / `.intro-coral` accent spans).
 
+**Design system.** The site runs the segmentation-overlay system recorded in ADR 0010. Two rules
+bind every UI change: `--scan-00..10` are the only tonal values (no ad-hoc greys, no literal hex),
+and `--mask` is spent only on a peer-reviewed or externally verifiable claim, never on decoration.
+The design skill that produced it is gitignored — reinstall with `npx impeccable install`, then
+`/impeccable critique` or `/impeccable audit` before shipping UI work.
+
 **Secrets.** Never commit real values. `.env.example` only.
 
 ## Boundaries — do not edit by hand
