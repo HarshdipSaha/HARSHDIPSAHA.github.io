@@ -89,3 +89,45 @@ Measured on the built export, before vs after:
 - `/work` and `/gallery` were rendering their **meta** titles as the visible `<h1>`, so the pages
   read "Projects – Harshdip Saha" and "Gallery – Harshdip Saha". They now render `label`.
 - impeccable itself is gitignored (153 files, 3.5 MB); reinstall with `npx impeccable install`.
+
+## Reference research (three parallel agents)
+
+Delegated after the first pass, because the initial "research" was only a CSSOM scrape.
+Findings that changed the build:
+
+- **thine.com** is TanStack Start + Vite + React 19 on Vercel, Tailwind v4 + shadcn/ui, Motion
+  (framer-motion), Lenis, and Rive on mobile. Its centrepiece is a **601-frame scroll-scrubbed
+  WebP sequence costing 25-67 MB** depending on viewport — rejected here as indefensible for a
+  portfolio. **Correction to my earlier work:** the two easings I read out of its stylesheets and
+  attributed to its design are Radix/Vaul/sonner component defaults; its actual default is
+  `ease-out-cubic [0.33, 1, 0.68, 1]`. The CSS comment now states this honestly. Adopted instead:
+  its palette discipline (one tinted near-black, one accent, alpha-white neutrals — no grey ramp),
+  fluid `clamp()` display type, and `text-box-trim`.
+- **lexsi.ai** is Webflow, and the motion is **Webflow IX3 (GSAP-backed)** with no hand-written
+  GSAP and **no smooth-scroll library at all**. Its entire site has **four** interactions. Adopted:
+  the fluid-root lever, the accent-rationing rule (sub-6px marks, mono labels, ≤2px state
+  indicators, `::selection`/`::marker`/`:focus-visible`, at most one filled element), the local
+  theme-inversion island, and the full-height gutter hairlines.
+- **Motion landscape.** Recommendation was to add **no library**: GSAP + ScrollTrigger measures
+  45.2 kB gzip and is "proprietary free", not open source; Motion has a 34 kB floor. Native
+  `animation-timeline: view()` is *not* a substitute for one-shot reveals — it **reverses on
+  scroll-up**, and Firefox still has not shipped it. `@starting-style` is Baseline and was adopted
+  for the hero.
+
+Fixes that came directly out of that research:
+
+- **The 2000ms Once UI `RevealFx` was still running**, wrapping `<Background>` in the root layout —
+  `transition: all ease-in-out`, no reduced-motion guard. I had replaced the home page's copy and
+  missed this one. Removed.
+- **LCP hazard in my own reveal.** Chrome does not treat an `opacity: 0` element as an LCP
+  candidate, and `<Reveal>` only flips after hydration. The hero no longer uses it; it uses
+  `@starting-style`, which animates at first paint, and the `<h1>` carries `data-lcp` and is
+  excluded from the hidden start state entirely.
+- **The blanket `*` reduced-motion reset was wrong.** `prefers-reduced-motion` means remove
+  vestibular triggers, not every visual change; the wildcard also killed colour transitions and
+  focus rings and would have stomped `@starting-style`. Replaced with targeted rules.
+- **One shared IntersectionObserver** instead of one per element, writing the attribute directly
+  rather than through React state — removes N re-renders from the scroll path.
+- **Stagger reconciled.** lexsi's 150ms applies to lines within one split heading; for independent
+  sections the standard band is 30-80ms. Set to 80ms and capped at 4 steps, so nothing is
+  uninteractive for more than 320ms.

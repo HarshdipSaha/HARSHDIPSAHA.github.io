@@ -35,14 +35,27 @@
   --mask-a40: rgba(255, 176, 32, 0.4);
 
   /* ---- motion: the viewer's own grammar --------------------------------
-     Easings measured off the reference sites, not invented.               */
+     These are the canonical UI curves, not invented and not borrowed as
+     identity. --ease-slice is ease-out-quint; --ease-probe is the iOS drawer
+     curve; --ease-settle is circ.inOut, which reads weighted rather than
+     springy because it eases in as well as out.
+
+     Provenance note: --ease-slice and --ease-probe were first read out of
+     thine.com's stylesheets, but they turned out to be Radix / Vaul / sonner
+     component defaults rather than that site's design choices. They are kept
+     because they are the right curves, not because they were copied.
+
+     Durations follow the rule that entrances get ease-out and stay under the
+     UI ceiling, while a once-per-session editorial reveal may run longer. */
   --ease-slice: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-probe: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-settle: cubic-bezier(0.85, 0, 0.15, 1);
   --dur-probe: 120ms;
   --dur-state: 240ms;
-  --dur-slice: 420ms;
-  --dur-sweep: 640ms;
-  --stagger: 60ms;
+  --dur-slice: 600ms;
+  --dur-sweep: 600ms;
+  --stagger: 80ms;
+  --reveal-lift: 1.5rem;
 
   /* ---- instrument rules ------------------------------------------------ */
   --rule-hair: 1px;
@@ -150,17 +163,15 @@ a.mask-plate:visited,
    animation timing — a hero that waits on hydration reads as a missing hero. */
 [data-motion="on"] [data-reveal] {
   opacity: 0;
-  transform: translateY(12px);
-  clip-path: inset(0 0 100% 0);
-  transition: opacity var(--dur-slice) var(--ease-slice), transform var(--dur-slice)
-    var(--ease-slice), clip-path var(--dur-sweep) var(--ease-slice);
+  transform: translateY(var(--reveal-lift));
+  transition: opacity var(--dur-slice) var(--ease-settle),
+    transform var(--dur-slice) var(--ease-settle);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
 [data-motion="on"] [data-reveal="in"] {
   opacity: 1;
   transform: none;
-  clip-path: inset(0 0 0 0);
 }
 
 /* The probe: a hairline that tracks the active row, like a crosshair. */
@@ -182,7 +193,7 @@ a.mask-plate:visited,
   transition: transform var(--dur-state) var(--ease-slice);
 }
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .probe-row:hover::before,
   .probe-row:focus-within::before {
     transform: scaleY(1);
@@ -300,7 +311,6 @@ a.mask-plate:visited,
   [data-motion="on"] [data-reveal="in"] {
     opacity: 1;
     transform: none;
-    clip-path: none;
     transition: none;
   }
 
@@ -308,13 +318,16 @@ a.mask-plate:visited,
     transition: none;
   }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  /* Deliberately NOT a blanket `*` reset. prefers-reduced-motion means remove
+     vestibular triggers - translation, scale, parallax - not every visual
+     change. Colour transitions and focus rings stay. */
+  .hero-enter > * {
+    transform: none;
+    transition: opacity var(--dur-state) var(--ease-settle);
+  }
+
+  [data-motion="on"] [data-reveal] {
+    transform: none;
   }
 }
 
@@ -342,4 +355,175 @@ a.mask-plate:visited,
   .probe-row::before {
     left: -0.5rem;
   }
+}
+
+/* ============================================================================
+   FLUID ROOT — one lever that scales the whole system.
+
+   Every token in Once UI and in this file is rem-based, so scaling the root
+   scales type, spacing, and rules together. The `rem` term is deliberate: it
+   resolves against the user's own browser font-size setting, so their
+   accessibility preference still moves the design. A raw vw curve would
+   silently override it.
+   ========================================================================= */
+
+html {
+  font-size: clamp(0.9375rem, 0.875rem + 0.28vw, 1.125rem);
+}
+
+/* ============================================================================
+   TYPESETTING — two declarations, disproportionate payoff.
+   ========================================================================= */
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+/* ============================================================================
+   ACCENT RATIONING — the mask's permitted surfaces, written down.
+
+   The mask may appear ONLY on: marks under ~6px, monospace labels at or below
+   0.875rem, state indicators at or below 2px, the system affordances below,
+   and at most ONE filled element per page. Anything else is decoration, and
+   decoration is what makes an accent look cheap.
+   ========================================================================= */
+
+::selection {
+  background: var(--mask-a24);
+  color: var(--scan-10);
+}
+
+li::marker {
+  color: var(--mask);
+}
+
+:focus-visible {
+  outline: 2px solid var(--mask);
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   INVERSION ISLAND — how a dark page carries dense or figure-heavy content.
+
+   Re-declares the ramp locally, so a table, figure, or code panel becomes a
+   light island without fighting the page theme. lexsi.ai does exactly this for
+   its benchmark charts rather than forcing data onto near-black.
+   ========================================================================= */
+
+.invert-island {
+  --scan-00: #ffffff;
+  --scan-01: #f6f7f9;
+  --scan-02: #eceef1;
+  --scan-03: #dfe3e8;
+  --scan-04: #cbd1d9;
+  --scan-05: #aab2bd;
+  --scan-06: #858e9b;
+  --scan-07: #626b78;
+  --scan-08: #434b56;
+  --scan-09: #232931;
+  --scan-10: #0a0c0f;
+  --mask: #9a5b00;
+  --mask-a12: rgba(154, 91, 0, 0.1);
+  --mask-a24: rgba(154, 91, 0, 0.2);
+  --mask-a40: rgba(154, 91, 0, 0.34);
+  --rule-color: var(--scan-04);
+  background: var(--scan-00);
+  color: var(--scan-09);
+}
+
+/* ============================================================================
+   GUTTER — two hairlines running the full document height.
+
+   The highest ratio of perceived craft to code on either reference site.
+   Non-interactive, decorative, and hidden from assistive tech.
+   ========================================================================= */
+
+.page-gutter {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.page-gutter > span {
+  width: min(100% - 2rem, 64rem);
+  height: 100%;
+  border-left: var(--rule-hair) solid var(--rule-color);
+  border-right: var(--rule-hair) solid var(--rule-color);
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .page-gutter {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   HERO ENTRANCE — first paint, no JS, no hydration wait.
+
+   @starting-style is Baseline (all engines since 2024) and transitions from it
+   begin on the very first paint, so the hero never waits for React. The LCP
+   element carries [data-lcp] and is excluded: Chrome does not treat an
+   opacity:0 element as an LCP candidate, so animating the headline would push
+   Largest Contentful Paint out to hydration time.
+   ========================================================================= */
+
+.hero-enter > * {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--dur-slice) var(--ease-settle),
+    transform var(--dur-slice) var(--ease-settle);
+}
+
+.hero-enter > *:nth-child(2) { transition-delay: calc(var(--stagger) * 1); }
+.hero-enter > *:nth-child(3) { transition-delay: calc(var(--stagger) * 2); }
+.hero-enter > *:nth-child(4) { transition-delay: calc(var(--stagger) * 3); }
+.hero-enter > *:nth-child(5) { transition-delay: calc(var(--stagger) * 4); }
+
+@starting-style {
+  .hero-enter > *:not([data-lcp]) {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+
+/* Inline text links carrying an action, in the instrument's own language:
+   a hairline underline that brightens rather than a colour change. The mask
+   is never spent on navigation. */
+a.link-underline {
+  color: var(--scan-10);
+  text-decoration: none;
+  border-bottom: var(--rule-hair) solid var(--scan-06);
+  padding-bottom: 2px;
+  font-weight: 500;
+  transition: border-color var(--dur-probe) var(--ease-probe);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a.link-underline:hover {
+    border-bottom-color: var(--scan-09);
+  }
+}
+
+/* Trim the font's half-leading so vertical rhythm is measured cap-height to
+   baseline instead of em-box to em-box. Degrades silently where unsupported. */
+p,
+li,
+h1,
+h2,
+h3 {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }

@@ -37,72 +37,64 @@ export default function Home() {
           The thesis: who, the verified result, the positioning, two actions.
           Deliberately no project cards above the fold — that is the catalogue
           homepage this design refuses.                                      */}
-      <Column as="section" fillWidth gap="24" paddingY="64" s={{ paddingY: "32" }}>
-        <Reveal index={0}>
-          <Text className="readout">
-            {person.name} — {person.role.split("·")[0].trim()}
-          </Text>
-        </Reveal>
+      <Column
+        as="section"
+        fillWidth
+        gap="24"
+        paddingY="64"
+        s={{ paddingY: "32" }}
+        className="hero-enter"
+      >
+        <Text className="readout">
+          {person.name} — {person.role.split("·")[0].trim()}
+        </Text>
 
-        <Reveal index={1}>
-          <Heading
-            wrap="balance"
-            variant="display-strong-l"
-            className="hero-display"
-            style={{ maxWidth: "20ch" }}
-          >
-            {home.headline}
-          </Heading>
-        </Reveal>
+        <Heading
+          data-lcp
+          wrap="balance"
+          variant="display-strong-l"
+          className="hero-display"
+          style={{ maxWidth: "20ch" }}
+        >
+          {home.headline}
+        </Heading>
 
         {home.plate && (
-          <Reveal index={2}>
-            <a
-              href={home.plate.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mask-plate"
-              aria-label={`${home.plate.metric}, ${home.plate.context} — opens the published paper`}
-            >
-              <span>{home.plate.metric}</span>
-              <span aria-hidden="true">·</span>
-              <span>{home.plate.context}</span>
-            </a>
-          </Reveal>
+          <a
+            href={home.plate.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mask-plate"
+            aria-label={`${home.plate.metric}, ${home.plate.context} — opens the published paper`}
+          >
+            <span>{home.plate.metric}</span>
+            <span aria-hidden="true">·</span>
+            <span>{home.plate.context}</span>
+          </a>
         )}
 
-        <Reveal index={3}>
-          <Text
-            wrap="balance"
-            variant="heading-default-l"
-            onBackground="neutral-weak"
-            style={{ maxWidth: "56ch" }}
-          >
-            {home.subline}
-          </Text>
-        </Reveal>
+        <Text
+          wrap="balance"
+          variant="heading-default-l"
+          onBackground="neutral-weak"
+          style={{ maxWidth: "56ch" }}
+        >
+          {home.subline}
+        </Text>
 
         {home.actions && home.actions.length > 0 && (
-          <Reveal index={4}>
-            <Row gap="24" wrap vertical="center" paddingTop="8">
-              {home.actions.map((action) => (
-                <a
-                  key={action.href}
-                  href={action.href}
-                  {...(action.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  style={{
-                    color: "var(--scan-10)",
-                    textDecoration: "none",
-                    borderBottom: "1px solid var(--scan-06)",
-                    paddingBottom: "2px",
-                    fontWeight: 500,
-                  }}
-                >
-                  {action.label} <span aria-hidden="true">→</span>
-                </a>
-              ))}
-            </Row>
-          </Reveal>
+          <Row gap="24" wrap vertical="center" paddingTop="8">
+            {home.actions.map((action) => (
+              <a
+                key={action.href}
+                href={action.href}
+                {...(action.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className="link-underline"
+              >
+                {action.label} <span aria-hidden="true">→</span>
+              </a>
+            ))}
+          </Row>
         )}
       </Column>
 

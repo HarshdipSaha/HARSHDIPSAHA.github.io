@@ -1,90 +1,107 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface RevealProps {
   children: React.ReactNode;
-  /** Stagger index — multiplied by --stagger (60ms). Prefer this over raw ms. */
+  /** Stagger index. Multiplied by --stagger, then capped (see MAX_STAGGER_STEPS). */
   index?: number;
   /** Explicit delay in ms. Overrides `index` when set. */
   delayMs?: number;
-  /** Fraction of the element that must be visible before it slices in. */
-  threshold?: number;
-  /** Render as a different element. Defaults to a plain div. */
   as?: "div" | "section" | "li" | "article";
   className?: string;
   style?: React.CSSProperties;
 }
 
-const STAGGER_MS = 60;
+/** 80ms per step — the top of the 30-80ms band that still reads as a sequence. */
+const STAGGER_MS = 80;
 
 /**
- * The slice reveal — this site's one entrance motion.
+ * Nothing waits more than 4 steps (320ms). Stagger is decorative, and an
+ * element sitting at opacity 0 is an element whose links cannot be clicked.
+ */
+const MAX_STAGGER_STEPS = 4;
+
+/**
+ * One IntersectionObserver for the whole page, not one per element.
  *
- * Content is sliced in the way a volume is scrubbed: a clip-path wipe up the
- * scan axis plus a short lift. Not a fade, and emphatically not the 2s
- * blur-wipe this replaced.
+ * Previously each <Reveal> allocated its own observer plus a React state cell,
+ * so a page with 30 reveals did 30 re-renders on the scroll path. This writes
+ * the attribute straight onto the node, so revealing costs no React work.
+ */
+let sharedObserver: IntersectionObserver | null = null;
+
+function getObserver(): IntersectionObserver | null {
+  if (typeof IntersectionObserver === "undefined") return null;
+  if (!sharedObserver) {
+    sharedObserver = new IntersectionObserver(
+      (entries, observer) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).dataset.reveal = "in";
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+    );
+  }
+  return sharedObserver;
+}
+
+/**
+ * The scroll entrance for BELOW-the-fold content.
  *
- * Everything is visible by default if JS never runs or motion is reduced:
- * the observer only ever ADDS the revealed state, and `prefers-reduced-motion`
- * short-circuits to visible on mount.
+ * Above-the-fold content must not use this: it starts hidden and only reveals
+ * after hydration, which delays Largest Contentful Paint (Chrome does not
+ * treat an `opacity: 0` element as an LCP candidate). The hero uses the CSS
+ * `.hero-enter` / `@starting-style` path instead, which animates on first
+ * paint with no JS at all.
+ *
+ * Content is visible by default — the hidden start state is scoped to
+ * `[data-motion="on"]`, which an inline script sets only when JS is running
+ * and motion is not reduced.
  */
 export function Reveal({
   children,
   index = 0,
   delayMs,
-  threshold = 0.15,
   as = "div",
   className,
   style,
 }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
-  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
 
-    const reduced =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const observer = getObserver();
 
-    if (reduced || typeof IntersectionObserver === "undefined") {
-      setRevealed(true);
+    // Reduced motion, no observer support, or already on screen: show it now.
+    if (reduced || !observer) {
+      node.dataset.reveal = "in";
       return;
     }
-
-    // Already in view on mount (above the fold) — reveal without waiting.
     const rect = node.getBoundingClientRect();
     if (rect.top < window.innerHeight && rect.bottom > 0) {
-      setRevealed(true);
+      node.dataset.reveal = "in";
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setRevealed(true);
-            observer.disconnect();
-          }
-        }
-      },
-      { threshold, rootMargin: "0px 0px -8% 0px" },
-    );
-
     observer.observe(node);
-    return () => observer.disconnect();
-  }, [threshold]);
+    return () => observer.unobserve(node);
+  }, []);
 
   const Tag = as as React.ElementType;
-  const delay = delayMs ?? index * STAGGER_MS;
+  const delay = delayMs ?? Math.min(index, MAX_STAGGER_STEPS) * STAGGER_MS;
 
   return (
     <Tag
       ref={ref}
-      data-reveal={revealed ? "in" : ""}
+      data-reveal=""
       className={className}
       style={{ ...style, ["--reveal-delay" as string]: `${delay}ms` }}
     >
