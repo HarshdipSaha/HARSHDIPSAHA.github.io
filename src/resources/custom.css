@@ -985,3 +985,108 @@ header a:active {
     var(--mask) calc(100% * var(--on))
   );
 }
+
+/* ============================================================================
+   MONO CHROME — the third font role.
+
+   lexsi.ai runs three font roles, not two: serif display, sans body, and mono
+   for every button, eyebrow, tag, and number. Its teardown is blunt that the
+   mono role carries more of the "research lab" signal than any of its motion
+   does, because monospace reads as SPECIFICATION rather than decoration.
+
+   Body copy stays in Archivo. Only chrome — the things you press, the things
+   that label — takes the mono.
+   ========================================================================= */
+
+button,
+[data-role="button"],
+.button,
+[class*="Button_button"] {
+  font-family: var(--font-code), ui-monospace, monospace;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+
+/* Tags and pills are labels, so they take the mono and the tracking that makes
+   small caps legible. */
+[class*="Tag_tag"],
+[class*="Chip_chip"] {
+  font-family: var(--font-code), ui-monospace, monospace;
+  letter-spacing: 0.03em;
+}
+
+/* Numbers are data. Tabular figures so columns of them line up. */
+.readout,
+time,
+[class*="tabular"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   THE LIGHT ISLAND — the publication rendered as a viewer panel.
+
+   A dark page does not have to force dense or figure-bearing content onto
+   near-black. lexsi.ai flips its token scope locally so its benchmark charts
+   sit on a light panel; the same move here turns the one peer-reviewed result
+   into a lit plate on the scan, which is exactly what the world describes.
+   ========================================================================= */
+
+.publications-block > * {
+  transition:
+    border-color var(--dur-state) var(--ease-probe),
+    box-shadow var(--dur-state) var(--ease-probe);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .publications-block > *:hover {
+    border-color: var(--mask-a40);
+  }
+}
+
+/* ============================================================================
+   CLOSING SETTLE — the page ends rather than stops.
+
+   A three-second scale from 1.06 to 1 on the final full-bleed image. It is the
+   only slow moment on the site and it is what makes a page feel closed instead
+   of merely run out. Taken from lexsi.ai, which uses `scale 1.1 -> 1` over 3s
+   on its closing image and nothing else that slow anywhere.
+   ========================================================================= */
+
+[data-motion="on"] .settle-in img {
+  animation: settle 3000ms var(--ease-slice) both;
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-motion="on"] .settle-in img {
+    animation: none;
+  }
+}
+
+/* ============================================================================
+   NUMBERED RAIL — the /about contents as a specification index.
+   ========================================================================= */
+
+.editorial h2::before {
+  content: counter(section, decimal-leading-zero);
+  counter-increment: section;
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-code), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--scan-06);
+  font-variant-numeric: tabular-nums;
+}
+
+.editorial {
+  counter-reset: section;
+}

@@ -34,19 +34,19 @@
             "w": 480,
             "h": 420,
             "src": "/images/responsive/gallery/gallery-1-480.avif",
-            "bytes": 7517
+            "bytes": 8298
           },
           {
             "w": 960,
             "h": 840,
             "src": "/images/responsive/gallery/gallery-1-960.avif",
-            "bytes": 19340
+            "bytes": 21628
           },
           {
             "w": 1280,
             "h": 1120,
             "src": "/images/responsive/gallery/gallery-1-1280.avif",
-            "bytes": 30345
+            "bytes": 33596
           }
         ],
         "webp": [
@@ -54,19 +54,19 @@
             "w": 480,
             "h": 420,
             "src": "/images/responsive/gallery/gallery-1-480.webp",
-            "bytes": 7060
+            "bytes": 8502
           },
           {
             "w": 960,
             "h": 840,
             "src": "/images/responsive/gallery/gallery-1-960.webp",
-            "bytes": 18586
+            "bytes": 22480
           },
           {
             "w": 1280,
             "h": 1120,
             "src": "/images/responsive/gallery/gallery-1-1280.webp",
-            "bytes": 27906
+            "bytes": 32394
           }
         ]
       },
@@ -82,10 +82,6 @@
         {
           "type": "image/avif",
           "srcSet": "/images/responsive/gallery/gallery-2-480.avif 480w, /images/responsive/gallery/gallery-2-780.avif 780w"
-        },
-        {
-          "type": "image/webp",
-          "srcSet": "/images/responsive/gallery/gallery-2-480.webp 480w, /images/responsive/gallery/gallery-2-780.webp 780w"
         }
       ],
       "variants": {
@@ -94,29 +90,16 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-2-480.avif",
-            "bytes": 19462
+            "bytes": 22046
           },
           {
             "w": 780,
             "h": 1040,
             "src": "/images/responsive/gallery/gallery-2-780.avif",
-            "bytes": 45856
+            "bytes": 50133
           }
         ],
-        "webp": [
-          {
-            "w": 480,
-            "h": 640,
-            "src": "/images/responsive/gallery/gallery-2-480.webp",
-            "bytes": 23910
-          },
-          {
-            "w": 780,
-            "h": 1040,
-            "src": "/images/responsive/gallery/gallery-2-780.webp",
-            "bytes": 54840
-          }
-        ]
+        "webp": []
       },
       "maxWidth": 780
     },
@@ -130,10 +113,6 @@
         {
           "type": "image/avif",
           "srcSet": "/images/responsive/gallery/gallery-3-480.avif 480w, /images/responsive/gallery/gallery-3-780.avif 780w"
-        },
-        {
-          "type": "image/webp",
-          "srcSet": "/images/responsive/gallery/gallery-3-480.webp 480w, /images/responsive/gallery/gallery-3-780.webp 780w"
         }
       ],
       "variants": {
@@ -142,29 +121,16 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-3-480.avif",
-            "bytes": 32409
+            "bytes": 36526
           },
           {
             "w": 780,
             "h": 1040,
             "src": "/images/responsive/gallery/gallery-3-780.avif",
-            "bytes": 78162
+            "bytes": 83578
           }
         ],
-        "webp": [
-          {
-            "w": 480,
-            "h": 640,
-            "src": "/images/responsive/gallery/gallery-3-480.webp",
-            "bytes": 35872
-          },
-          {
-            "w": 780,
-            "h": 1040,
-            "src": "/images/responsive/gallery/gallery-3-780.webp",
-            "bytes": 89216
-          }
-        ]
+        "webp": []
       },
       "maxWidth": 780
     },
@@ -173,7 +139,7 @@
       "width": 1200,
       "height": 1600,
       "aspectRatio": 0.75,
-      "bytes": 332670,
+      "bytes": 350820,
       "sources": [
         {
           "type": "image/avif",
@@ -190,19 +156,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-4-480.avif",
-            "bytes": 40540
+            "bytes": 46035
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/gallery/gallery-4-960.avif",
-            "bytes": 141051
+            "bytes": 156957
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/gallery/gallery-4-1200.avif",
-            "bytes": 217612
+            "bytes": 235026
           }
         ],
         "webp": [
@@ -210,19 +176,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-4-480.webp",
-            "bytes": 55630
+            "bytes": 65592
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/gallery/gallery-4-960.webp",
-            "bytes": 183312
+            "bytes": 214564
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/gallery/gallery-4-1200.webp",
-            "bytes": 258222
+            "bytes": 300326
           }
         ]
       },
@@ -250,19 +216,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-5-480.avif",
-            "bytes": 37936
+            "bytes": 42970
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/gallery/gallery-5-960.avif",
-            "bytes": 139379
+            "bytes": 155910
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/gallery/gallery-5-1200.avif",
-            "bytes": 205785
+            "bytes": 221274
           }
         ],
         "webp": [
@@ -270,19 +236,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-5-480.webp",
-            "bytes": 45382
+            "bytes": 53260
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/gallery/gallery-5-960.webp",
-            "bytes": 163148
+            "bytes": 192744
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/gallery/gallery-5-1200.webp",
-            "bytes": 234408
+            "bytes": 269304
           }
         ]
       },
@@ -306,13 +272,13 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-6-480.avif",
-            "bytes": 68922
+            "bytes": 77085
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/gallery/gallery-6-960.avif",
-            "bytes": 196225
+            "bytes": 211716
           }
         ],
         "webp": []
@@ -341,19 +307,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-7-480.avif",
-            "bytes": 27206
+            "bytes": 30713
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/gallery/gallery-7-960.avif",
-            "bytes": 79952
+            "bytes": 89320
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/gallery/gallery-7-1200.avif",
-            "bytes": 116455
+            "bytes": 128260
           }
         ],
         "webp": [
@@ -361,19 +327,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-7-480.webp",
-            "bytes": 31908
+            "bytes": 37698
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/gallery/gallery-7-960.webp",
-            "bytes": 92978
+            "bytes": 109410
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/gallery/gallery-7-1200.webp",
-            "bytes": 126450
+            "bytes": 146982
           }
         ]
       },
@@ -401,19 +367,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-8-480.avif",
-            "bytes": 36805
+            "bytes": 41833
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/gallery/gallery-8-960.avif",
-            "bytes": 111320
+            "bytes": 124991
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/gallery/gallery-8-1200.avif",
-            "bytes": 161318
+            "bytes": 179076
           }
         ],
         "webp": [
@@ -421,19 +387,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/gallery/gallery-8-480.webp",
-            "bytes": 49446
+            "bytes": 56754
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/gallery/gallery-8-960.webp",
-            "bytes": 146652
+            "bytes": 170706
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/gallery/gallery-8-1200.webp",
-            "bytes": 199718
+            "bytes": 229614
           }
         ]
       },
@@ -444,15 +410,11 @@
       "width": 780,
       "height": 736,
       "aspectRatio": 1.059783,
-      "bytes": 137798,
+      "bytes": 145089,
       "sources": [
         {
           "type": "image/avif",
           "srcSet": "/images/responsive/me-480.avif 480w, /images/responsive/me-780.avif 780w"
-        },
-        {
-          "type": "image/webp",
-          "srcSet": "/images/responsive/me-480.webp 480w, /images/responsive/me-780.webp 780w"
         }
       ],
       "variants": {
@@ -461,29 +423,16 @@
             "w": 480,
             "h": 453,
             "src": "/images/responsive/me-480.avif",
-            "bytes": 44164
+            "bytes": 50664
           },
           {
             "w": 780,
             "h": 736,
             "src": "/images/responsive/me-780.avif",
-            "bytes": 94025
+            "bytes": 104257
           }
         ],
-        "webp": [
-          {
-            "w": 480,
-            "h": 453,
-            "src": "/images/responsive/me-480.webp",
-            "bytes": 59744
-          },
-          {
-            "w": 780,
-            "h": 736,
-            "src": "/images/responsive/me-780.webp",
-            "bytes": 127302
-          }
-        ]
+        "webp": []
       },
       "maxWidth": 780
     },
@@ -492,7 +441,7 @@
       "width": 780,
       "height": 736,
       "aspectRatio": 1.059783,
-      "bytes": 137798,
+      "bytes": 145089,
       "sources": [],
       "variants": {
         "avif": [],
@@ -505,7 +454,7 @@
       "width": 989,
       "height": 496,
       "aspectRatio": 1.993952,
-      "bytes": 88610,
+      "bytes": 247241,
       "sources": [
         {
           "type": "image/avif",
@@ -522,13 +471,13 @@
             "w": 480,
             "h": 241,
             "src": "/images/responsive/projects/agentic-loan-480.avif",
-            "bytes": 8111
+            "bytes": 8658
           },
           {
             "w": 989,
             "h": 496,
             "src": "/images/responsive/projects/agentic-loan-989.avif",
-            "bytes": 18828
+            "bytes": 20852
           }
         ],
         "webp": [
@@ -536,13 +485,13 @@
             "w": 480,
             "h": 241,
             "src": "/images/responsive/projects/agentic-loan-480.webp",
-            "bytes": 11268
+            "bytes": 14404
           },
           {
             "w": 989,
             "h": 496,
             "src": "/images/responsive/projects/agentic-loan-989.webp",
-            "bytes": 29338
+            "bytes": 38086
           }
         ]
       },
@@ -554,21 +503,9 @@
       "height": 168,
       "aspectRatio": 1.785714,
       "bytes": 14295,
-      "sources": [
-        {
-          "type": "image/avif",
-          "srcSet": "/images/responsive/projects/ai-generated-text-detector-300.avif 300w"
-        }
-      ],
+      "sources": [],
       "variants": {
-        "avif": [
-          {
-            "w": 300,
-            "h": 168,
-            "src": "/images/responsive/projects/ai-generated-text-detector-300.avif",
-            "bytes": 12330
-          }
-        ],
+        "avif": [],
         "webp": []
       },
       "maxWidth": 300
@@ -578,7 +515,7 @@
       "width": 1200,
       "height": 630,
       "aspectRatio": 1.904762,
-      "bytes": 79231,
+      "bytes": 88085,
       "sources": [
         {
           "type": "image/avif",
@@ -595,19 +532,19 @@
             "w": 480,
             "h": 252,
             "src": "/images/responsive/projects/ai-healthcare-480.avif",
-            "bytes": 10990
+            "bytes": 12343
           },
           {
             "w": 960,
             "h": 504,
             "src": "/images/responsive/projects/ai-healthcare-960.avif",
-            "bytes": 28879
+            "bytes": 32376
           },
           {
             "w": 1200,
             "h": 630,
             "src": "/images/responsive/projects/ai-healthcare-1200.avif",
-            "bytes": 41596
+            "bytes": 46834
           }
         ],
         "webp": [
@@ -615,19 +552,19 @@
             "w": 480,
             "h": 252,
             "src": "/images/responsive/projects/ai-healthcare-480.webp",
-            "bytes": 12476
+            "bytes": 14462
           },
           {
             "w": 960,
             "h": 504,
             "src": "/images/responsive/projects/ai-healthcare-960.webp",
-            "bytes": 33226
+            "bytes": 39494
           },
           {
             "w": 1200,
             "h": 630,
             "src": "/images/responsive/projects/ai-healthcare-1200.webp",
-            "bytes": 45336
+            "bytes": 53844
           }
         ]
       },
@@ -638,10 +575,28 @@
       "width": 1202,
       "height": 806,
       "aspectRatio": 1.491315,
-      "bytes": 11908,
-      "sources": [],
+      "bytes": 25206,
+      "sources": [
+        {
+          "type": "image/avif",
+          "srcSet": "/images/responsive/projects/alien-invasion-pygame-480.avif 480w, /images/responsive/projects/alien-invasion-pygame-1202.avif 1202w"
+        }
+      ],
       "variants": {
-        "avif": [],
+        "avif": [
+          {
+            "w": 480,
+            "h": 322,
+            "src": "/images/responsive/projects/alien-invasion-pygame-480.avif",
+            "bytes": 9081
+          },
+          {
+            "w": 1202,
+            "h": 806,
+            "src": "/images/responsive/projects/alien-invasion-pygame-1202.avif",
+            "bytes": 25188
+          }
+        ],
         "webp": []
       },
       "maxWidth": 1202
@@ -652,33 +607,10 @@
       "height": 225,
       "aspectRatio": 1.333333,
       "bytes": 9730,
-      "sources": [
-        {
-          "type": "image/avif",
-          "srcSet": "/images/responsive/projects/anime-recommender-300.avif 300w"
-        },
-        {
-          "type": "image/webp",
-          "srcSet": "/images/responsive/projects/anime-recommender-300.webp 300w"
-        }
-      ],
+      "sources": [],
       "variants": {
-        "avif": [
-          {
-            "w": 300,
-            "h": 225,
-            "src": "/images/responsive/projects/anime-recommender-300.avif",
-            "bytes": 4813
-          }
-        ],
-        "webp": [
-          {
-            "w": 300,
-            "h": 225,
-            "src": "/images/responsive/projects/anime-recommender-300.webp",
-            "bytes": 5638
-          }
-        ]
+        "avif": [],
+        "webp": []
       },
       "maxWidth": 300
     },
@@ -687,7 +619,7 @@
       "width": 1025,
       "height": 800,
       "aspectRatio": 1.28125,
-      "bytes": 182273,
+      "bytes": 383816,
       "sources": [
         {
           "type": "image/avif",
@@ -704,13 +636,13 @@
             "w": 480,
             "h": 375,
             "src": "/images/responsive/projects/apt-480.avif",
-            "bytes": 12928
+            "bytes": 13996
           },
           {
             "w": 1025,
             "h": 800,
             "src": "/images/responsive/projects/apt-1025.avif",
-            "bytes": 32377
+            "bytes": 35232
           }
         ],
         "webp": [
@@ -718,13 +650,13 @@
             "w": 480,
             "h": 375,
             "src": "/images/responsive/projects/apt-480.webp",
-            "bytes": 17492
+            "bytes": 22758
           },
           {
             "w": 1025,
             "h": 800,
             "src": "/images/responsive/projects/apt-1025.webp",
-            "bytes": 46810
+            "bytes": 61322
           }
         ]
       },
@@ -752,25 +684,25 @@
             "w": 480,
             "h": 270,
             "src": "/images/responsive/projects/aquila-480.avif",
-            "bytes": 7512
+            "bytes": 8194
           },
           {
             "w": 960,
             "h": 540,
             "src": "/images/responsive/projects/aquila-960.avif",
-            "bytes": 20851
+            "bytes": 23056
           },
           {
             "w": 1440,
             "h": 810,
             "src": "/images/responsive/projects/aquila-1440.avif",
-            "bytes": 36991
+            "bytes": 41253
           },
           {
             "w": 1920,
             "h": 1080,
             "src": "/images/responsive/projects/aquila-1920.avif",
-            "bytes": 55323
+            "bytes": 60207
           }
         ],
         "webp": [
@@ -778,25 +710,25 @@
             "w": 480,
             "h": 270,
             "src": "/images/responsive/projects/aquila-480.webp",
-            "bytes": 7200
+            "bytes": 8672
           },
           {
             "w": 960,
             "h": 540,
             "src": "/images/responsive/projects/aquila-960.webp",
-            "bytes": 21058
+            "bytes": 25498
           },
           {
             "w": 1440,
             "h": 810,
             "src": "/images/responsive/projects/aquila-1440.webp",
-            "bytes": 37532
+            "bytes": 44302
           },
           {
             "w": 1920,
             "h": 1080,
             "src": "/images/responsive/projects/aquila-1920.webp",
-            "bytes": 53742
+            "bytes": 62996
           }
         ]
       },
@@ -807,7 +739,7 @@
       "width": 762,
       "height": 402,
       "aspectRatio": 1.895522,
-      "bytes": 105034,
+      "bytes": 296622,
       "sources": [
         {
           "type": "image/avif",
@@ -824,13 +756,13 @@
             "w": 480,
             "h": 253,
             "src": "/images/responsive/projects/atomnet-480.avif",
-            "bytes": 16762
+            "bytes": 18373
           },
           {
             "w": 762,
             "h": 402,
             "src": "/images/responsive/projects/atomnet-762.avif",
-            "bytes": 33947
+            "bytes": 38093
           }
         ],
         "webp": [
@@ -838,13 +770,13 @@
             "w": 480,
             "h": 253,
             "src": "/images/responsive/projects/atomnet-480.webp",
-            "bytes": 23054
+            "bytes": 29504
           },
           {
             "w": 762,
             "h": 402,
             "src": "/images/responsive/projects/atomnet-762.webp",
-            "bytes": 48820
+            "bytes": 60620
           }
         ]
       },
@@ -855,7 +787,7 @@
       "width": 337,
       "height": 380,
       "aspectRatio": 0.886842,
-      "bytes": 39735,
+      "bytes": 125033,
       "sources": [
         {
           "type": "image/avif",
@@ -872,7 +804,7 @@
             "w": 337,
             "h": 380,
             "src": "/images/responsive/projects/branddiffusion-337.avif",
-            "bytes": 14905
+            "bytes": 16384
           }
         ],
         "webp": [
@@ -880,7 +812,7 @@
             "w": 337,
             "h": 380,
             "src": "/images/responsive/projects/branddiffusion-337.webp",
-            "bytes": 19824
+            "bytes": 24688
           }
         ]
       },
@@ -891,7 +823,7 @@
       "width": 793,
       "height": 464,
       "aspectRatio": 1.709052,
-      "bytes": 67673,
+      "bytes": 200502,
       "sources": [
         {
           "type": "image/avif",
@@ -908,13 +840,13 @@
             "w": 480,
             "h": 281,
             "src": "/images/responsive/projects/brats-response-480.avif",
-            "bytes": 13932
+            "bytes": 15365
           },
           {
             "w": 793,
             "h": 464,
             "src": "/images/responsive/projects/brats-response-793.avif",
-            "bytes": 30291
+            "bytes": 33685
           }
         ],
         "webp": [
@@ -922,13 +854,13 @@
             "w": 480,
             "h": 281,
             "src": "/images/responsive/projects/brats-response-480.webp",
-            "bytes": 17934
+            "bytes": 22668
           },
           {
             "w": 793,
             "h": 464,
             "src": "/images/responsive/projects/brats-response-793.webp",
-            "bytes": 40800
+            "bytes": 51644
           }
         ]
       },
@@ -940,33 +872,10 @@
       "height": 166,
       "aspectRatio": 1.831325,
       "bytes": 6196,
-      "sources": [
-        {
-          "type": "image/avif",
-          "srcSet": "/images/responsive/projects/gui-cansat-304.avif 304w"
-        },
-        {
-          "type": "image/webp",
-          "srcSet": "/images/responsive/projects/gui-cansat-304.webp 304w"
-        }
-      ],
+      "sources": [],
       "variants": {
-        "avif": [
-          {
-            "w": 304,
-            "h": 166,
-            "src": "/images/responsive/projects/gui-cansat-304.avif",
-            "bytes": 5016
-          }
-        ],
-        "webp": [
-          {
-            "w": 304,
-            "h": 166,
-            "src": "/images/responsive/projects/gui-cansat-304.webp",
-            "bytes": 4960
-          }
-        ]
+        "avif": [],
+        "webp": []
       },
       "maxWidth": 304
     },
@@ -975,7 +884,7 @@
       "width": 1919,
       "height": 1061,
       "aspectRatio": 1.808671,
-      "bytes": 30583,
+      "bytes": 64543,
       "sources": [
         {
           "type": "image/avif",
@@ -992,25 +901,25 @@
             "w": 480,
             "h": 265,
             "src": "/images/responsive/projects/gui-cansat-480.avif",
-            "bytes": 2165
+            "bytes": 2256
           },
           {
             "w": 960,
             "h": 531,
             "src": "/images/responsive/projects/gui-cansat-960.avif",
-            "bytes": 5031
+            "bytes": 5241
           },
           {
             "w": 1440,
             "h": 796,
             "src": "/images/responsive/projects/gui-cansat-1440.avif",
-            "bytes": 8872
+            "bytes": 9364
           },
           {
             "w": 1919,
             "h": 1061,
             "src": "/images/responsive/projects/gui-cansat-1919.avif",
-            "bytes": 12494
+            "bytes": 13534
           }
         ],
         "webp": [
@@ -1018,25 +927,25 @@
             "w": 480,
             "h": 265,
             "src": "/images/responsive/projects/gui-cansat-480.webp",
-            "bytes": 2410
+            "bytes": 3102
           },
           {
             "w": 960,
             "h": 531,
             "src": "/images/responsive/projects/gui-cansat-960.webp",
-            "bytes": 6288
+            "bytes": 7590
           },
           {
             "w": 1440,
             "h": 796,
             "src": "/images/responsive/projects/gui-cansat-1440.webp",
-            "bytes": 10818
+            "bytes": 13274
           },
           {
             "w": 1919,
             "h": 1061,
             "src": "/images/responsive/projects/gui-cansat-1919.webp",
-            "bytes": 16714
+            "bytes": 19806
           }
         ]
       },
@@ -1047,7 +956,7 @@
       "width": 1844,
       "height": 712,
       "aspectRatio": 2.589888,
-      "bytes": 72003,
+      "bytes": 177665,
       "sources": [
         {
           "type": "image/avif",
@@ -1064,25 +973,25 @@
             "w": 480,
             "h": 185,
             "src": "/images/responsive/projects/livekit-agents-480.avif",
-            "bytes": 6512
+            "bytes": 6883
           },
           {
             "w": 960,
             "h": 371,
             "src": "/images/responsive/projects/livekit-agents-960.avif",
-            "bytes": 14985
+            "bytes": 15894
           },
           {
             "w": 1440,
             "h": 556,
             "src": "/images/responsive/projects/livekit-agents-1440.avif",
-            "bytes": 22005
+            "bytes": 23668
           },
           {
             "w": 1844,
             "h": 712,
             "src": "/images/responsive/projects/livekit-agents-1844.avif",
-            "bytes": 24453
+            "bytes": 26518
           }
         ],
         "webp": [
@@ -1090,25 +999,25 @@
             "w": 480,
             "h": 185,
             "src": "/images/responsive/projects/livekit-agents-480.webp",
-            "bytes": 7662
+            "bytes": 10080
           },
           {
             "w": 960,
             "h": 371,
             "src": "/images/responsive/projects/livekit-agents-960.webp",
-            "bytes": 19230
+            "bytes": 25406
           },
           {
             "w": 1440,
             "h": 556,
             "src": "/images/responsive/projects/livekit-agents-1440.webp",
-            "bytes": 30312
+            "bytes": 40118
           },
           {
             "w": 1844,
             "h": 712,
             "src": "/images/responsive/projects/livekit-agents-1844.webp",
-            "bytes": 39400
+            "bytes": 50804
           }
         ]
       },
@@ -1136,13 +1045,13 @@
             "w": 480,
             "h": 278,
             "src": "/images/responsive/projects/missing-person-480.avif",
-            "bytes": 12798
+            "bytes": 14437
           },
           {
             "w": 920,
             "h": 533,
             "src": "/images/responsive/projects/missing-person-920.avif",
-            "bytes": 37165
+            "bytes": 42265
           }
         ],
         "webp": [
@@ -1150,13 +1059,13 @@
             "w": 480,
             "h": 278,
             "src": "/images/responsive/projects/missing-person-480.webp",
-            "bytes": 15728
+            "bytes": 18482
           },
           {
             "w": 920,
             "h": 533,
             "src": "/images/responsive/projects/missing-person-920.webp",
-            "bytes": 40592
+            "bytes": 48022
           }
         ]
       },
@@ -1167,7 +1076,7 @@
       "width": 750,
       "height": 469,
       "aspectRatio": 1.599147,
-      "bytes": 77212,
+      "bytes": 84877,
       "sources": [
         {
           "type": "image/avif",
@@ -1184,13 +1093,13 @@
             "w": 480,
             "h": 300,
             "src": "/images/responsive/projects/museum-ticketing-chatbot-480.avif",
-            "bytes": 25160
+            "bytes": 28265
           },
           {
             "w": 750,
             "h": 469,
             "src": "/images/responsive/projects/museum-ticketing-chatbot-750.avif",
-            "bytes": 47588
+            "bytes": 53550
           }
         ],
         "webp": [
@@ -1198,13 +1107,13 @@
             "w": 480,
             "h": 300,
             "src": "/images/responsive/projects/museum-ticketing-chatbot-480.webp",
-            "bytes": 33580
+            "bytes": 38570
           },
           {
             "w": 750,
             "h": 469,
             "src": "/images/responsive/projects/museum-ticketing-chatbot-750.webp",
-            "bytes": 60430
+            "bytes": 70552
           }
         ]
       },
@@ -1232,13 +1141,13 @@
             "w": 480,
             "h": 270,
             "src": "/images/responsive/projects/object-tennis-tracker-480.avif",
-            "bytes": 12154
+            "bytes": 13470
           },
           {
             "w": 752,
             "h": 423,
             "src": "/images/responsive/projects/object-tennis-tracker-752.avif",
-            "bytes": 24714
+            "bytes": 27310
           }
         ],
         "webp": [
@@ -1246,13 +1155,13 @@
             "w": 480,
             "h": 270,
             "src": "/images/responsive/projects/object-tennis-tracker-480.webp",
-            "bytes": 13562
+            "bytes": 15780
           },
           {
             "w": 752,
             "h": 423,
             "src": "/images/responsive/projects/object-tennis-tracker-752.webp",
-            "bytes": 26326
+            "bytes": 30764
           }
         ]
       },
@@ -1263,34 +1172,11 @@
       "width": 322,
       "height": 157,
       "aspectRatio": 2.050955,
-      "bytes": 10702,
-      "sources": [
-        {
-          "type": "image/avif",
-          "srcSet": "/images/responsive/projects/pysdf-322.avif 322w"
-        },
-        {
-          "type": "image/webp",
-          "srcSet": "/images/responsive/projects/pysdf-322.webp 322w"
-        }
-      ],
+      "bytes": 13050,
+      "sources": [],
       "variants": {
-        "avif": [
-          {
-            "w": 322,
-            "h": 157,
-            "src": "/images/responsive/projects/pysdf-322.avif",
-            "bytes": 6119
-          }
-        ],
-        "webp": [
-          {
-            "w": 322,
-            "h": 157,
-            "src": "/images/responsive/projects/pysdf-322.webp",
-            "bytes": 7154
-          }
-        ]
+        "avif": [],
+        "webp": []
       },
       "maxWidth": 322
     },
@@ -1316,19 +1202,19 @@
             "w": 480,
             "h": 207,
             "src": "/images/responsive/projects/sehat-saathi/architecture-480.avif",
-            "bytes": 3945
+            "bytes": 4173
           },
           {
             "w": 960,
             "h": 414,
             "src": "/images/responsive/projects/sehat-saathi/architecture-960.avif",
-            "bytes": 9827
+            "bytes": 10501
           },
           {
             "w": 1280,
             "h": 552,
             "src": "/images/responsive/projects/sehat-saathi/architecture-1280.avif",
-            "bytes": 14636
+            "bytes": 15479
           }
         ],
         "webp": [
@@ -1336,19 +1222,19 @@
             "w": 480,
             "h": 207,
             "src": "/images/responsive/projects/sehat-saathi/architecture-480.webp",
-            "bytes": 4422
+            "bytes": 4960
           },
           {
             "w": 960,
             "h": 414,
             "src": "/images/responsive/projects/sehat-saathi/architecture-960.webp",
-            "bytes": 12050
+            "bytes": 13000
           },
           {
             "w": 1280,
             "h": 552,
             "src": "/images/responsive/projects/sehat-saathi/architecture-1280.webp",
-            "bytes": 18294
+            "bytes": 19832
           }
         ]
       },
@@ -1359,7 +1245,7 @@
       "width": 1378,
       "height": 2532,
       "aspectRatio": 0.544234,
-      "bytes": 1718807,
+      "bytes": 3276212,
       "sources": [
         {
           "type": "image/avif",
@@ -1376,19 +1262,19 @@
             "w": 480,
             "h": 882,
             "src": "/images/responsive/projects/tinysafetynet-480.avif",
-            "bytes": 31472
+            "bytes": 36068
           },
           {
             "w": 960,
             "h": 1764,
             "src": "/images/responsive/projects/tinysafetynet-960.avif",
-            "bytes": 85959
+            "bytes": 98598
           },
           {
             "w": 1378,
             "h": 2532,
             "src": "/images/responsive/projects/tinysafetynet-1378.avif",
-            "bytes": 167589
+            "bytes": 182556
           }
         ],
         "webp": [
@@ -1396,19 +1282,19 @@
             "w": 480,
             "h": 882,
             "src": "/images/responsive/projects/tinysafetynet-480.webp",
-            "bytes": 38910
+            "bytes": 57758
           },
           {
             "w": 960,
             "h": 1764,
             "src": "/images/responsive/projects/tinysafetynet-960.webp",
-            "bytes": 96786
+            "bytes": 168146
           },
           {
             "w": 1378,
             "h": 2532,
             "src": "/images/responsive/projects/tinysafetynet-1378.webp",
-            "bytes": 178238
+            "bytes": 305242
           }
         ]
       },
@@ -1420,28 +1306,10 @@
       "height": 595,
       "aspectRatio": 1.448739,
       "bytes": 36676,
-      "sources": [
-        {
-          "type": "image/webp",
-          "srcSet": "/images/responsive/projects/tomato-disease-480.webp 480w, /images/responsive/projects/tomato-disease-862.webp 862w"
-        }
-      ],
+      "sources": [],
       "variants": {
         "avif": [],
-        "webp": [
-          {
-            "w": 480,
-            "h": 331,
-            "src": "/images/responsive/projects/tomato-disease-480.webp",
-            "bytes": 16494
-          },
-          {
-            "w": 862,
-            "h": 595,
-            "src": "/images/responsive/projects/tomato-disease-862.webp",
-            "bytes": 36138
-          }
-        ]
+        "webp": []
       },
       "maxWidth": 862
     },
@@ -1467,13 +1335,13 @@
             "w": 480,
             "h": 270,
             "src": "/images/responsive/projects/youtube-langchain-480.avif",
-            "bytes": 4766
+            "bytes": 5120
           },
           {
             "w": 686,
             "h": 386,
             "src": "/images/responsive/projects/youtube-langchain-686.avif",
-            "bytes": 7732
+            "bytes": 8467
           }
         ],
         "webp": [
@@ -1481,13 +1349,13 @@
             "w": 480,
             "h": 270,
             "src": "/images/responsive/projects/youtube-langchain-480.webp",
-            "bytes": 5536
+            "bytes": 6226
           },
           {
             "w": 686,
             "h": 386,
             "src": "/images/responsive/projects/youtube-langchain-686.webp",
-            "bytes": 9356
+            "bytes": 10620
           }
         ]
       },
@@ -1498,11 +1366,15 @@
       "width": 791,
       "height": 553,
       "aspectRatio": 1.43038,
-      "bytes": 18155,
+      "bytes": 41323,
       "sources": [
         {
           "type": "image/avif",
           "srcSet": "/images/responsive/projects/zombies-learning-480.avif 480w, /images/responsive/projects/zombies-learning-791.avif 791w"
+        },
+        {
+          "type": "image/webp",
+          "srcSet": "/images/responsive/projects/zombies-learning-480.webp 480w, /images/responsive/projects/zombies-learning-791.webp 791w"
         }
       ],
       "variants": {
@@ -1511,16 +1383,29 @@
             "w": 480,
             "h": 336,
             "src": "/images/responsive/projects/zombies-learning-480.avif",
-            "bytes": 8821
+            "bytes": 9365
           },
           {
             "w": 791,
             "h": 553,
             "src": "/images/responsive/projects/zombies-learning-791.avif",
-            "bytes": 13563
+            "bytes": 14223
           }
         ],
-        "webp": []
+        "webp": [
+          {
+            "w": 480,
+            "h": 336,
+            "src": "/images/responsive/projects/zombies-learning-480.webp",
+            "bytes": 13672
+          },
+          {
+            "w": 791,
+            "h": 553,
+            "src": "/images/responsive/projects/zombies-learning-791.webp",
+            "bytes": 24482
+          }
+        ]
       },
       "maxWidth": 791
     },
@@ -1529,7 +1414,7 @@
       "width": 1200,
       "height": 1600,
       "aspectRatio": 0.75,
-      "bytes": 391869,
+      "bytes": 415657,
       "sources": [
         {
           "type": "image/avif",
@@ -1546,19 +1431,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/publications/miccai-480.avif",
-            "bytes": 46488
+            "bytes": 52857
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/publications/miccai-960.avif",
-            "bytes": 173004
+            "bytes": 197912
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/publications/miccai-1200.avif",
-            "bytes": 261668
+            "bytes": 292232
           }
         ],
         "webp": [
@@ -1566,19 +1451,19 @@
             "w": 480,
             "h": 640,
             "src": "/images/responsive/publications/miccai-480.webp",
-            "bytes": 61186
+            "bytes": 71026
           },
           {
             "w": 960,
             "h": 1280,
             "src": "/images/responsive/publications/miccai-960.webp",
-            "bytes": 233452
+            "bytes": 269948
           },
           {
             "w": 1200,
             "h": 1600,
             "src": "/images/responsive/publications/miccai-1200.webp",
-            "bytes": 344018
+            "bytes": 400056
           }
         ]
       },

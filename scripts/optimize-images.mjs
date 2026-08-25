@@ -52,22 +52,34 @@ const CONFIG = {
    * (JPEG/WebP sources) can subsample chroma safely.
    */
   avif: {
-    photo: { quality: 60, effort: 5, chromaSubsampling: "4:2:0" },
-    graphic: { quality: 60, effort: 5, chromaSubsampling: "4:4:4" },
+    photo: { quality: 65, effort: 5, chromaSubsampling: "4:2:0" },
+    graphic: { quality: 65, effort: 5, chromaSubsampling: "4:4:4" },
   },
   webp: {
-    photo: { quality: 78, effort: 5 },
-    graphic: { quality: 80, effort: 5, smartSubsample: true },
+    photo: { quality: 82, effort: 5 },
+    graphic: { quality: 88, effort: 5, smartSubsample: true },
   },
-  jpeg: { quality: 82, mozjpeg: true, progressive: true },
-  png: { compressionLevel: 9, effort: 10 },
+  jpeg: { quality: 85, mozjpeg: true, progressive: true },
+  /**
+   * Strictly lossless. `palette: false` is load-bearing: sharp turns on palette
+   * quantisation implicitly at high `effort`, which silently costs ~64 dB PSNR
+   * on gradients. A portfolio screenshot must stay bit-exact.
+   */
+  png: { compressionLevel: 9, palette: false, adaptiveFiltering: true },
   /**
    * Already-lean lossy sources (bytes per pixel below this) keep their original
    * bytes. Re-encoding them would be generation loss for a negligible win.
    */
   lossyBppFloor: 0.15,
   /** Only replace a lossy fallback when the re-encode saves at least this much. */
-  minLossyGain: 0.05,
+  minLossyGain: 0.1,
+  /**
+   * Thumbnails are left alone: a few KB is not worth a second lossy generation,
+   * and their sources are usually already artefacted.
+   */
+  minPixelsForRecompress: 200_000,
+  /** No responsive ladder for assets this small — there is nothing to win. */
+  variantByteFloor: 16 * 1024,
   /** Directories (relative to public/images) that get a fallback pass only. */
   fallbackOnly: ["og"],
 };
@@ -132,6 +144,7 @@ function encoderFor(format, pipeline, profile = "photo") {
 function shouldRecompressFallback({ format, bytes, width, height, needsResize }) {
   if (needsResize) return true;
   if (format === "png") return true;
+  if (width * height < CONFIG.minPixelsForRecompress) return false;
   return bytes / (width * height) > CONFIG.lossyBppFloor;
 }
 
@@ -144,6 +157,11 @@ async function buildFallback(srcBuffer, meta) {
   }
 
   let pipeline = sharp(srcBuffer, { failOn: "none" });
+  // A fully-opaque alpha channel is a quarter of the pixel data for nothing.
+  // Dropping it changes no visible pixel.
+  if (meta.hasAlpha && (await sharp(srcBuffer, { failOn: "none" }).stats()).isOpaque) {
+    pipeline = pipeline.removeAlpha();
+  }
   if (needsResize) pipeline = pipeline.resize({ width: CONFIG.maxWidth, withoutEnlargement: true, fit: "inside" });
   const { data, info } = await encoderFor(format, pipeline).toBuffer({ resolveWithObject: true });
 
@@ -195,7 +213,9 @@ async function processFile(absPath, state, stats) {
   const outputs = [];
   const variants = { avif: [], webp: [] };
 
-  if (!fallbackOnly) {
+  const tooSmallForVariants = fallback.buffer.length < CONFIG.variantByteFloor;
+
+  if (!fallbackOnly && !tooSmallForVariants) {
     const outDir = path.join(responsiveDir, path.dirname(rel));
     fs.mkdirSync(outDir, { recursive: true });
     const base = path.basename(rel, path.extname(rel));

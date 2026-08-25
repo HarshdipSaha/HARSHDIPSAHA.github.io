@@ -314,7 +314,6 @@ const about: About = {
   },
   colophon: {
     display: true,
-    pronunciation: "/ˈhəːʃdiːp ˈsaːɦa/",
     lines: [
       <>Set in Archivo and JetBrains Mono.</>,
       <>
