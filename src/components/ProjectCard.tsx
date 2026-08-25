@@ -1,4 +1,5 @@
-import { Column, Heading, Media, Row, SmartLink, Text } from "@once-ui-system/core";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
+import { Column, Heading, Row, SmartLink, Text } from "@once-ui-system/core";
 
 interface ProjectCardProps {
   href: string;
@@ -47,14 +48,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       {cover && (
         <Row flex={4} fillWidth>
           <SmartLink href={href} style={{ display: "block", width: "100%", margin: 0 }}>
-            <Media
+            <ResponsiveImage
               src={cover}
               alt={title}
               aspectRatio="16 / 10"
-              radius="m"
               priority={priority}
+              // The card is ~40% of a 64rem column on desktop, full-bleed below
+              // the breakpoint. Getting this wrong makes srcset pick badly.
               sizes="(max-width: 768px) 100vw, 420px"
-              border="neutral-alpha-weak"
+              style={{ border: "1px solid var(--rule-color)" }}
             />
           </SmartLink>
         </Row>

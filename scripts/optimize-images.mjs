@@ -152,7 +152,15 @@ async function buildFallback(srcBuffer, meta) {
   const needsResize = meta.width > CONFIG.maxWidth;
   const format = meta.format === "jpg" ? "jpeg" : meta.format;
 
-  if (!shouldRecompressFallback({ format, bytes: srcBuffer.length, width: meta.width, height: meta.height, needsResize })) {
+  if (
+    !shouldRecompressFallback({
+      format,
+      bytes: srcBuffer.length,
+      width: meta.width,
+      height: meta.height,
+      needsResize,
+    })
+  ) {
     return { buffer: srcBuffer, width: meta.width, height: meta.height, changed: false };
   }
 
@@ -162,7 +170,8 @@ async function buildFallback(srcBuffer, meta) {
   if (meta.hasAlpha && (await sharp(srcBuffer, { failOn: "none" }).stats()).isOpaque) {
     pipeline = pipeline.removeAlpha();
   }
-  if (needsResize) pipeline = pipeline.resize({ width: CONFIG.maxWidth, withoutEnlargement: true, fit: "inside" });
+  if (needsResize)
+    pipeline = pipeline.resize({ width: CONFIG.maxWidth, withoutEnlargement: true, fit: "inside" });
   const { data, info } = await encoderFor(format, pipeline).toBuffer({ resolveWithObject: true });
 
   // Never regress: keep the smaller bytes, and require a real win before
@@ -231,7 +240,9 @@ async function processFile(absPath, state, stats) {
           withoutEnlargement: true,
           fit: "inside",
         });
-        const { data, info } = await encoderFor(format, pipeline, profile).toBuffer({ resolveWithObject: true });
+        const { data, info } = await encoderFor(format, pipeline, profile).toBuffer({
+          resolveWithObject: true,
+        });
         stats.encoded++;
         // Never ship a "responsive" file that is heavier than simply using the
         // fallback — that would make the page slower, not faster.
@@ -340,7 +351,15 @@ async function main() {
 
   const files = walk(imagesDir).sort();
   const state = readState();
-  const stats = { encoded: 0, rejected: 0, skipped: 0, restored: 0, fallbacksRewritten: 0, fallbackBytesSaved: 0, errors: [] };
+  const stats = {
+    encoded: 0,
+    rejected: 0,
+    skipped: 0,
+    restored: 0,
+    fallbacksRewritten: 0,
+    fallbackBytesSaved: 0,
+    errors: [],
+  };
 
   const results = await mapWithConcurrency(files, 4, (file) => processFile(file, state, stats));
 
@@ -375,7 +394,10 @@ async function main() {
   );
 
   fs.mkdirSync(cacheDir, { recursive: true });
-  fs.writeFileSync(cacheStatePath, `${JSON.stringify({ configHash: CONFIG_HASH, entries: nextState }, null, 2)}\n`);
+  fs.writeFileSync(
+    cacheStatePath,
+    `${JSON.stringify({ configHash: CONFIG_HASH, entries: nextState }, null, 2)}\n`,
+  );
 
   const savedKb = Math.round(stats.fallbackBytesSaved / 1024);
   console.log(
