@@ -104,6 +104,10 @@ a.mask-plate:hover,
 a.mask-plate:visited,
 .mask-plate {
   display: inline-flex;
+  /* A flex item resolves `inline-flex` to `flex` and would stretch to the
+     column's full width. Both of these are required for it to hug its text. */
+  align-self: flex-start;
+  width: fit-content;
   align-items: baseline;
   gap: 0.4em;
   padding: 0.15em 0.5em;
@@ -536,4 +540,174 @@ h2,
 h3 {
   text-box-trim: trim-both;
   text-box-edge: cap alphabetic;
+}
+
+/* ============================================================================
+   PROJECT CARD LINKS
+
+   Once UI's SmartLink paints its brand colour (cyan) on these, which breaks
+   the rule the whole system rests on: the ramp carries emphasis and the mask
+   is reserved for verified claims. Navigation gets neither.
+   ========================================================================= */
+
+.card-links a,
+.card-links a:hover,
+.card-links a:visited,
+.card-links a * {
+  color: var(--scan-09);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-links a:hover,
+  .card-links a:hover * {
+    color: var(--scan-10);
+  }
+}
+
+/* ============================================================================
+   FOCAL SEQUENCE — the scan reconstructing.
+
+   The one authored moment on this site. Words resolve out of blurred noise in
+   sequence while a probe line sweeps down through them, the way a volume
+   resolves in a viewer. Everything else on the page is quiet supporting state;
+   this is the only place motion is allowed to perform.
+
+   Cost: opacity + filter + transform on ~8 spans, plus one 2px bar. All
+   compositor-friendly, all one-shot, none of it running after ~1.6s.
+   ========================================================================= */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.scan-reveal {
+  position: relative;
+  display: block;
+}
+
+.scan-word {
+  display: inline-block;
+  /* NOT zero: Chrome drops opacity:0 elements from LCP candidacy, and this is
+     the LCP element. Under the blur it reads as noise either way. */
+  opacity: 0.09;
+  filter: blur(14px);
+  transform: translateY(0.16em);
+  will-change: opacity, filter, transform;
+  animation: scan-resolve 720ms var(--ease-settle) forwards;
+  animation-delay: calc(var(--i, 0) * 60ms + 140ms);
+}
+
+@keyframes scan-resolve {
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+/* The probe: a bright line descending through the text as it resolves. */
+.scan-reveal::after {
+  content: "";
+  position: absolute;
+  left: -1.5%;
+  right: -1.5%;
+  top: 0;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--mask), transparent);
+  box-shadow: 0 0 22px 3px var(--mask-a40);
+  opacity: 0;
+  animation: scan-sweep 1600ms var(--ease-slice) forwards;
+}
+
+@keyframes scan-sweep {
+  0% {
+    top: -0.1em;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* `will-change` is a loan, not a gift — release it once the sequence is over. */
+.scan-reveal-words {
+  animation: scan-settle 0ms 2s forwards;
+}
+
+@keyframes scan-settle {
+  to {
+    will-change: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-word {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    animation: none;
+  }
+
+  .scan-reveal::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ============================================================================
+   PRESS FEEDBACK — every control acknowledges being pressed.
+
+   The site had zero of this: nothing responded to a click anywhere. A press
+   affordance is the cheapest possible signal that an interface is alive, and
+   its absence is one of the clearest tells of a templated build.
+   ========================================================================= */
+
+a,
+button,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:active,
+button:active,
+[role="button"]:active {
+  transform: scale(0.97);
+}
+
+a,
+button,
+[role="button"] {
+  transition: transform var(--dur-probe) var(--ease-probe);
+}
+
+/* Icon-only controls take a deeper press: less area, so it needs more travel
+   to register as the same gesture. */
+.card-links a:active,
+nav a:active,
+header a:active {
+  transform: scale(0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a:active,
+  button:active,
+  [role="button"]:active {
+    transform: none;
+  }
 }

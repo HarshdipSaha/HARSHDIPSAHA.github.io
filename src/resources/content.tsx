@@ -63,7 +63,9 @@ const home: Home = {
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio of ${person.name} — UG researcher @ NexGenLab NSUT. ML, computer vision, neuroimaging. Open to SDE & research internships.`,
-  headline: <>Building ML pipelines & enjoying life through backpropagation</>,
+  // Plain string (still a valid ReactNode) so the hero's focal sequence can
+  // split it per word. See src/components/motion/ScanReveal.tsx.
+  headline: "Building ML pipelines & enjoying life through backpropagation",
   featured: {
     display: false,
     title: (

@@ -218,7 +218,7 @@ export default function About() {
                         {experience.timeframe}
                       </Text>
                     </Row>
-                    <Text variant="body-default-s" onBackground="brand-weak" marginBottom="m">
+                    <Text variant="body-default-s" marginBottom="m" style={{ color: "var(--scan-07)" }}>
                       {experience.role}
                     </Text>
                     <Column as="ul" gap="16">
@@ -384,7 +384,7 @@ export default function About() {
                     }}
                   >
                     <Row gap="12" vertical="center">
-                      <Icon name="trophy" onBackground="brand-medium" />
+                      <Icon name="trophy" style={{ color: "var(--scan-07)" }} />
                       <Text variant="heading-strong-l" wrap="balance">
                         {achievement.title}
                       </Text>

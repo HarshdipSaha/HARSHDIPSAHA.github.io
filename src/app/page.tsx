@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion/Reveal";
+import { ScanReveal } from "@/components/motion/ScanReveal";
 import { Projects } from "@/components/work/Projects";
 import { about, baseURL, home, person, publications, work } from "@/resources";
 import { generateMeta } from "@/utils/meta";
@@ -56,7 +57,11 @@ export default function Home() {
           className="hero-display"
           style={{ maxWidth: "20ch" }}
         >
-          {home.headline}
+          {typeof home.headline === "string" ? (
+            <ScanReveal text={home.headline} />
+          ) : (
+            home.headline
+          )}
         </Heading>
 
         {home.plate && (

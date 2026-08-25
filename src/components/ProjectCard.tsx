@@ -82,7 +82,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </Text>
         )}
 
-        <Row gap="24" wrap paddingTop="4">
+        <Row gap="24" wrap paddingTop="4" className="card-links">
           {content?.trim() && (
             <SmartLink
               suffixIcon="arrowRight"
