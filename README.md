@@ -2,7 +2,7 @@
 
 Personal portfolio site: **[harshdipsaha.tech](https://harshdipsaha.tech/)** · [harshdipsaha.github.io](https://harshdipsaha.github.io)
 
-Next.js 16 (App Router, static export) · TypeScript · MDX · Once UI · deployed to GitHub Pages.
+Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS v4 · Motion · Lenis · MDX · deployed to GitHub Pages.
 
 ---
 
@@ -22,7 +22,7 @@ reconstructions from that archaeology; everything after is recorded as it happen
 Context      AGENTS.md · CLAUDE.md · CONTEXT.md · AGENT_WORKFLOWS.md   how agents behave here
 Capabilities .claude/skills · AGENT_WORKFLOWS.md                       what agents can do
 Knowledge    docs/ (tutorials · how-to · reference · explanation · adr) decisions that persist
-Product      src/ · scripts/ · public/                                 the software
+Product      src/ · content/ · scripts/ · public/                      the software
 Quality      evals/ · .github/workflows/                               what must hold to ship
 ```
 
@@ -30,14 +30,14 @@ Quality      evals/ · .github/workflows/                               what mus
 
 ```bash
 npm install
-npm run dev          # predev auto-syncs images; serves on :3000
+npm run dev          # predev builds images into public/img/; serves on :3000
 ```
 
 ## Build & deploy
 
 ```bash
-npx tsc --noEmit -p tsconfig.json   # type-check — the gate
-npm run build                       # prebuild syncs images, then exports to out/
+npm run typecheck    # tsc --noEmit — the gate
+npm run build        # prebuild builds images, then exports to out/
 ```
 
 Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages.
@@ -54,13 +54,16 @@ Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages.
 | `docs/adr/` | Architecture decision records — the "why" log |
 | `docs/` | Tutorials, how-to guides, reference, explanation (Diátaxis) |
 | `evals/` | Behaviour checks that the repo's conventions still hold |
-| `src/app/` | Pages (home, about, work, gallery, process) |
-| `src/app/work/projects/` | One `.mdx` per project |
-| `src/resources/content.tsx` | Single source of truth for site copy, typed |
-| `src/resources/once-ui.config.ts` | Theme, route toggles, schema |
-| `gallery/`, `project_images/` | Image drop-zones — sync scripts publish them |
-| `scripts/` | Build-time sync + static generation |
-| `public/` | **Generated** assets + resume — do not hand-edit `public/images/**` |
+| `src/app/` | Routes: `/`, `/story`, `/projects`, `/projects/[slug]`, `/gallery`, `/process`, 404, sitemap, robots; `globals.css` holds the design tokens |
+| `src/content/site.ts` | Single source of truth for all site copy that isn't a project; the `nav` array drives Nav, Footer and sitemap |
+| `content/projects/` | One `.mdx` per project (18); lowercased filename = URL slug |
+| `content/writing/` | Three old blog posts, kept as content — not rendered |
+| `src/components/` | `Nav`, `Footer`, `ui` (Pill/Label/Container/Arrow), `SmoothScroll`, `ProjectGrid`, `Gallery`, `motion/*`, `home/*` |
+| `src/lib/projects.ts` | Reads project MDX + the image manifest |
+| `src/data/images.json` | **Generated** image manifest (committed) — do not hand-edit |
+| `gallery/`, `project_images/`, `me.jpg` | Image drop-zones — `scripts/build-images.mjs` publishes them |
+| `scripts/` | `build-images.mjs` (sharp, predev/prebuild), `render-brain-frames.py` (manual), `check-aidlc-sync.mjs` (CI gate) |
+| `public/` | `img/` is **generated** (gitignored); `brain/` frames and `resume.pdf` are committed |
 
 ## Contributing to this repo (or asking an agent to)
 

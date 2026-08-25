@@ -1,6 +1,6 @@
 # 0010 — Segmentation-overlay design system, and a home page that is not the catalogue
 
-**Status:** Accepted · **Date:** 2026-08-25 · **Supersedes:** —
+**Status:** Superseded by [ADR 0011](0011-rebuild-from-scratch-on-thine-model.md) · **Date:** 2026-08-25 · **Supersedes:** —
 
 ## Context
 

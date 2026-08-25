@@ -37,7 +37,7 @@ const changed = diffOutput.split("\n").filter(Boolean);
 const exempt = [
   /^public\//,
   /^out\//,
-  /^src\/data\/gallery\.json$/,
+  /^src\/data\/images\.json$/,
   /^gallery\//,
   /^project_images\//,
   /^me\.jpg$/,
@@ -51,7 +51,8 @@ const substantive = [
   /^package(-lock)?\.json$/,
   /^next\.config\./,
   /^tsconfig\.json$/,
-  /^biome\.json$/,
+  /^postcss\.config\./,
+  /^content\//,
   /^\.github\/workflows\//,
 ];
 

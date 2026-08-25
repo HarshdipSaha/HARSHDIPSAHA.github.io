@@ -2,7 +2,7 @@
 
 Goal: take a non-trivial change from intent to closed record, with an approval gate and a rebuilt registry.
 
-Trivial changes (a typo, a one-line copy fix in `content.tsx`) skip this entirely: edit, type-check, done.
+Trivial changes (a typo, a one-line copy fix in `src/content/site.ts`) skip this entirely: edit, type-check, mark the PR `[trivial]`, done. ADR 0009 defines the boundary — deleting a file, adding a route or moving content is never trivial.
 
 ## Steps
 
@@ -13,7 +13,7 @@ Trivial changes (a typo, a one-line copy fix in `content.tsx`) skip this entirel
 3. **Create the folder.**
 
    ```
-   mkdir aidlc-docs/efforts/008-my-ref
+   mkdir aidlc-docs/efforts/014-my-ref
    ```
 
    Naming: `{NNN}-{ref}`, zero-padded to three digits, kebab-case ref.
@@ -21,11 +21,11 @@ Trivial changes (a typo, a one-line copy fix in `content.tsx`) skip this entirel
 4. **Write `effort-state.md` with status `planning`:**
 
    ```markdown
-   # Effort 008 — My Ref
+   # Effort 014 — My Ref
 
    | Field | Value |
    |-------|-------|
-   | Ref | 008-my-ref |
+   | Ref | 014-my-ref |
    | Status | planning |
    | Depth | standard |
    | Opened | YYYY-MM-DD |
@@ -65,11 +65,12 @@ Trivial changes (a typo, a one-line copy fix in `content.tsx`) skip this entirel
 8. **Verify.** Paste real output, not a claim:
 
    ```
-   npx tsc --noEmit -p tsconfig.json
+   npm run typecheck
    npm run build
+   npm run check:aidlc
    ```
 
-   Record both in the `## Verification` section, along with anything route-specific you checked.
+   Record them in the `## Verification` section, along with anything route-specific you checked (e.g. `out/projects/<slug>/index.html` exists).
 
 9. **Close.** Set `Status` to `complete`, fill `Closed`, fill `Commits` with the real SHAs and PR numbers, and fill `ADRs` — if the effort made an architectural decision, that decision belongs in `docs/adr/NNNN-*.md`, not in the effort file.
 
@@ -89,4 +90,5 @@ Terminal alternatives: `blocked`, `failed`, `abandoned`. A blocked effort keeps 
 
 - [../explanation/ai-dlc-in-this-repo.md](../explanation/ai-dlc-in-this-repo.md) — why this exists at all.
 - [../adr/0008-adopt-ai-dlc-and-docs-first-structure.md](../adr/0008-adopt-ai-dlc-and-docs-first-structure.md)
+- [../adr/0009-ci-enforced-aidlc-recording.md](../adr/0009-ci-enforced-aidlc-recording.md) — the CI gate and the `[trivial]` hatch.
 - `aidlc-docs/README.md`

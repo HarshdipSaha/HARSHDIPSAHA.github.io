@@ -23,7 +23,7 @@ What the structure buys, concretely:
 - A new contributor — human or agent — reads `aidlc-docs/inception/` and knows the system's shape without reading the source.
 - Every change carries its own justification, at the time it is made, when the reasoning is still in someone's head.
 - Approval is an explicit event with a record, not an implicit consequence of a merge.
-- `npx tsc --noEmit` and `npm run build` output is recorded per effort, so "it worked" is evidence rather than a claim.
+- `npm run typecheck` and `npm run build` output is recorded per effort, so "it worked" is evidence rather than a claim.
 
 ## The effort loop
 
@@ -60,6 +60,8 @@ Efforts 001–006 and ADRs 0001–0007 are **reconstructions**. They were backfi
 This distinction is worth stating plainly, because a reconstruction is weaker evidence than a record. It captures *what* changed accurately, since the diffs are unambiguous, but *why* is inference. Rejected alternatives are the biggest gap: a diff shows what was chosen and is silent on what was considered.
 
 They are still worth having. A reconstructed decision record with a known provenance is better than no record and better than folklore, because it is falsifiable — anyone who remembers otherwise can correct it, and the correction lands somewhere durable. It also establishes the shape the repo now expects, so effort 008 has a form to follow. The `Reconstructed: yes` flag is what keeps the two classes of record from being confused.
+
+The largest test of the process so far is the from-scratch rebuild of the site (ADR 0011, effort 013): the template-derived front end that ADRs 0001 and 0010 describe was deleted and replaced, and the record of *why* — and of what the rebuild deliberately kept (static export, content-as-code, the drop-zone pipeline, this lifecycle) — shipped in the same PR as the code. The superseded ADRs stay in `docs/adr/`, marked as such; that is what a decision log is for.
 
 ## Surfaced publicly
 

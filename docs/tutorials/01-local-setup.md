@@ -13,7 +13,7 @@ No prior knowledge of this repo is assumed.
 ## 1. Clone the repo
 
 ```
-git clone https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io.git
+git clone https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io.git
 cd HARSHDIPSAHA.github.io
 ```
 
@@ -23,7 +23,7 @@ cd HARSHDIPSAHA.github.io
 npm install
 ```
 
-This takes a couple of minutes the first time. It installs Next.js 16, React 19.2, TypeScript 5.8, `@once-ui-system/core`, MDX tooling and Biome.
+This takes a minute or two the first time. It installs Next.js 16, React 19.2, TypeScript 5.8, Tailwind CSS v4, Motion, Lenis, the MDX tooling, and — as dev dependencies — `sharp` (for the image build) and `playwright`.
 
 ## 3. Start the dev server
 
@@ -31,46 +31,46 @@ This takes a couple of minutes the first time. It installs Next.js 16, React 19.
 npm run dev
 ```
 
-Before `next dev` starts, npm automatically runs the `predev` script, which is three sync scripts in a row:
+Before `next dev` starts, npm automatically runs the `predev` script:
 
 ```
-node scripts/sync-me.mjs && node scripts/sync-gallery.mjs && node scripts/sync-project-images.mjs
+node scripts/build-images.mjs
 ```
 
-You will see their output scroll past first:
+You will see one line scroll past first:
 
 ```
-Synced me.jpg from root → public/images/me.jpg and og/home.jpg
-Synced 8 gallery images from gallery/ → public/images/gallery, wrote gallery.json
-Synced 18 project images from project_images/ → public/images/projects/
+images: 8 gallery, 19 projects, 37 encoded
 ```
 
-That is the image pipeline doing its job. `me.jpg`, `gallery/` and `project_images/` at the repo root are the *sources*; everything under `public/images/` is *generated* from them. You never hand-edit `public/images/`. See [../reference/build-scripts.md](../reference/build-scripts.md).
+That is the image pipeline doing its job. `me.jpg`, `gallery/` and `project_images/` at the repo root are the *sources*; everything under `public/img/` is *generated* from them by sharp — resized, converted to WebP, and listed with its dimensions in `src/data/images.json`. The first run encodes everything (`37 encoded`: 8 gallery images × 2 sizes, 19 project images, the portrait and the Open Graph card); afterwards a cache in `.cache/` makes it near-instant (`0 encoded`). You never hand-edit `public/img/` or `images.json`. See [../reference/build-scripts.md](../reference/build-scripts.md).
 
 ## 4. Open the site
 
 Go to `http://localhost:3000`.
 
-Four routes are live:
+Five routes are live, plus one page per project:
 
-- `/` — home, headline and featured badge
-- `/about` — intro, work experience, studies, tech stack, research interests
-- `/work` — the project index, newest first
-- `/gallery` — the 8 synced gallery images
+- `/` — home: the two-part hero, a brain you scrub through by scrolling, a passage that lights up word by word, three sticky cards, experience, six selected projects, a closing CTA
+- `/story` — the about page: portrait, intro, education, achievements, skills
+- `/projects` — all 18 projects, newest first
+- `/projects/<slug>` — one page per `.mdx` file in `content/projects/`
+- `/gallery` — the 8 built gallery images with a lightbox
+- `/process` — how this site is made (AI-DLC)
 
-There is a fifth route, `/blog`, which is **switched off**. Its posts still exist in `src/app/blog/posts/`, but `"/blog": false` in `src/resources/once-ui.config.ts` keeps it out of the nav. That toggle object is the on/off switch for every route.
+The nav links come from one array — `nav` in `src/content/site.ts`. The footer and the sitemap read the same array. That is the whole routing "configuration".
 
-Click a project card on `/work` to see its detail page. Each of those pages is one `.mdx` file in `src/app/work/projects/`.
+Scroll the home page. If your OS has "reduce motion" turned on, you will see static sections instead of the animations — that is deliberate, every animated component checks for it.
 
 ## 5. Type-check
 
 Stop the dev server (`Ctrl+C`) and run:
 
 ```
-npx tsc --noEmit -p tsconfig.json
+npm run typecheck
 ```
 
-No output means no type errors. Site copy in `src/resources/content.tsx` is typed, so a malformed entry fails here rather than in the browser.
+No output means no type errors. Site copy in `src/content/site.ts` is TypeScript, and the components destructure it, so removing a field a component needs fails here rather than in the browser.
 
 ## 6. Build
 
@@ -78,13 +78,15 @@ No output means no type errors. Site copy in `src/resources/content.tsx` is type
 npm run build
 ```
 
-`prebuild` re-runs the three sync scripts plus `node scripts/generate-static.mjs`, then `next build` produces a fully static site in `out/`. That folder is exactly what gets deployed to GitHub Pages — no server involved. See [../explanation/why-static-export.md](../explanation/why-static-export.md).
+`prebuild` re-runs the image build (instant, thanks to the cache), then `next build` produces a fully static site in `out/` — one folder per route, plus `sitemap.xml` and `robots.txt`. That folder is exactly what gets deployed to GitHub Pages; no server is involved. See [../explanation/why-static-export.md](../explanation/why-static-export.md).
+
+Optional: `npm start` serves `out/` locally so you can check the exported site rather than the dev server.
 
 ## What you have now
 
 - The site running locally on port 3000.
-- An understanding that images flow drop-zone → `public/images/` via sync scripts.
-- An understanding that routes are toggled in `once-ui.config.ts`.
+- An understanding that images flow drop-zone → `scripts/build-images.mjs` → `public/img/` + `src/data/images.json`.
+- An understanding that routes are a page file plus a `nav` entry in `site.ts`.
 - A clean type-check and a static build in `out/`.
 
 ## Next

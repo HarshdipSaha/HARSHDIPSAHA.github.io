@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://harshdipsaha.github.io/sitemap.xml

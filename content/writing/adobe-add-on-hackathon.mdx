@@ -1,0 +1,150 @@
+---
+title: "Building Loomis — Letting Adobe Express 'See' Your Design"
+publishedAt: "2026-01-17"
+summary: "How we designed and built a canvas-aware AI assistant add-on that understands your Adobe Express design and suggests relevant visuals in real time."
+image: ""
+tag: "AI Product Engineering"
+---
+
+**Demo:** [https://www.youtube.com/watch?v=IUtnioTxOO4](https://www.youtube.com/watch?v=IUtnioTxOO4)
+
+**GitHub:** [https://github.com/DevAggarwal03/Loomis-Adobe-Express-Add-on](https://github.com/DevAggarwal03/Loomis-Adobe-Express-Add-on)
+
+**Pitch Deck:** [https://drive.google.com/file/d/1-Yl3WOPzWZGF_6frg8W1lbCQZdmQiiqb/view?usp=sharing](https://drive.google.com/file/d/1-Yl3WOPzWZGF_6frg8W1lbCQZdmQiiqb/view?usp=sharing)
+
+This post documents our journey of building **Loomis**, an AI-powered Adobe Express add-on — what problem we were solving, how we approached it, what worked, what didn’t, and what we learned along the way.
+
+The goal was simple:
+Make design feel fluid by keeping inspiration inside the canvas.\_
+
+---
+
+## The Problem
+
+In modern design workflows, creativity is constantly interrupted.
+
+While working on presentations, social posts, or business documents, we kept seeing the same pattern:
+
+- Designers weren’t stuck on ideas — they were stuck on **finding the right assets**.
+- People kept jumping between:
+
+  - Unsplash
+  - Tenor
+  - Adobe Stock
+  - Pinterest
+
+- Every switch broke focus, slowed momentum, and made design feel fragmented.
+
+So even though tools like Adobe Express were powerful, the **experience of finding assets felt broken**.
+
+---
+
+## Design Goals
+
+Before writing code, we defined clear goals for Loomis:
+
+1. Keep everything **inside the Adobe Express canvas**
+2. Reduce manual searching for visuals
+3. Make AI suggestions **relevant, not random**
+4. Ensure the add-on felt **native, not like a third-party plugin**
+5. Ship a real, usable product — not just a demo
+
+These goals pushed us toward a vision-first, context-aware system rather than a simple keyword-based search tool.
+
+---
+
+## The Core Idea
+
+What if your design tool could **actually understand your canvas** and proactively suggest what it needs next?
+
+Instead of you thinking:
+
+> “What image should I add?”
+
+Loomis would think:
+
+> “This slide looks like a minimal tech pitch — maybe you need a subtle gradient background and a conceptual illustration.”
+
+That became the foundation of Loomis.
+
+---
+
+## What Loomis Does
+
+Loomis is an **AI-powered Adobe Express add-on** that works directly inside your canvas. It:
+
+- Scans your current design (or an uploaded image)
+- Understands the theme, style, and intent
+- Identifies what you already have — and what might be missing
+- Suggests relevant:
+
+  - Images
+  - Backgrounds
+  - Illustrations
+  - GIFs
+
+- Lets you insert any suggestion into your design **in one click**
+
+No tabs. No distractions. Just design.
+
+---
+
+## How We Built It
+
+We built Loomis as a **native Adobe Express add-on**, using:
+
+- **Lit + Spectrum Web Components** for a polished UI
+- **Adobe Express SDK** to read and modify the canvas
+- **Google Gemini Vision** for AI-powered design analysis
+- An **Asset Orchestrator** that:
+
+  - Fetches GIFs from **Tenor**
+  - Fetches images, backgrounds, and illustrations from **Unsplash**
+  - Handles attribution and Adobe constraints automatically
+
+This modular architecture let us iterate quickly while keeping the system reliable.
+
+---
+
+## The Hard Parts (and How We Solved Them)
+
+We didn’t just ship a demo — we shipped a **usable product**. Along the way, we tackled:
+
+- Making AI suggestions **consistent and structured** instead of vague
+- Ensuring GIFs met **Adobe’s animation requirements**
+- Balancing **speed vs. accuracy** in AI analysis
+- Designing a UI with:
+
+  - Proper loading states
+  - Graceful error handling
+  - Smooth pagination
+
+Each of these forced us to think beyond just “make it work” and toward “make it feel good.”
+
+---
+
+## What We’re Proud Of
+
+Loomis isn’t just a concept — it’s real. We:
+
+- Delivered a **fully working MVP inside Adobe Express**
+- Built **true canvas-aware AI analysis**
+- Enabled **genuine one-click asset insertion**
+- Created **explainable, segmented suggestions** (not random results)
+- Designed a UI that feels **native to Adobe Express**
+- Made the add-on easily deployable via a **private link**
+
+---
+
+## What We Learned
+
+Building Loomis taught us a lot:
+
+- AI works best when you give it **clear structure and constraints**
+- More options ≠ better creativity
+- **Smart filtering beats endless scrolling**
+- Shipping fast with quality matters more than chasing perfection
+
+---
+
+Loomis is our attempt to make design **faster, smarter, and more intuitive** — without leaving the canvas.

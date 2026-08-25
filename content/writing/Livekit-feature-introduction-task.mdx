@@ -1,0 +1,199 @@
+---
+title: "Voice Interruption Handling — My Journey"
+publishedAt: "2025-11-16"
+summary: "How I designed and built a robust interruption filter for LiveKit voice agents"
+image: ""
+tag: "Chatbot Feature Engineering"
+---
+
+# Voice Interruption Handling — My Journey
+
+This post documents my journey of building a **voice interruption handler** for LiveKit voice agents — what problem I was solving, how I approached it, what worked, what didn’t, and what I learned from the process.
+
+The goal was simple:  
+_Make voice agents feel more human by interrupting only when the user actually means to interrupt._
+
+---
+
+## The Problem
+
+In real conversations, people constantly make small sounds:
+
+- "uh"
+- "hmm"
+- "oh"
+- "mmm"
+- breathing noise
+- background fan or keyboard sounds
+
+But early versions of the agent treated **any detected speech as an interruption**. This caused:
+
+- False interruptions while the agent was talking
+- The agent stopping mid-sentence due to filler words
+- A jittery and unnatural conversational flow
+- Race conditions between VAD, STT, and agent speech state
+
+So even though the system was technically correct, the **user experience felt broken**.
+
+---
+
+## Design Goals
+
+Before writing code, I defined clear goals:
+
+1. Ignore fillers and meaningless noise
+2. Interrupt only on real user intent
+3. Avoid async race conditions between audio, STT, and agent state
+4. Keep the solution simple and debuggable
+
+This pushed me toward a **small rule-based classifier instead of a heavy ML solution**.
+
+---
+
+## The Core Idea
+
+Every transcript should be classified into one of three buckets:
+
+- `ignore` → filler or noise, do nothing
+- `speech` → real speech, but not an interrupt
+- `interrupt` → user wants the agent to stop
+
+This became the foundation of the `InterruptionFilter`.
+
+---
+
+## The InterruptionFilter
+
+I introduced a new module:
+
+```text
+livekit.agents.voice.interrupt_handler
+```
+
+Its responsibility is extremely focused:
+
+> Given a transcript and confidence score, decide whether it should be ignored, treated as speech, or treated as an interrupt.
+
+### What it does
+
+- Tokenizes the transcript
+- Checks for filler-only phrases
+- Applies confidence thresholds
+- Uses async locks to avoid race conditions
+
+This made the behavior predictable and stable.
+
+---
+
+## Handling Fillers
+
+I defined a list of filler tokens:
+
+```
+uh, umm, hmm, mhmm, mm, oh, ah, haan, han, uh-huh
+```
+
+Rules:
+
+- If the transcript contains **only filler tokens**, ignore it.
+- If the transcript contains **real words**, then:
+
+  - If confidence ≥ 0.6 → treat as speech/interrupt
+  - Else → ignore
+
+This simple logic eliminated most false positives.
+
+---
+
+## Integration into the Agent
+
+The filter was integrated into the `UserInputTranscribedEvent` pipeline.
+
+Key changes:
+
+- Removed STT-driven interruption logic
+- Allowed only **interim transcripts** to trigger interrupts (faster reaction)
+- Added a minimum word count to avoid single-word VAD glitches
+
+```python
+if outcome == "interrupt" and not ev.is_final:
+    await session.interrupt()
+```
+
+This ensures the agent stops **while the user is starting to speak**, not after they finish.
+
+---
+
+## Testing Strategy
+
+I tested the system in three ways:
+
+### 1. Unit Tests
+
+- Filler-only inputs → ignored
+- Mixed phrases → interrupt
+- Low confidence noise → ignored
+
+### 2. Live Testing
+
+Using an actual microphone in:
+
+- Quiet rooms
+- Noisy rooms
+- With laptop fans and AC running
+
+### 3. Edge Cases
+
+- "umm can you help" → interrupt
+- "oh" → ignore
+- Loud single word → ignored unless meaningful
+
+All tests passed and behavior matched expectations.
+
+---
+
+## Challenges Faced
+
+### Async Race Conditions
+
+The hardest bugs weren’t logical — they were timing bugs.
+
+VAD, STT, and TTS all run asynchronously, so without locks and state checks, the agent could:
+
+- Interrupt twice
+- Resume too early
+- Or miss an interrupt entirely
+
+Adding async locking solved this.
+
+---
+
+## What I Learned
+
+### 1. Coordination matters more than intelligence
+
+In real-time systems, **ordering and timing** are more important than clever algorithms.
+
+### 2. False positives hurt trust
+
+If the agent interrupts incorrectly, users lose confidence quickly.
+
+Better to miss one interrupt than to interrupt wrongly.
+
+### 3. Simple systems are easier to reason about
+
+A small rule-based classifier was more reliable than a complex ML-based solution here.
+
+---
+
+## Final Thoughts
+
+This task taught me that good conversational systems are not about sounding smart — they’re about **feeling natural**.
+
+And natural conversations are less about reacting fast and more about **reacting correctly**.
+
+Sometimes the best thing a system can do is nothing at all.
+
+That’s what this interruption handler really is: a layer of restraint.
+
+---

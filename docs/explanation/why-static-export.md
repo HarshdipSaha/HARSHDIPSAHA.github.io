@@ -1,8 +1,8 @@
 # Why static export
 
-This site is built with `output: "export"` in `next.config.mjs` and served from GitHub Pages. `npm run build` produces a folder, `out/`, and the folder *is* the website. Nothing runs in production.
+This site is built with `output: "export"` in `next.config.ts` and served from GitHub Pages. `npm run build` produces a folder, `out/`, and the folder *is* the website. Nothing runs in production.
 
-See [../adr/0002-static-export-github-pages.md](../adr/0002-static-export-github-pages.md) for the decision record.
+See [../adr/0002-static-export-github-pages.md](../adr/0002-static-export-github-pages.md) for the decision record. The 2026 rebuild (ADR 0011) changed the whole front end and kept this decision untouched — nothing in the new design needed a server.
 
 ## What was on the table
 
@@ -18,17 +18,17 @@ The deeper argument is legibility. A static export has one failure mode: the bui
 
 The constraints are real and they are not negotiable at the margin:
 
-- **No API routes or route handlers.** There is no server to route to.
-- **No server actions.** Forms cannot post to the app.
-- **No SSR or ISR.** Every page is rendered once, at build time.
+- **No API routes or route handlers.** There is no server to route to. `sitemap.ts` and `robots.ts` are `force-static` and emitted at build.
+- **No server actions.** Forms cannot post to the app; the contact CTA is a `mailto:`.
+- **No SSR or ISR.** Every page is rendered once, at build time. `/projects/[slug]` enumerates its pages with `generateStaticParams`.
 - **No middleware, redirects or rewrites.** GitHub Pages serves files; there is no request-time hook.
-- **No `next/image` optimization.** `images.unoptimized: true` is mandatory. You ship correctly-sized files or you ship oversized ones — which is exactly why the drop-zone sync pipeline exists (see [../adr/0005-drop-zone-image-sync-pipeline.md](../adr/0005-drop-zone-image-sync-pipeline.md)).
+- **No `next/image` optimization.** `images.unoptimized: true` is mandatory. You ship correctly-sized files or you ship oversized ones — which is exactly why `scripts/build-images.mjs` exists: sharp resizes and encodes every drop-zone image to WebP at build time and records its dimensions in `src/data/images.json`, so every `<img>` has a real `width`/`height` (see [../adr/0005-drop-zone-image-sync-pipeline.md](../adr/0005-drop-zone-image-sync-pipeline.md)).
 - **No server-side search.** Any search would be a client-side index shipped as part of the bundle.
 - **Every content change is a rebuild and a deploy.** Fixing a typo means a commit, a CI run, and a Pages deployment. There is no "edit and save".
 
-Anything dynamic must live in one of two places: resolved at build time, or executed in the browser. The header clock is the illustration — `TimeDisplay` in `src/components/Header.tsx` is a client component with a `setInterval`, because the server that would otherwise have known the time does not exist.
+Anything dynamic must live in one of two places: resolved at build time, or executed in the browser. The home page is the illustration — the brain sequence (`BrainSequence.tsx`) decodes 160 committed WebP frames and scrubs them on a canvas from scroll position, the card stack and word-highlight passage are `useScroll` transforms, and Lenis smooths the wheel. All of it is client-side JavaScript over static files, and all of it degrades to plain markup under `prefers-reduced-motion`. The server that would otherwise have been involved does not exist.
 
-That constraint propagates upward into how content works. Content cannot be fetched at request time, so it must be present in the repo at build time — which is the reason site copy is a typed TSX module and projects are MDX files. See [content-as-code.md](content-as-code.md).
+That constraint propagates upward into how content works. Content cannot be fetched at request time, so it must be present in the repo at build time — which is the reason site copy is a TypeScript module and projects are MDX files. See [content-as-code.md](content-as-code.md).
 
 ## When you would outgrow it
 

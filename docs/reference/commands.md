@@ -6,33 +6,28 @@ Defined in `package.json`. `predev` and `prebuild` are npm lifecycle hooks — n
 
 | Command | What it does | When to use |
 | --- | --- | --- |
-| `npm run dev` | `next dev` (Turbopack) on `http://localhost:3000` | Local development |
-| `npm run predev` | `node scripts/sync-me.mjs && node scripts/sync-gallery.mjs && node scripts/sync-project-images.mjs` | Runs automatically before `dev`; rarely invoked directly |
+| `npm run dev` | `next dev` on `http://localhost:3000` | Local development |
+| `npm run predev` | `node scripts/build-images.mjs` | Runs automatically before `dev`; rarely invoked directly |
 | `npm run build` | `next build` → static site in `out/` | Before shipping; run in CI |
-| `npm run prebuild` | `node scripts/sync-me.mjs && node scripts/sync-gallery.mjs && node scripts/sync-project-images.mjs && node scripts/generate-static.mjs` | Runs automatically before `build` |
-| `npm run export` | `next export` | Legacy; `output: "export"` in `next.config.mjs` already exports during `build` |
-| `npm run lint` | `next lint` | Linting |
-| `npm run biome-write` | `npx @biomejs/biome format --write .` | Format touched files before committing |
-| `npm start` | `next start` | Not used for this site — there is no server runtime in production |
+| `npm run prebuild` | `node scripts/build-images.mjs` | Runs automatically before `build` |
+| `npm run typecheck` | `tsc --noEmit -p tsconfig.json` | Before claiming any change is done. Clean output = pass |
+| `npm run images` | `node scripts/build-images.mjs` | After adding a gallery/project image or replacing `me.jpg`, without restarting dev |
+| `npm run check:aidlc` | `node scripts/check-aidlc-sync.mjs` | Before opening a PR — the same gate CI runs |
+| `npm start` | `npx serve out` | Serve the exported site locally after `npm run build`; not used in production (GitHub Pages serves `out/`) |
 
-## Type-check
+There is no lint or format script.
 
-| Command | What it does | When to use |
-| --- | --- | --- |
-| `npx tsc --noEmit -p tsconfig.json` | Type-checks the whole project, emits nothing | Before claiming any change is done. Clean output = pass |
-
-## Sync scripts standalone
+## Other tools
 
 | Command | What it does | When to use |
 | --- | --- | --- |
-| `node scripts/sync-me.mjs` | `me.jpg` → `public/images/me.jpg`, `public/images/og/home.jpg` | After replacing the avatar |
-| `node scripts/sync-gallery.mjs` | `gallery/` → `public/images/gallery/` + `src/data/gallery.json` | After adding a gallery image, without restarting dev |
-| `node scripts/sync-project-images.mjs` | `project_images/` → `public/images/projects/` | After adding a project image, without restarting dev |
-| `node scripts/generate-static.mjs` | Writes `public/sitemap.xml` and `public/robots.txt` | Rarely; `prebuild` covers it |
+| `python scripts/render-brain-frames.py <template-dir>` | Regenerates `public/brain/**` from the ICBM 152 template | Almost never; output is committed. See [build-scripts.md](build-scripts.md) |
 
 Details in [build-scripts.md](build-scripts.md).
 
-## CI pipeline
+## CI pipelines
+
+### `deploy.yml`
 
 `.github/workflows/deploy.yml`. Triggers: push to `main`, or manual `workflow_dispatch`. Two jobs, `build` then `deploy`, on `ubuntu-latest`.
 
@@ -41,18 +36,23 @@ Details in [build-scripts.md](build-scripts.md).
 | Checkout | `actions/checkout@v4` | |
 | Setup Node.js | `actions/setup-node@v4` | `node-version: "20"` |
 | Install dependencies | `npm install` | Not `npm ci` |
-| Build | `npm run build` | Triggers `prebuild`; produces `out/` |
+| Build | `npm run build` | Triggers `prebuild` (image build); produces `out/` |
 | Setup Pages | `actions/configure-pages@v4` | |
 | Upload artifact | `actions/upload-pages-artifact@v3` | `path: out` |
 | Deploy | `actions/deploy-pages@v4` | `deploy` job, environment `github-pages` |
 
 Permissions: `contents: read`, `pages: write`, `id-token: write`. Concurrency group `pages`, `cancel-in-progress: false`.
 
+### `aidlc-check.yml`
+
+`.github/workflows/aidlc-check.yml`. Trigger: `pull_request` to `main`. One job: checkout with `fetch-depth: 0`, Node 20, `node scripts/check-aidlc-sync.mjs` with `BASE_REF=origin/<base>` and `PR_TITLE` in the environment. Fails the PR if substantive paths changed without an `aidlc-docs/` change and the title lacks `[trivial]`.
+
 ## Definition of done
 
 ```
-npx tsc --noEmit -p tsconfig.json     # clean, no output
-npm run build                          # exits 0, out/ contains the affected route
+npm run typecheck                 # clean, no output
+npm run build                     # exits 0, out/ contains the affected route
+npm run check:aidlc               # OK, or the PR carries [trivial]
 ```
 
-Both must be run and their real output seen. Do not claim done on inspection alone.
+All must be run and their real output seen. Do not claim done on inspection alone.

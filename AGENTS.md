@@ -8,14 +8,20 @@ Live: https://harshdipsaha.github.io and https://harshdipsaha.tech/
 ```bash
 npm install
 
-npm run dev            # predev runs the 3 sync scripts, then next dev
-npm run build          # prebuild runs sync scripts + generate-static.mjs, then next build -> out/
-npm run lint           # next lint
-npm run biome-write    # npx @biomejs/biome format --write .
-npx tsc --noEmit -p tsconfig.json   # type-check (run this before claiming done)
+npm run dev            # predev runs scripts/build-images.mjs, then next dev on :3000
+npm run build          # prebuild runs scripts/build-images.mjs, then next build -> out/
+npm run typecheck      # tsc --noEmit -p tsconfig.json (run this before claiming done)
+npm run images         # rebuild public/img/ + src/data/images.json without starting dev
+npm run check:aidlc    # node scripts/check-aidlc-sync.mjs — the CI gate, run locally
 ```
 
-Stack: Next.js 16.0.10 (Turbopack, `output: "export"`), React 19.2, TypeScript 5.8, MDX (@next/mdx + next-mdx-remote), Once UI (@once-ui-system/core), Sass, Biome, ESLint 9.
+There is no lint or format script. Nothing else is wired up.
+
+Stack: Next.js 16.3 (App Router, `output: "export"`), React 19.2, TypeScript 5.8, Tailwind CSS v4
+(`@tailwindcss/postcss`; tokens in `@theme` inside `src/app/globals.css`), Motion 13 (`motion/react`),
+Lenis (`lenis/react`), `next-mdx-remote/rsc` + `remark-gfm`, `gray-matter`, `clsx`. Dev-only: `sharp`
+(build-time images), `playwright` (screenshots). Fonts: Instrument Serif (italic display) + Commissioner
+via `next/font/google` in `src/app/layout.tsx`. No Once UI, no Sass, no Biome, no ESLint config.
 
 ## Architecture constraints (static export)
 
@@ -24,26 +30,35 @@ Stack: Next.js 16.0.10 (Turbopack, `output: "export"`), React 19.2, TypeScript 5
 | `output: "export"` | No server runtime at all |
 | No API routes / route handlers | Fetch client-side or bake data at build time |
 | No server actions, no SSR/ISR | Everything is prerendered into `out/` |
-| `images.unoptimized: true` | No `next/image` optimization; ship correctly-sized files |
+| `images.unoptimized: true` | No `next/image` optimization; `scripts/build-images.mjs` ships correctly-sized WebP |
 | GitHub Pages host | Static files only; no redirects/rewrites middleware |
+| Motion 13 scroll timelines | Every `useTransform` input range driven by `useScroll` must stay within `[0, 1]` — it throws otherwise |
 
 CI: `.github/workflows/deploy.yml` — Node 20, `npm install`, `npm run build`, uploads `out/`, deploys to Pages on push to `main`.
 
 ## Conventions
 
-**Content is code.** All site copy lives in `src/resources/content.tsx` (person, social, home, about, blog, work, gallery), typed against `src/types/content.types.ts`. Edit content there — not inside components.
+**Content is code.** Every word that is not a project case study lives in `src/content/site.ts`
+(exports: `person`, `nav`, `hero`, `sequence`, `passage`, `threads`, `experience`, `selectedProjects`,
+`closing`, `story`, `publication`, `footer`, `process`). Components render it; they do not invent copy.
+Project case studies are `content/projects/*.mdx`. `content/writing/*.mdx` holds three old blog posts
+that are **not rendered anywhere** — content only.
 
-**Images are synced, never hand-copied.** Drop files in the drop-zones; scripts publish them:
+**Images are built, never hand-copied.** Drop files in the drop-zones; `scripts/build-images.mjs`
+(sharp, runs on `predev`/`prebuild`, cached in `.cache/`) publishes them:
 
-| Drop-zone | Script | Destination |
+| Drop-zone | Destination | Manifest key |
 |---|---|---|
-| `me.jpg` (root) | `scripts/sync-me.mjs` | `public/images/me.jpg`, `public/images/og/home.jpg` |
-| `gallery/` | `scripts/sync-gallery.mjs` | `public/images/gallery/` + `src/data/gallery.json` |
-| `project_images/` | `scripts/sync-project-images.mjs` | `public/images/projects/` via `FILE_MAP` |
+| `me.jpg` (root) | `public/img/me.webp`, `public/img/og.jpg` | `me` |
+| `gallery/*.jpeg` | `public/img/gallery/NN.webp` + `NN-s.webp` thumbs | `gallery[]` |
+| `project_images/<source name>` | `public/img/projects/<slug>.webp` via `PROJECT_MAP` | `projects[slug]` |
 
-`scripts/sync-project-images.mjs` has an explicit `FILE_MAP` at the top mapping `"source name.png" -> "kebab-dest.png"`. Add an entry when you add a project image (unmapped files fall through to an auto kebab-case rename).
+The manifest is `src/data/images.json` (committed — `{ gallery: [{src, thumb, w, h}], projects: {slug: {src, w, h}}, me: {src, w, h} }`),
+read through `src/lib/projects.ts` (`gallery`, `projectImages`, `portrait`). `PROJECT_MAP` at the top
+of the script maps `"source name.png" -> "slug"`; add an entry when you add a project image (unmapped
+files fall back to a kebab-case of the filename). `resume.pdf` at the root is copied to `public/resume.pdf` and committed directly.
 
-**Adding a project** = one MDX file in `src/app/work/projects/` + one image in `project_images/` + one `FILE_MAP` entry.
+**Adding a project** = one MDX file in `content/projects/` + one image in `project_images/` + one `PROJECT_MAP` entry.
 
 ```mdx
 ---
@@ -51,29 +66,47 @@ title: "Retinal Vessel Segmentation"
 publishedAt: "2026-08-01"
 summary: "U-Net variant benchmarked on DRIVE and STARE."
 images:
-  - "/images/projects/retinal-vessel-segmentation.png"
-link: "https://github.com/HarshdipSaha/..."
+  - "/img/projects/retinal-vessel-segmentation.webp"
+link: "https://github.com/HARSHDIPSAHA/..."
 ---
 
-Body copy in MDX.
+Body copy in MDX (GFM).
 ```
 
 ```js
-// scripts/sync-project-images.mjs
-const FILE_MAP = {
-  "Retinal Vessel Seg.png": "retinal-vessel-segmentation.png",
+// scripts/build-images.mjs
+const PROJECT_MAP = {
+  "Retinal Vessel Seg.png": "retinal-vessel-segmentation",
 };
 ```
 
-**Routes need two edits.** Toggle the path in the `routes` object of `src/resources/once-ui.config.ts` **and** add the nav link in `src/components/Header.tsx`. Both, or the page is unreachable. (`/blog` is currently toggled off.)
+The URL slug is the **lowercased MDX filename**; the image key is the basename of `images[0]` and must
+match a `PROJECT_MAP` value. They need not be the same string.
 
-**Theme/config** lives in `src/resources/once-ui.config.ts` (theme, routes, schema, fonts, baseURL); icons in `src/resources/icons.ts`; bespoke CSS in `src/resources/custom.css` (includes `.intro-cyan` / `.intro-amber` / `.intro-violet` / `.intro-emerald` / `.intro-coral` accent spans).
+**Routes need two edits.** Create `src/app/<route>/page.tsx` **and** add `{ label, href }` to the `nav`
+array in `src/content/site.ts`. `Nav.tsx`, `Footer.tsx` and `sitemap.ts` all read that one array; there is
+no route toggle. Current routes: `/`, `/story`, `/projects`, `/projects/[slug]`, `/gallery`, `/process`,
+404, `/sitemap.xml`, `/robots.txt`.
 
-**Design system.** The site runs the segmentation-overlay system recorded in ADR 0010. Two rules
-bind every UI change: `--scan-00..10` are the only tonal values (no ad-hoc greys, no literal hex),
-and `--mask` is spent only on a peer-reviewed or externally verifiable claim, never on decoration.
-The design skill that produced it is gitignored — reinstall with `npx impeccable install`, then
-`/impeccable critique` or `/impeccable audit` before shipping UI work.
+**Design tokens** live in the `@theme` block of `src/app/globals.css`: `--color-ink` (#171519, page
+background), `--color-ink-2/3`, `--color-paper` (#ebe5e1), `--color-tangerine` (#f49752 — the only
+accent, used for the primary pill CTA and small marks), plus `--color-sunny/seafoam/cerulean` for tiny
+marks only. Rule: every neutral is `paper` or white at an alpha (`text-paper/60`, `border-white/10`) —
+there is no grey ramp and no ad-hoc hex. Utility classes: `.display` (serif italic, -0.03em, lh 0.95),
+`.label` (13px caps, 0.2em tracking, 45% paper), `.glass`, `.hairline`, `.measure` (40rem), `.prose`,
+`.over-photo`. Shared primitives: `Pill`, `Label`, `Container`, `Arrow` in `src/components/ui.tsx`.
+
+**Motion.** Enter-on-view is `Reveal` / `Group` / `Item` (`src/components/motion/Reveal.tsx`,
+blur-diagonal default); per-word blur-in is `TextAnimate`; scroll-linked word highlight is `ScrollWords`.
+Every animated component checks `useReducedMotion()` and renders static markup when set; `SmoothScroll`
+(Lenis) disables itself on `prefers-reduced-motion`. Inline-block word spans must have their separating
+space **outside** the span. Keep `useScroll`-driven `useTransform` ranges inside `[0, 1]`.
+
+**Brain sequence.** `src/components/home/BrainSequence.tsx` scrubs 160 axial slices on a canvas. The
+frames (`public/brain/1080/NNN.webp`, `public/brain/640/NNN.webp`, `public/brain/manifest.json`, ~3.8 MB)
+**are committed** — regenerating them (`scripts/render-brain-frames.py`; nibabel, numpy, Pillow) needs a
+63 MB download of the ICBM 152 Nonlinear Symmetric 2009a T1 template. The template's licence requires its
+copyright notice, which the footer colophon (`footer.colophon` in `site.ts`) carries. Do not remove it.
 
 **Secrets.** Never commit real values. `.env.example` only.
 
@@ -81,12 +114,14 @@ The design skill that produced it is gitignored — reinstall with `npx impeccab
 
 | Path | Why |
 |---|---|
-| `public/images/**` | Generated by the sync scripts; overwritten every build |
-| `src/data/gallery.json` | Generated by `scripts/sync-gallery.mjs` |
+| `public/img/**` | Generated by `scripts/build-images.mjs`; gitignored, regenerated every build |
+| `.cache/` | Image pipeline cache; gitignored |
+| `src/data/images.json` | Generated manifest (committed so `tsc` works in a fresh clone) |
 | `out/` | Build output |
-| `.next/`, `node_modules/` | Tooling artifacts |
+| `.next/`, `node_modules/`, `tsconfig.tsbuildinfo` | Tooling artifacts |
+| `public/brain/**` | Committed render output of `scripts/render-brain-frames.py`; rerun the script, don't hand-edit |
 
-To change anything under those paths, change its source: the drop-zone, the script, or `content.tsx`.
+To change anything under those paths, change its source: the drop-zone, the script, or `site.ts`.
 
 ## Change lifecycle — applies to every AI tool, not just Claude
 
@@ -101,9 +136,10 @@ touches substantive paths (`src/`, `scripts/`, configs, workflows) without touch
    derived view; never hand-patch it).
 3. **Audit** — add this effort's gate rows to `aidlc-docs/audit.md`.
 4. **ADR** — *only if* the change makes an architectural or IA decision → `docs/adr/NNNN-*.md`
-   + a row in `docs/adr/README.md`.
+   + a row in `docs/adr/README.md`. The current design is ADR 0011 (rebuild on the thine.com model);
+   it supersedes ADR 0010.
 5. **Docs sync** — *only if* facts stated in `CONTEXT.md`, `README.md`, or `docs/` drifted
-   (route counts, IA table, pipeline diagram, glossary). Don't touch them otherwise.
+   (route list, IA table, pipeline diagram, glossary). Don't touch them otherwise.
 
 **Trivial escape hatch** (narrow, defined in ADR 0009): a typo or a one-line copy tweak that
 deletes nothing, adds no route, and changes no structure. Mark the PR title `[trivial]`.
@@ -112,12 +148,22 @@ Deleting a file, moving content between sections, or changing a link target is *
 
 ## Definition of done
 
-1. `npx tsc --noEmit -p tsconfig.json` — clean.
+1. `npm run typecheck` — clean.
 2. `npm run build` — succeeds and `out/` contains the affected route.
-3. `npm run biome-write` run on touched files.
-4. New/changed copy lives in `content.tsx` or an MDX file, not hardcoded in a component.
-5. New route: `routes` toggle **and** `Header.tsx` link both present.
-6. No edits under the boundaries table.
-7. **Change lifecycle complete** — effort record + registry + audit in the same PR; ADR and
-   CONTEXT.md/docs sync done *iff* needed (see above). `node scripts/check-aidlc-sync.mjs`
-   passes locally.
+3. New/changed copy lives in `src/content/site.ts` or a `content/projects/*.mdx` file, not hardcoded in a component.
+4. New route: `src/app/<route>/page.tsx` **and** a `nav` entry in `src/content/site.ts` both present.
+5. New project image: `PROJECT_MAP` entry present; `images[0]` basename matches it.
+6. No hand-edits under `public/img/`, `.cache/`, `src/data/images.json`, or `out/`.
+7. Animated components honour `useReducedMotion()`; `useScroll`-driven ranges stay within `[0, 1]`.
+8. **Change lifecycle complete** — effort record + registry + audit in the same PR; ADR and
+   CONTEXT.md/docs sync done *iff* needed (see above). `npm run check:aidlc` passes locally.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

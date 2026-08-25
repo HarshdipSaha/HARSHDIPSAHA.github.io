@@ -1,170 +1,72 @@
+import Link from "next/link";
+import { BrainSequence } from "@/components/home/BrainSequence";
+import { CardStack } from "@/components/home/CardStack";
+import { Closing } from "@/components/home/Closing";
+import { Experience } from "@/components/home/Experience";
+import { Hero } from "@/components/home/Hero";
 import { Reveal } from "@/components/motion/Reveal";
-import { ProbeText } from "@/components/motion/ProbeText";
-import { ScanReveal } from "@/components/motion/ScanReveal";
-import { Projects } from "@/components/work/Projects";
-import { about, baseURL, home, person, publications, work } from "@/resources";
-import { generateMeta } from "@/utils/meta";
-import { Column, Heading, Row, Schema, Text } from "@once-ui-system/core";
+import { ScrollWords } from "@/components/motion/ScrollWords";
+import { ProjectGrid } from "@/components/ProjectGrid";
+import { Arrow, Container, Label } from "@/components/ui";
+import { passage, selectedProjects, sequence, threads } from "@/content/site";
+import { gallery, getProjectsBySlugs, projectImages } from "@/lib/projects";
 
-export async function generateMetadata() {
-  return generateMeta({
-    title: home.title,
-    description: home.description,
-    baseURL: baseURL,
-    path: home.path,
-    image: home.image,
-  });
+function resolveImage(ref: string): string {
+  const [kind, key] = ref.split(":");
+  if (kind === "gallery") return gallery[Number(key) - 1]?.src ?? gallery[0].src;
+  return projectImages[key]?.src ?? gallery[0].src;
 }
 
 export default function Home() {
-  const lead = publications.items[0];
+  const selected = getProjectsBySlugs(selectedProjects.slugs);
+  const cards = threads.cards.map(({ image, ...c }) => ({ ...c, src: resolveImage(image) }));
 
   return (
-    <Column maxWidth="m" fillWidth gap="0" paddingY="12">
-      <Schema
-        as="webPage"
-        baseURL={baseURL}
-        path={home.path}
-        title={home.title}
-        description={home.description}
-        image={home.image}
-        author={{
-          name: person.name,
-          url: `${baseURL}${about.path}`,
-          image: `${baseURL}${person.avatar}`,
-        }}
-      />
+    <>
+      <Hero />
 
-      {/* ---- FIRST VIEWPORT ------------------------------------------------
-          The thesis: who, the verified result, the positioning, two actions.
-          Deliberately no project cards above the fold — that is the catalogue
-          homepage this design refuses.                                      */}
-      <Column
-        as="section"
-        fillWidth
-        gap="24"
-        paddingY="64"
-        s={{ paddingY: "32" }}
-        className="hero-enter"
-      >
-        {/* The name is already in the header and the lab is already in the
-            subline, so this shows the one part of `role` stated nowhere else. */}
-        <Text className="readout">{person.role.split("·").slice(-1)[0].trim()}</Text>
+      <BrainSequence stages={sequence.stages} eyebrow={sequence.eyebrow} />
 
-        <Heading
-          data-lcp
-          wrap="balance"
-          variant="display-strong-l"
-          className="hero-display"
-          style={{ maxWidth: "20ch" }}
-        >
-          {typeof home.headline === "string" ? (
-            <ScanReveal text={home.headline} />
-          ) : (
-            home.headline
-          )}
-        </Heading>
+      <section className="py-36 md:py-52">
+        <Container wide>
+          <ScrollWords
+            text={passage}
+            className="mx-auto max-w-[1180px] text-[2.1rem] font-medium leading-[1.12] tracking-[-0.02em] sm:text-[3rem] md:text-[3.9rem] lg:text-[4.9rem]"
+          />
+        </Container>
+      </section>
 
-
-        <Text
-          wrap="balance"
-          variant="heading-default-l"
-          onBackground="neutral-weak"
-          style={{ maxWidth: "56ch" }}
-        >
-          {home.subline}
-        </Text>
-
-        {home.actions && home.actions.length > 0 && (
-          <Row gap="24" wrap vertical="center" paddingTop="8">
-            {home.actions.map((action) => (
-              <a
-                key={action.href}
-                href={action.href}
-                {...(action.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                className="link-underline"
-              >
-                {action.label} <span aria-hidden="true">→</span>
-              </a>
-            ))}
-          </Row>
-        )}
-      </Column>
-
-      <hr className="rule-h" />
-
-      {/* ---- RESEARCH LEADS ------------------------------------------------ */}
-      {publications.display && lead && (
-        <Column as="section" fillWidth gap="16" paddingY="48" s={{ paddingY: "32" }}>
-          <Reveal index={0}>
-            <Text className="readout">{publications.title}</Text>
+      <section className="pb-8 pt-8 text-center">
+        <Container>
+          <Reveal variant="blur-up">
+            <Label>{threads.label}</Label>
+            <h2 className="mx-auto mt-6 max-w-[16ch] text-[clamp(2.4rem,6vw,4.6rem)] font-medium leading-[1.02] tracking-tight text-paper">{threads.title}</h2>
+            <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-paper/70">{threads.body}</p>
           </Reveal>
-          <Reveal index={1}>
-            <Column gap="12" className="probe-row">
-              <Heading as="h2" variant="heading-strong-xl" wrap="balance">
-                {lead.title}
-              </Heading>
-              <Row gap="12" wrap vertical="center">
-                <Text variant="body-default-m" onBackground="neutral-weak">
-                  {lead.venue}
-                </Text>
-                {lead.result && <span className="mask-plate">{lead.result}</span>}
-              </Row>
-              <Text
-                variant="body-default-m"
-                onBackground="neutral-weak"
-                style={{ maxWidth: "68ch", lineHeight: 1.7 }}
-              >
-                {lead.summaryText ? <ProbeText text={lead.summaryText} /> : lead.summary}
-              </Text>
-              <Row gap="24" wrap paddingTop="4">
-                {lead.links.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      color: "var(--scan-09)",
-                      textDecoration: "none",
-                      borderBottom: "1px solid var(--scan-05)",
-                      paddingBottom: "2px",
-                      fontSize: "0.9375rem",
-                    }}
-                  >
-                    {link.label} <span aria-hidden="true">→</span>
-                  </a>
-                ))}
-              </Row>
-            </Column>
+        </Container>
+      </section>
+
+      <CardStack cards={cards} />
+
+      <Experience />
+
+      <section className="pb-28 md:pb-40">
+        <Container>
+          <Reveal>
+            <div className="flex items-end justify-between gap-6">
+              <Label>{selectedProjects.label}</Label>
+              <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-paper/60 transition-colors hover:text-paper">
+                {selectedProjects.allLabel} <Arrow />
+              </Link>
+            </div>
           </Reveal>
-        </Column>
-      )}
+          <div className="mt-12">
+            <ProjectGrid projects={selected} />
+          </div>
+        </Container>
+      </section>
 
-      <hr className="rule-h" />
-
-      {/* ---- SELECTED WORK -------------------------------------------------
-          A selection, not the catalogue. /work owns the full index.        */}
-      <Column as="section" fillWidth gap="24" paddingY="48" s={{ paddingY: "32" }}>
-        <Reveal index={0}>
-          <Row fillWidth horizontal="between" vertical="center" gap="16" wrap>
-            <Text className="readout">Selected work</Text>
-            <a
-              href={work.path}
-              style={{
-                color: "var(--scan-08)",
-                textDecoration: "none",
-                fontSize: "0.875rem",
-              }}
-            >
-              All projects <span aria-hidden="true">→</span>
-            </a>
-          </Row>
-        </Reveal>
-        <Reveal index={1}>
-          <Projects stack range={[1, home.selectedWorkCount ?? 3]} />
-        </Reveal>
-      </Column>
-    </Column>
+      <Closing />
+    </>
   );
 }

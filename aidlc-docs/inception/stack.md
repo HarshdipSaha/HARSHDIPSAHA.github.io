@@ -1,5 +1,7 @@
 # Inception — Stack Baseline
 
+> **Historical.** This records the stack as it stood when AI-DLC was adopted (effort 007). The site was rebuilt from scratch in effort 013 — see [ADR 0011](../../docs/adr/0011-rebuild-from-scratch-on-thine-model.md) and `AGENTS.md` for the current stack (Next.js 16, Tailwind v4, Motion, Lenis). Kept unchanged so drift from the baseline stays provable.
+
 ## Runtime & framework
 
 | Package | Version | Role |

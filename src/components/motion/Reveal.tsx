@@ -1,113 +1,78 @@
 "use client";
 
-import type React from "react";
-import { useEffect, useRef } from "react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
+import type { ReactNode } from "react";
 
-interface RevealProps {
-  children: React.ReactNode;
-  /** Stagger index. Multiplied by --stagger, then capped (see MAX_STAGGER_STEPS). */
-  index?: number;
-  /** Explicit delay in ms. Overrides `index` when set. */
-  delayMs?: number;
-  as?: "div" | "section" | "li" | "article";
+const EASE = [0.33, 1, 0.68, 1] as const;
+
+/**
+ * Enter-on-view. Blur clears while the block slides in from up-left; the
+ * default everywhere on the site so that every section arrives the same way.
+ */
+const container = (stagger: number, delay: number): Variants => ({
+  hidden: {},
+  show: { transition: { staggerChildren: stagger, delayChildren: delay } },
+});
+
+const VARIANTS: Record<string, Variants> = {
+  "blur-diagonal": {
+    hidden: { opacity: 0, filter: "blur(6px)", x: -16, y: -16 },
+    show: { opacity: 1, filter: "blur(0px)", x: 0, y: 0, transition: { duration: 0.7, ease: EASE } },
+  },
+  "blur-up": {
+    hidden: { opacity: 0, filter: "blur(8px)", y: 24 },
+    show: { opacity: 1, filter: "blur(0px)", y: 0, transition: { duration: 0.8, ease: EASE } },
+  },
+  fade: {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.9, ease: EASE } },
+  },
+};
+
+type Props = {
+  children: ReactNode;
   className?: string;
-  style?: React.CSSProperties;
-}
+  variant?: keyof typeof VARIANTS;
+  delay?: number;
+  stagger?: number;
+  amount?: number;
+  once?: boolean;
+};
 
-/** 80ms per step — the top of the 30-80ms band that still reads as a sequence. */
-const STAGGER_MS = 80;
-
-/**
- * Nothing waits more than 4 steps (320ms). Stagger is decorative, and an
- * element sitting at opacity 0 is an element whose links cannot be clicked.
- */
-const MAX_STAGGER_STEPS = 4;
-
-/**
- * One IntersectionObserver for the whole page, not one per element.
- *
- * Previously each <Reveal> allocated its own observer plus a React state cell,
- * so a page with 30 reveals did 30 re-renders on the scroll path. This writes
- * the attribute straight onto the node, so revealing costs no React work.
- */
-let sharedObserver: IntersectionObserver | null = null;
-
-function getObserver(): IntersectionObserver | null {
-  if (typeof IntersectionObserver === "undefined") return null;
-  if (!sharedObserver) {
-    sharedObserver = new IntersectionObserver(
-      (entries, observer) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).dataset.reveal = "in";
-            observer.unobserve(entry.target);
-          }
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
-    );
-  }
-  return sharedObserver;
-}
-
-/**
- * The scroll entrance for BELOW-the-fold content.
- *
- * Above-the-fold content must not use this: it starts hidden and only reveals
- * after hydration, which delays Largest Contentful Paint (Chrome does not
- * treat an `opacity: 0` element as an LCP candidate). The hero uses the CSS
- * `.hero-enter` / `@starting-style` path instead, which animates on first
- * paint with no JS at all.
- *
- * Content is visible by default — the hidden start state is scoped to
- * `[data-motion="on"]`, which an inline script sets only when JS is running
- * and motion is not reduced.
- */
-export function Reveal({
-  children,
-  index = 0,
-  delayMs,
-  as = "div",
-  className,
-  style,
-}: RevealProps) {
-  const ref = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    const observer = getObserver();
-
-    // Reduced motion, no observer support, or already on screen: show it now.
-    if (reduced || !observer) {
-      node.dataset.reveal = "in";
-      return;
-    }
-    const rect = node.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      node.dataset.reveal = "in";
-      return;
-    }
-
-    observer.observe(node);
-    return () => observer.unobserve(node);
-  }, []);
-
-  const Tag = as as React.ElementType;
-  const delay = delayMs ?? Math.min(index, MAX_STAGGER_STEPS) * STAGGER_MS;
-
+export function Reveal({ children, className, variant = "blur-diagonal", delay = 0, stagger = 0.08, amount = 0.15, once = true }: Props) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
   return (
-    <Tag
-      ref={ref}
-      data-reveal=""
+    <motion.div
       className={className}
-      style={{ ...style, ["--reveal-delay" as string]: `${delay}ms` }}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once, amount }}
+      variants={container(stagger, delay)}
     >
-      {children}
-    </Tag>
+      <motion.div variants={VARIANTS[variant]} className="contents">
+        {children}
+      </motion.div>
+    </motion.div>
   );
 }
 
-export default Reveal;
+/** Direct children of a <Reveal> that should cascade instead of arriving together. */
+export function Item({ children, className, variant = "blur-diagonal" }: { children: ReactNode; className?: string; variant?: keyof typeof VARIANTS }) {
+  return (
+    <motion.div variants={VARIANTS[variant]} className={className}>
+      {children}
+    </motion.div>
+  );
+}
+
+/** A group whose Items stagger. Unlike <Reveal>, the group itself doesn't animate. */
+export function Group({ children, className, delay = 0, stagger = 0.1, amount = 0.15 }: Omit<Props, "variant">) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+  return (
+    <motion.div className={className} initial="hidden" whileInView="show" viewport={{ once: true, amount }} variants={container(stagger, delay)}>
+      {children}
+    </motion.div>
+  );
+}
