@@ -4,7 +4,16 @@ import { hero } from "@/content/site";
 export function Hero() {
   return (
     <section className="relative flex min-h-[100svh] flex-col px-6 pb-16 pt-32 md:px-12 md:pb-28">
-      <div className="flex flex-1 items-center">
+      <div className="flex flex-1 flex-col justify-center">
+        {/* The one plain line: what he does, for whom, where. */}
+        <TextAnimate
+          as="p"
+          text={hero.kicker}
+          trigger="mount"
+          duration={0.6}
+          delay={0}
+          className="label mb-8 !text-[0.75rem] md:mb-12"
+        />
         <h1 className="display grid w-full gap-y-[clamp(1.5rem,6vw,4rem)] text-[clamp(2.75rem,7.2vw,8.5rem)] text-paper md:grid-cols-2">
           <TextAnimate
             as="span"
@@ -25,7 +34,7 @@ export function Hero() {
         </h1>
       </div>
 
-      <div className="mx-auto w-full max-w-[36rem] text-center">
+      <div className="mx-auto w-full max-w-[40rem] text-center">
         <TextAnimate
           text={hero.subline}
           trigger="mount"

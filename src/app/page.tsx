@@ -25,7 +25,7 @@ export default function Home() {
     <>
       <Hero />
 
-      <BrainSequence stages={sequence.stages} eyebrow={sequence.eyebrow} />
+      <BrainSequence stages={sequence.stages} eyebrow={sequence.eyebrow} hint={sequence.hint} />
 
       <section className="py-36 md:py-52">
         <Container wide>
