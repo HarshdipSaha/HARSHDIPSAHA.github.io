@@ -494,9 +494,7 @@ export default function About() {
               )}
               {about.colophon.lines.map((line, i) => (
                 // Fixed, ordered prose lines — index is the honest key.
-                <p key={i} className={i === 0 ? "colophon-line" : undefined}>
-                  {line}
-                </p>
+                <p key={i}>{line}</p>
               ))}
             </footer>
           )}

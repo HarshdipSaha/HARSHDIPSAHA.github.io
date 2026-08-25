@@ -788,7 +788,9 @@ header a:active {
   padding-bottom: 3rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  /* Must exceed the within-paragraph line spacing, or wrapped lines sit
+     further apart than separate paragraphs and the hierarchy reads inverted. */
+  gap: 1.35rem;
   align-items: flex-start;
 }
 
@@ -803,6 +805,7 @@ header a:active {
 
 .colophon p {
   margin: 0;
+  max-width: var(--measure, 34rem);
   font-size: 0.9375rem;
   line-height: 1.6;
   color: var(--scan-07);
@@ -814,6 +817,6 @@ header a:active {
   letter-spacing: 0.02em;
 }
 
-.colophon .colophon-line {
-  color: var(--scan-09);
+.colophon .colophon-ipa {
+  margin-bottom: 0.25rem;
 }
