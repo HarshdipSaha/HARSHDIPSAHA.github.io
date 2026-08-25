@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import { useEffect, useRef, useState } from "react";
 import { Pill } from "@/components/ui";
 
@@ -37,7 +38,7 @@ export function BrainSequence({ stages, eyebrow }: { stages: Stage[]; eyebrow: s
   const frames = useRef<(HTMLImageElement | null)[]>(Array(FRAMES).fill(null));
   const current = useRef(0);
   const [loaded, setLoaded] = useState(0);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const dim = useTransform(scrollYProgress, [0, 0.12, 0.7, 1], [0, 0.3, 0.55, 0.6]);

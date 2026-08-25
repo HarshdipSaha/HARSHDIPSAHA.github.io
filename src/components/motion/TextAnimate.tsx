@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import { Fragment, type ElementType } from "react";
 
 const EASE = [0.33, 1, 0.68, 1] as const;
@@ -26,7 +27,7 @@ type Props = {
  * animated fragments are hidden from them.
  */
 export function TextAnimate({ text, as: Tag = "p", className, duration = 0.9, delay = 0, trigger = "view" }: Props) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const words = text.split(" ");
   if (reduced) return <Tag className={className}>{text}</Tag>;
 
@@ -46,7 +47,7 @@ export function TextAnimate({ text, as: Tag = "p", className, duration = 0.9, de
       >
         {words.map((w, i) => (
           <Fragment key={i}>
-            <motion.span className="inline-block will-change-[transform,filter,opacity]" variants={item}>
+            <motion.span className="inline-block" variants={item}>
               {w}
             </motion.span>{" "}
           </Fragment>

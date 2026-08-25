@@ -17,17 +17,18 @@
 | 011 | 011-segmentation-overlay-redesign | Segmentation-overlay redesign | complete | 2026-08-25 | 2026-08-25 | 0010 | PR "Segmentation-overlay redesign" |
 | 012 | 012-responsive-image-pipeline | Build-time responsive image pipeline | complete | 2026-08-25 | 2026-08-25 | none | PR "Build-time responsive image pipeline" |
 | 013 | 013-rebuild-on-thine-model | Rebuild from scratch on the thine.com model | complete | 2026-08-25 | 2026-08-25 | 0011 | branch `extremechange` |
+| 014 | 014-scroll-performance | Scroll performance, passage copy, hydration-safe reduced motion | complete | 2026-08-25 | 2026-08-25 | none | branch `extremechange` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 13 |
+| complete | 14 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **13** |
+| **Total** | **14** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -36,4 +37,4 @@ All of efforts 001-006 and 008 were retrofitted into effort format after the fac
 
 Effort 007 was recorded as it happened (planning gate logged live) but its registry/audit entries fell out of sync with the merged PR until effort 009's cleanup. Effort 009 was the first recorded start-to-finish with no drift; effort 010 makes that mandatory — the `aidlc-check` CI gate (ADR 0009) now fails any PR whose substantive diff ships without an `aidlc-docs/` update.
 
-Next effort number: 014
+Next effort number: 015

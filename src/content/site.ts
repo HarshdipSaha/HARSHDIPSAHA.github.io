@@ -60,7 +60,7 @@ export const sequence = {
 
 /** Words light up as they scroll through the viewport. `*word*` is accented. */
 export const passage =
-  "A radiologist decides in minutes whether a tumour is progressing. A model has to *earn* that call. I build the pipelines that make its answer checkable — the segmentation, the 3D CNNs, and the plumbing nobody sees — and then I ship the systems around them.";
+  "A paper is a piece of maths that other people will build on without re-deriving it — every product that uses it borrows it on trust. That's why I take research seriously. And it's why I ship what I build: because an idea only becomes *real* when it survives being used.";
 
 export const threads = {
   label: "Three threads",

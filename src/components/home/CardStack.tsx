@@ -1,7 +1,8 @@
 "use client";
 
-import { cubicBezier, motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { useRef } from "react";
+import { cubicBezier, motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
+import { useEffect, useRef } from "react";
 import { Pill } from "@/components/ui";
 
 export type StackCard = {
@@ -18,8 +19,26 @@ export type StackCard = {
  */
 export function CardStack({ cards }: { cards: StackCard[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+
+  // Decode the three photos one viewport before the stack arrives. Left to the
+  // browser, a 1200x1600 image decodes at first paint, which lands as a 50-80ms
+  // frame right as the first card scrolls in.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        for (const img of el.querySelectorAll("img")) img.decode().catch(() => {});
+      },
+      { rootMargin: "100% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   if (reduced) {
     return (
@@ -47,7 +66,7 @@ function StickyCard({ card, index, total, progress }: { card: StackCard; index: 
   const scale = useTransform(progress, [index / total, 1], [1, target], { ease });
   return (
     <div className="sticky top-0 flex h-screen items-center justify-center px-4 md:px-8" style={{ top: `${index * 28}px` }}>
-      <motion.div style={{ scale }} className="w-full max-w-[1240px] origin-top">
+      <motion.div style={{ scale }} className="w-full max-w-[1240px] origin-top will-change-transform">
         <Card card={card} />
       </motion.div>
     </div>
@@ -57,7 +76,7 @@ function StickyCard({ card, index, total, progress }: { card: StackCard; index: 
 function Card({ card }: { card: StackCard }) {
   return (
     <article className="relative h-[76vh] max-h-[820px] w-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-ink-2">
-      <img src={card.src} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
+      <img src={card.src} alt="" className="absolute inset-0 h-full w-full object-cover" decoding="async" />
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
       <div className="absolute inset-x-0 bottom-0 p-7 md:p-12">
         <h3 className="over-photo text-[2.6rem] font-semibold leading-none tracking-tight text-white md:text-[3.25rem]">{card.title}</h3>

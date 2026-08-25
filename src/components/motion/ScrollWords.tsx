@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import { useRef } from "react";
 import clsx from "clsx";
 
@@ -11,7 +12,7 @@ import clsx from "clsx";
  */
 export function ScrollWords({ text, className }: { text: string; className?: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.75", "end 0.45"] });
   const words = text.split(" ");
 
@@ -28,11 +29,19 @@ export function ScrollWords({ text, className }: { text: string; className?: str
   );
 }
 
+/**
+ * The ghost is a ::before pseudo-element drawing `data-word`, so it sizes the
+ * box but is not a text node: copy/paste and assistive tech see the lit copy
+ * only, once. (The <p>'s aria-label carries the clean string anyway.)
+ */
 function Word({ word, accent, progress, range, reduced }: { word: string; accent: boolean; progress: MotionValue<number>; range: [number, number]; reduced: boolean }) {
   const opacity = useTransform(progress, range, [0, 1]);
   return (
-    <span aria-hidden="true" className={clsx("relative inline-block", accent && "text-tangerine")}>
-      <span className="opacity-20">{word}</span>
+    <span
+      aria-hidden="true"
+      data-word={word}
+      className={clsx("relative inline-block before:opacity-20 before:content-[attr(data-word)]", accent && "text-tangerine")}
+    >
       <motion.span className="absolute inset-0" style={{ opacity: reduced ? 1 : opacity }}>
         {word}
       </motion.span>

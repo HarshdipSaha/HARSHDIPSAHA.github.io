@@ -65,11 +65,14 @@ body {
   color: color-mix(in oklab, var(--color-paper) 45%, transparent);
 }
 
+/* Unprefixed last: the CSS minifier (Lightning CSS) keeps only the last of a
+   prefixed/unprefixed pair, and it used to keep -webkit-, which Chromium and
+   Firefox ignore. */
 .glass {
   background: color-mix(in oklab, white 8%, transparent);
   border: 1px solid color-mix(in oklab, white 14%, transparent);
-  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
 }
 
 .hairline {
@@ -80,13 +83,13 @@ body {
   max-width: 40rem;
 }
 
-/* Titles set over photographs, on the sticky cards. */
+/* Titles set over photographs, on the sticky cards. Two layers, not four:
+   text-shadow blur is rasterised per layer and per radius, and these cards
+   re-raster whenever they scale. */
 .over-photo {
   text-shadow:
-    0 0 40px rgb(0 0 0 / 0.9),
-    0 0 80px rgb(0 0 0 / 0.7),
-    0 4px 20px rgb(0 0 0 / 0.8),
-    0 8px 40px rgb(0 0 0 / 0.7);
+    0 2px 12px rgb(0 0 0 / 0.9),
+    0 6px 40px rgb(0 0 0 / 0.75);
 }
 
 /* Long-form copy: case studies, the story page, process notes. */

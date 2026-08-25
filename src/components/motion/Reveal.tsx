@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import type { ReactNode } from "react";
 
 const EASE = [0.33, 1, 0.68, 1] as const;
@@ -40,7 +41,7 @@ type Props = {
 };
 
 export function Reveal({ children, className, variant = "blur-diagonal", delay = 0, stagger = 0.08, amount = 0.15, once = true }: Props) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   if (reduced) return <div className={className}>{children}</div>;
   return (
     <motion.div
@@ -68,7 +69,7 @@ export function Item({ children, className, variant = "blur-diagonal" }: { child
 
 /** A group whose Items stagger. Unlike <Reveal>, the group itself doesn't animate. */
 export function Group({ children, className, delay = 0, stagger = 0.1, amount = 0.15 }: Omit<Props, "variant">) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   if (reduced) return <div className={className}>{children}</div>;
   return (
     <motion.div className={className} initial="hidden" whileInView="show" viewport={{ once: true, amount }} variants={container(stagger, delay)}>
