@@ -46,9 +46,9 @@ export default function Home() {
         s={{ paddingY: "32" }}
         className="hero-enter"
       >
-        <Text className="readout">
-          {person.name} — {person.role.split("·")[0].trim()}
-        </Text>
+        {/* The name is already in the header and the lab is already in the
+            subline, so this shows the one part of `role` stated nowhere else. */}
+        <Text className="readout">{person.role.split("·").slice(-1)[0].trim()}</Text>
 
         <Heading
           data-lcp
@@ -64,19 +64,6 @@ export default function Home() {
           )}
         </Heading>
 
-        {home.plate && (
-          <a
-            href={home.plate.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mask-plate"
-            aria-label={`${home.plate.metric}, ${home.plate.context} — opens the published paper`}
-          >
-            <span>{home.plate.metric}</span>
-            <span aria-hidden="true">·</span>
-            <span>{home.plate.context}</span>
-          </a>
-        )}
 
         <Text
           wrap="balance"

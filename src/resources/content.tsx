@@ -83,12 +83,9 @@ const home: Home = {
       scientific computing — and I build and ship the systems around the research.
     </>
   ),
-  // The one verified claim that leads the page. Spends the mask accent.
-  plate: {
-    metric: "World Rank 3",
-    context: "BraTS-PRO 2025 · MICCAI oral",
-    href: "https://link.springer.com/10.1007/978-3-032-16370-7_23",
-  },
+  // NOTE: there is deliberately no hero `plate`. The World Rank 3 result is
+  // stated once, by the publication entry below the fold. Repeating it in the
+  // first viewport made the same claim appear twice on one screen.
   actions: [
     {
       label: "Read the paper",
@@ -315,6 +312,25 @@ const about: About = {
       "Alignment",
     ],
   },
+  colophon: {
+    display: true,
+    pronunciation: "/ˈhəːʃdiːp ˈsaːɦa/",
+    lines: [
+      <>Set in Archivo and JetBrains Mono.</>,
+      <>
+        Built with Next.js and statically exported to GitHub Pages — no server, no database,
+        no tracking beyond analytics.
+      </>,
+      <>
+        Every change to this site is recorded as a numbered effort with a written rationale,
+        and every structural decision as an ADR. The whole record is public at{" "}
+        <a href="/process" className="link-underline">
+          /process
+        </a>
+        .
+      </>,
+    ],
+  },
   achievements: {
     display: true,
     title: "Achievements",
@@ -535,13 +551,15 @@ const publications: Publications = {
       result: "World Rank 3",
       year: "2025",
       image: "/images/publications/miccai.jpg",
+      // The venue line and the result plate above already state MICCAI, the oral
+      // presentation and the rank. The summary describes the METHOD and nothing
+      // that has already been said.
       summary: (
         <>
-          Our team placed <span className="ink-strong">third worldwide</span> in the BraTS
-          Lighthouse 2025 Tumor Progression Challenge, with the paper accepted for{" "}
-          <span className="ink-strong">oral presentation at MICCAI 2025</span>. We proposed an
-          end-to-end pipeline for longitudinal glioblastoma response classification under RANO
-          criteria, combining Swin UNETR segmentation with 3D CNNs and GAN-based class balancing.
+          An end-to-end pipeline for longitudinal glioblastoma response classification under{" "}
+          <span className="ink-strong">RANO criteria</span> — Swin UNETR segmentation, 3D CNNs,
+          and GAN-based class balancing — entered in the BraTS Lighthouse 2025 Tumor Progression
+          Challenge.
         </>
       ),
       links: [

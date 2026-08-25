@@ -280,6 +280,14 @@ export interface About extends BasePageConfig {
       }>;
     }>;
   };
+  /** Closing colophon: how the thing was made. */
+  colophon?: {
+    display: boolean;
+    /** Pronunciation, rendered in mono. */
+    pronunciation?: string;
+    /** One line per row. Kept factual — a colophon states production facts. */
+    lines: React.ReactNode[];
+  };
 }
 
 /**

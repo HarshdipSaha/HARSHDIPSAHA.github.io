@@ -115,7 +115,7 @@ export default function About() {
           </Column>
         )}
 
-        <Column fillWidth gap="l" style={{ maxWidth: "36rem" }}>
+        <Column fillWidth gap="l" className="editorial" style={{ maxWidth: "36rem" }}>
           <Column id={about.intro.title} fillWidth vertical="center" marginBottom="8">
             {about.calendar.display && (
               <Row
@@ -486,6 +486,19 @@ export default function About() {
                 ))}
               </Column>
             </>
+          )}
+          {about.colophon?.display && (
+            <footer className="colophon">
+              {about.colophon.pronunciation && (
+                <p className="colophon-ipa">{about.colophon.pronunciation}</p>
+              )}
+              {about.colophon.lines.map((line, i) => (
+                // Fixed, ordered prose lines — index is the honest key.
+                <p key={i} className={i === 0 ? "colophon-line" : undefined}>
+                  {line}
+                </p>
+              ))}
+            </footer>
           )}
         </Column>
       </Column>

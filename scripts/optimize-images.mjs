@@ -46,8 +46,19 @@ const CONFIG = {
    * don't ship e.g. both 1440w and 1378w.
    */
   nearDuplicateRatio: 0.9,
-  avif: { quality: 55, effort: 5, chromaSubsampling: "4:2:0" },
-  webp: { quality: 82, effort: 5 },
+  /**
+   * Two encoder profiles. "graphic" (PNG sources — screenshots, diagrams, UI)
+   * keeps full chroma so coloured text and thin strokes stay crisp; "photo"
+   * (JPEG/WebP sources) can subsample chroma safely.
+   */
+  avif: {
+    photo: { quality: 60, effort: 5, chromaSubsampling: "4:2:0" },
+    graphic: { quality: 60, effort: 5, chromaSubsampling: "4:4:4" },
+  },
+  webp: {
+    photo: { quality: 78, effort: 5 },
+    graphic: { quality: 80, effort: 5, smartSubsample: true },
+  },
   jpeg: { quality: 82, mozjpeg: true, progressive: true },
   png: { compressionLevel: 9, effort: 10 },
   /**
@@ -104,9 +115,9 @@ function ladderFor(intrinsicWidth) {
   return { cap, widths: [...new Set(widths)].sort((a, b) => a - b) };
 }
 
-function encoderFor(format, pipeline) {
-  if (format === "avif") return pipeline.avif(CONFIG.avif);
-  if (format === "webp") return pipeline.webp(CONFIG.webp);
+function encoderFor(format, pipeline, profile = "photo") {
+  if (format === "avif") return pipeline.avif(CONFIG.avif[profile]);
+  if (format === "webp") return pipeline.webp(CONFIG.webp[profile]);
   if (format === "jpeg") return pipeline.jpeg(CONFIG.jpeg);
   if (format === "png") return pipeline.png(CONFIG.png);
   throw new Error(`unsupported format: ${format}`);
@@ -188,9 +199,11 @@ async function processFile(absPath, state, stats) {
     const outDir = path.join(responsiveDir, path.dirname(rel));
     fs.mkdirSync(outDir, { recursive: true });
     const base = path.basename(rel, path.extname(rel));
+    const profile = meta.format === "png" ? "graphic" : "photo";
 
-    for (const width of widths) {
-      for (const format of ["avif", "webp"]) {
+    for (const format of ["avif", "webp"]) {
+      const rungs = [];
+      for (const width of widths) {
         const outName = `${base}-${width}.${format}`;
         const outAbs = path.join(outDir, outName);
         const pipeline = sharp(fallback.buffer, { failOn: "none" }).resize({
@@ -198,16 +211,33 @@ async function processFile(absPath, state, stats) {
           withoutEnlargement: true,
           fit: "inside",
         });
-        const { data, info } = await encoderFor(format, pipeline).toBuffer({ resolveWithObject: true });
+        const { data, info } = await encoderFor(format, pipeline, profile).toBuffer({ resolveWithObject: true });
+        stats.encoded++;
+        // Never ship a "responsive" file that is heavier than simply using the
+        // fallback — that would make the page slower, not faster.
+        if (data.length >= fallback.buffer.length) {
+          stats.rejected++;
+          continue;
+        }
         fs.writeFileSync(outAbs, data);
-        outputs.push(toPosix(path.relative(root, outAbs)));
-        variants[format].push({
+        rungs.push({
           w: info.width,
           h: info.height,
-          src: `/images/${responsiveDirName}/${toPosix(path.join(path.dirname(rel), outName)).replace(/^\.\//, "")}`,
+          src: `/images/${responsiveDirName}/${toPosix(path.join(path.dirname(rel), outName))}`,
           bytes: data.length,
+          abs: outAbs,
         });
-        stats.encoded++;
+      }
+      // If the top rung lost, the browser would have to upscale a narrower
+      // variant to fill a wide slot. Drop the whole format instead.
+      const topRung = rungs.at(-1);
+      if (!topRung || topRung.w < Math.min(cap, fallback.width)) {
+        for (const rung of rungs) fs.rmSync(rung.abs, { force: true });
+        continue;
+      }
+      for (const rung of rungs) {
+        outputs.push(toPosix(path.relative(root, rung.abs)));
+        variants[format].push({ w: rung.w, h: rung.h, src: rung.src, bytes: rung.bytes });
       }
     }
   }
@@ -228,14 +258,11 @@ async function processFile(absPath, state, stats) {
     height: fallback.height,
     aspectRatio: Number((fallback.width / fallback.height).toFixed(6)),
     bytes: fallback.buffer.length,
-    sources: fallbackOnly
-      ? []
-      : [
-          { type: "image/avif", srcSet: toSrcSet(variants.avif) },
-          { type: "image/webp", srcSet: toSrcSet(variants.webp) },
-        ],
+    sources: ["avif", "webp"]
+      .filter((format) => variants[format].length > 0)
+      .map((format) => ({ type: `image/${format}`, srcSet: toSrcSet(variants[format]) })),
     variants,
-    maxWidth: fallbackOnly ? fallback.width : cap,
+    maxWidth: variants.avif.at(-1)?.w ?? variants.webp.at(-1)?.w ?? fallback.width,
   };
 
   return [
@@ -293,7 +320,7 @@ async function main() {
 
   const files = walk(imagesDir).sort();
   const state = readState();
-  const stats = { encoded: 0, skipped: 0, restored: 0, fallbacksRewritten: 0, fallbackBytesSaved: 0, errors: [] };
+  const stats = { encoded: 0, rejected: 0, skipped: 0, restored: 0, fallbacksRewritten: 0, fallbackBytesSaved: 0, errors: [] };
 
   const results = await mapWithConcurrency(files, 4, (file) => processFile(file, state, stats));
 
@@ -332,7 +359,8 @@ async function main() {
 
   const savedKb = Math.round(stats.fallbackBytesSaved / 1024);
   console.log(
-    `optimize-images: ${files.length} sources | encoded ${stats.encoded} variants | ` +
+    `optimize-images: ${files.length} sources | encoded ${stats.encoded} variants ` +
+      `(${stats.rejected} rejected as no-win) | ` +
       `restored ${stats.restored} | up-to-date ${stats.skipped} | ` +
       `fallbacks rewritten ${stats.fallbacksRewritten} (-${savedKb} KB)` +
       (pruned ? ` | pruned ${pruned} stale` : ""),

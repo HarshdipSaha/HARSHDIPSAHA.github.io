@@ -711,3 +711,109 @@ header a:active {
     transform: none;
   }
 }
+
+/* ============================================================================
+   EDITORIAL — the /about reading treatment.
+
+   thine.com's /story page is the cleanest thing on either reference site, and
+   the reason is entirely structural: a hard measure, generous top air, one
+   large gap between every block, and a colophon. None of it is decoration.
+
+   The measure is the load-bearing part. Prose set wider than ~68 characters
+   forces the eye to hunt for the next line's start, and no amount of type
+   polish recovers that.
+   ========================================================================= */
+
+.editorial {
+  --measure: 34rem;
+  --block-gap: 4rem;
+  padding-top: 2rem;
+}
+
+.editorial > * {
+  max-width: none;
+}
+
+/* Prose holds the measure; structured blocks (cards, grids, timelines) are
+   allowed the full column, because they are scanned rather than read. */
+.editorial p,
+.editorial li,
+.editorial .about-intro-p {
+  max-width: var(--measure);
+}
+
+/* More space above a heading than below it: a heading belongs to the section
+   it opens, not the one it closes. This is the single most common spacing
+   error in generated layouts. */
+.editorial h2 {
+  margin-top: var(--block-gap);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.editorial h2:first-of-type {
+  margin-top: 2rem;
+}
+
+.editorial h3 {
+  letter-spacing: -0.01em;
+}
+
+/* Body copy at a real reading size and leading, not UI-sized text. */
+.editorial p,
+.editorial li {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+/* Pull-quote: a rule and an indent, nothing more. */
+.editorial blockquote {
+  margin: 2rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--rule-color);
+  max-width: var(--measure);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--scan-09);
+}
+
+/* ---- Colophon -------------------------------------------------------------
+   A hairline at 97% width, then the pronunciation and a closing line. The
+   inset rule is the detail that reads as a printed page rather than a div:
+   a rule at a full 100% reads as a section divider, at 97% as a page edge.
+   -------------------------------------------------------------------------- */
+
+.colophon {
+  margin-top: 5rem;
+  padding-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.colophon::before {
+  content: "";
+  display: block;
+  width: 97%;
+  align-self: center;
+  border-top: var(--rule-hair) solid var(--rule-color);
+  margin-bottom: 2rem;
+}
+
+.colophon p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--scan-07);
+}
+
+.colophon .colophon-ipa {
+  font-family: var(--font-code), ui-monospace, monospace;
+  color: var(--scan-08);
+  letter-spacing: 0.02em;
+}
+
+.colophon .colophon-line {
+  color: var(--scan-09);
+}

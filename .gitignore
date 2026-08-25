@@ -44,3 +44,6 @@ next-env.d.ts
 .github/agents/impeccable-*
 .github/hooks/
 .impeccable/
+
+# build-time image pipeline cache (scripts/optimize-images.mjs)
+/.cache/
