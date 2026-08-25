@@ -323,6 +323,7 @@ a.mask-plate:visited,
      change. Colour transitions and focus rings stay. */
   .hero-enter > * {
     transform: none;
+    filter: none;
     transition: opacity var(--dur-state) var(--ease-settle);
   }
 
@@ -482,9 +483,11 @@ li::marker {
 .hero-enter > * {
   opacity: 1;
   transform: none;
+  filter: blur(0);
   transition:
     opacity var(--dur-slice) var(--ease-settle),
-    transform var(--dur-slice) var(--ease-settle);
+    transform var(--dur-slice) var(--ease-settle),
+    filter var(--dur-slice) var(--ease-settle);
 }
 
 .hero-enter > *:nth-child(2) { transition-delay: calc(var(--stagger) * 1); }
@@ -493,9 +496,16 @@ li::marker {
 .hero-enter > *:nth-child(5) { transition-delay: calc(var(--stagger) * 4); }
 
 @starting-style {
+  /* Resolving into focus rather than sliding in. Both reference sites read as
+     photographic for this reason: blur is depth-of-field, which is a camera
+     language, and this world is a scan coming into focus. Kept to 6px and to
+     the handful of small hero elements — filter is composited but not free,
+     and a large blurred surface is where that stops being true. The LCP
+     element is excluded from all of it. */
   .hero-enter > *:not([data-lcp]) {
     opacity: 0;
     transform: translateY(1rem);
+    filter: blur(6px);
   }
 }
 
