@@ -162,7 +162,7 @@ export default function Home() {
           </Row>
         </Reveal>
         <Reveal index={1}>
-          <Projects range={[1, home.selectedWorkCount ?? 3]} />
+          <Projects stack range={[1, home.selectedWorkCount ?? 3]} />
         </Reveal>
       </Column>
     </Column>

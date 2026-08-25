@@ -1090,3 +1090,177 @@ time,
 .editorial {
   counter-reset: section;
 }
+
+/* ============================================================================
+   LIGHTBOX — responsive images that still enlarge.
+
+   Built on native <dialog>, which supplies focus trapping, Escape-to-close,
+   inertness behind, and a top layer no ancestor's overflow can clip.
+   ========================================================================= */
+
+.lightbox-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  font: inherit;
+  border-radius: var(--radius-m);
+  overflow: hidden;
+}
+
+.lightbox-trigger img {
+  transition: transform var(--dur-state) var(--ease-slice);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lightbox-trigger:hover img {
+    transform: scale(1.02);
+  }
+}
+
+/* The press feedback further up scales every button; on a gallery tile that
+   reads as the tile shrinking away from the tap, so it is opted out. */
+.lightbox-trigger:active {
+  transform: none;
+}
+
+.lightbox {
+  width: min(96vw, 1600px);
+  max-width: none;
+  max-height: 94vh;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--scan-10);
+  overflow: visible;
+}
+
+.lightbox::backdrop {
+  background: color-mix(in oklab, var(--scan-00) 88%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lightbox[open] {
+    animation: lightbox-in 260ms var(--ease-slice);
+  }
+  .lightbox[open]::backdrop {
+    animation: lightbox-fade 260ms var(--ease-slice);
+  }
+}
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes lightbox-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.lightbox-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lightbox-figure img {
+  border-radius: var(--radius-m);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: var(--rule-hair) solid var(--rule-color);
+  border-radius: 999px;
+  background: var(--scan-01);
+  color: var(--scan-09);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+/* ============================================================================
+   STICKY CARD STACK — thine.com's pattern, adapted.
+
+   Each card pins in turn and recedes as the next rides over it, so a short
+   selection reads as a deck being dealt rather than a list being scrolled.
+
+   Two adaptations from the source, both forced by the content:
+   1. thine's cards are full-bleed h-screen panels. These are horizontal
+      (plate left, label right), so the card gets an explicit ground and a
+      hairline — without an opaque background a sticky card is transparent and
+      the one beneath shows straight through it.
+   2. The recede is scroll-LINKED rather than JS-driven. This is the second
+      correct use of a scrubbed timeline on the site: the card must un-recede
+      when you scroll back up, which is exactly the reversal that made
+      scroll-driven animation wrong for one-shot entrances.
+
+   Deliberately opt-in (`<Projects stack />`). /work renders 18 projects, and a
+   stack there would cost eighteen viewports of scrolling.
+   ========================================================================= */
+
+.card-stack {
+  /* Room for the last card to finish its travel before the section ends. */
+  padding-bottom: 4rem;
+}
+
+.stack-card {
+  position: sticky;
+  /* Each card parks slightly lower than the one before, so the stack's edges
+     stay visible and the depth is legible rather than implied. */
+  top: calc(7rem + var(--i, 0) * 1.4rem);
+  margin-bottom: 2.5rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-l);
+  border: var(--rule-hair) solid var(--rule-color);
+  background: var(--scan-01);
+  transform-origin: 50% 0;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .stack-card {
+      animation: stack-recede linear both;
+      animation-timeline: view();
+      /* Only while the card is leaving: it sits at full size on the way in. */
+      animation-range: exit-crossing 0% exit-crossing 100%;
+    }
+
+    @keyframes stack-recede {
+      to {
+        transform: scale(0.93);
+        opacity: 0.45;
+        filter: blur(2px);
+      }
+    }
+  }
+}
+
+/* Without sticky support or with reduced motion this is simply a spaced list,
+   which is a perfectly good way to read three projects. */
+@media (prefers-reduced-motion: reduce) {
+  .stack-card {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  /* A pinned stack on a phone eats the whole viewport per card. */
+  .stack-card {
+    position: static;
+    margin-bottom: 1.5rem;
+  }
+}

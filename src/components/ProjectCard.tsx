@@ -12,6 +12,8 @@ interface ProjectCardProps {
   link: string;
   /** Zero-based position in the list, used for the slice index readout. */
   index?: number;
+  /** When set, the card participates in a sticky stack at this depth. */
+  stackIndex?: number;
 }
 
 /**
@@ -34,6 +36,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   link,
   priority,
   index = 0,
+  stackIndex,
 }) => {
   const cover = images[0];
 
@@ -42,7 +45,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       fillWidth
       gap="32"
       s={{ direction: "column", gap: "16" }}
-      className="probe-row"
+      className={["probe-row", stackIndex !== undefined ? "stack-card" : null]
+        .filter(Boolean)
+        .join(" ")}
+      style={stackIndex !== undefined ? ({ ["--i" as string]: stackIndex } as never) : undefined}
       vertical="start"
     >
       {cover && (

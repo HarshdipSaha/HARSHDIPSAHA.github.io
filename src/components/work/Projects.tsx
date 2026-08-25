@@ -5,9 +5,14 @@ import { Column } from "@once-ui-system/core";
 interface ProjectsProps {
   range?: [number, number?];
   exclude?: string[];
+  /**
+   * Render as a sticky stack: cards pin and recede as the next one rides over.
+   * Only sane for a short selection — /work's full 18 would cost 18 viewports.
+   */
+  stack?: boolean;
 }
 
-export function Projects({ range, exclude }: ProjectsProps) {
+export function Projects({ range, exclude, stack = false }: ProjectsProps) {
   let allProjects = getPosts(["src", "app", "work", "projects"]);
 
   // Exclude by slug (exact match)
@@ -24,7 +29,12 @@ export function Projects({ range, exclude }: ProjectsProps) {
     : sortedProjects;
 
   return (
-    <Column fillWidth gap="40" marginBottom="24">
+    <Column
+      fillWidth
+      gap={stack ? "0" : "40"}
+      marginBottom="24"
+      className={stack ? "card-stack" : undefined}
+    >
       {displayedProjects.map((post, index) => (
         <ProjectCard
           priority={index < 2}
@@ -37,6 +47,7 @@ export function Projects({ range, exclude }: ProjectsProps) {
           content={post.content}
           avatars={post.metadata.team?.map((member) => ({ src: member.avatar })) || []}
           link={post.metadata.link || ""}
+          stackIndex={stack ? index : undefined}
         />
       ))}
     </Column>
