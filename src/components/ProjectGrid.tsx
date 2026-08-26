@@ -8,7 +8,10 @@ export function ProjectGrid({ projects, columns = 3 }: { projects: Project[]; co
     <Group className={clsx("grid gap-x-8 gap-y-14 sm:grid-cols-2", columns === 3 && "lg:grid-cols-3")} stagger={0.07} amount={0.05}>
       {projects.map((p) => (
         <Item key={p.slug}>
-          <Link href={`/projects/${p.slug}`} className="group block">
+          <Link href={`/projects/${p.slug}`} className="group hover-trigger relative block">
+            <span aria-hidden="true" className="corners">
+              <span /><span /><span /><span />
+            </span>
             <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-ink-2">
               {p.image ? (
                 <img

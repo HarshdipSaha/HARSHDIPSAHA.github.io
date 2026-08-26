@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Commissioner, Instrument_Serif } from "next/font/google";
 import { Footer } from "@/components/Footer";
+import { Gutters } from "@/components/Gutters";
 import { Nav } from "@/components/Nav";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { person } from "@/content/site";
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-dvh bg-ink text-paper">
         <SmoothScroll>
           <Nav />
+          <Gutters />
           <main>{children}</main>
           <Footer />
         </SmoothScroll>

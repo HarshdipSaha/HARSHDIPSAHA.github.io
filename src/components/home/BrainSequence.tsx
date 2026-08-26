@@ -129,7 +129,7 @@ export function BrainSequence({ stages, eyebrow, hint }: { stages: Stage[]; eyeb
 
   if (reduced) {
     return (
-      <section className="relative px-6 py-24 md:px-12">
+      <section ref={ref} className="relative px-6 py-24 md:px-12">
         <img src={frameSrc("1080", 84)} alt="Axial MRI slice through the ICBM 152 template brain" className="mx-auto w-full max-w-2xl rounded-2xl" width={1080} height={1080} />
         <div className="mx-auto mt-16 grid max-w-5xl gap-14 md:grid-cols-3">
           {stages.map((s) => (
