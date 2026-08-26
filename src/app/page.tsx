@@ -6,6 +6,7 @@ import { Experience } from "@/components/home/Experience";
 import { Hero } from "@/components/home/Hero";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollWords } from "@/components/motion/ScrollWords";
+import { MatrixRibbon } from "@/components/MatrixRibbon";
 import { ProjectGrid } from "@/components/ProjectGrid";
 import { Arrow, Container, Label } from "@/components/ui";
 import { passage, selectedProjects, sequence, threads } from "@/content/site";
@@ -25,15 +26,17 @@ export default function Home() {
     <>
       <Hero />
 
-      <BrainSequence stages={sequence.stages} eyebrow={sequence.eyebrow} />
+      <BrainSequence stages={sequence.stages} eyebrow={sequence.eyebrow} hint={sequence.hint} />
 
-      <section className="py-36 md:py-52">
+      <section className="pb-36 pt-16 md:pb-52 md:pt-20">
+        <MatrixRibbon className="mb-24 md:mb-32" />
         <Container wide>
           <ScrollWords
             text={passage}
             className="mx-auto max-w-[1180px] text-[2.1rem] font-medium leading-[1.12] tracking-[-0.02em] sm:text-[3rem] md:text-[3.9rem] lg:text-[4.9rem]"
           />
         </Container>
+        <MatrixRibbon className="mt-24 md:mt-32" />
       </section>
 
       <section className="pb-8 pt-8 text-center">

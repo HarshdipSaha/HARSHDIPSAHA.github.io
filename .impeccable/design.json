@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-26T03:30:00.000Z",
+  "title": "Design System: Harshdip Saha",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#171519", "tonalRamp": ["#0b0a0c", "#171519", "#211e23", "#2f2b31", "#4a454c", "#6b656d", "#948e96", "#c9c3c9"] },
+      "ink-2": { "role": "neutral", "displayName": "Ink 2", "canonical": "#211e23", "tonalRamp": ["#0b0a0c", "#171519", "#211e23", "#2f2b31", "#4a454c", "#6b656d", "#948e96", "#c9c3c9"] },
+      "ink-3": { "role": "neutral", "displayName": "Ink 3", "canonical": "#2f2b31", "tonalRamp": ["#0b0a0c", "#171519", "#211e23", "#2f2b31", "#4a454c", "#6b656d", "#948e96", "#c9c3c9"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#ebe5e1", "tonalRamp": ["#2a2624", "#4d4744", "#726a66", "#978e89", "#b9b0ab", "#d4ccc7", "#ebe5e1", "#f7f3f0"] },
+      "tangerine": { "role": "primary", "displayName": "Tangerine", "canonical": "#f49752", "tonalRamp": ["#3a1f0c", "#6b3a13", "#9a5420", "#c4702f", "#e28640", "#f49752", "#f7a86c", "#fbd0ae"] },
+      "tangerine-lift": { "role": "primary", "displayName": "Tangerine Lift", "canonical": "#f7a86c", "tonalRamp": ["#3a1f0c", "#6b3a13", "#9a5420", "#c4702f", "#e28640", "#f49752", "#f7a86c", "#fbd0ae"] },
+      "sunny": { "role": "tertiary", "displayName": "Sunny", "canonical": "#f4e382", "tonalRamp": ["#3a3510", "#6b621f", "#9a8e30", "#c4b545", "#e2d160", "#f4e382", "#f8eca4", "#fcf5cf"] },
+      "seafoam": { "role": "tertiary", "displayName": "Seafoam", "canonical": "#8ad7b6", "tonalRamp": ["#0f2a20", "#1e4d3b", "#2f7057", "#459474", "#62b592", "#8ad7b6", "#aee5cc", "#d3f1e3"] },
+      "cerulean": { "role": "tertiary", "displayName": "Cerulean", "canonical": "#9bc8d6", "tonalRamp": ["#122a31", "#234b57", "#376c7c", "#4f8ea0", "#72adbf", "#9bc8d6", "#bcdae4", "#dcedf2"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero spread and closing line; always italic Instrument Serif." },
+      "headline": { "displayName": "Headline", "purpose": "Stage titles over the brain, page titles." },
+      "title": { "displayName": "Title", "purpose": "Sans headings inside content: company names, card titles." },
+      "body": { "displayName": "Body", "purpose": "Prose and explanatory copy at paper 80-82%." },
+      "label": { "displayName": "Label", "purpose": "Section labels and viewer chrome; 13px caps, 0.2em tracking, paper 45%." }
+    },
+    "shadows": [
+      { "name": "over-photo", "value": "0 2px 12px rgb(0 0 0 / 0.9), 0 6px 40px rgb(0 0 0 / 0.75)", "purpose": "Text shadow on titles set over photographs only. No box-shadows exist." }
+    ],
+    "motion": [
+      { "name": "ease-out-cubic", "value": "cubic-bezier(0.33, 1, 0.68, 1)", "purpose": "State transitions on pills and reveals." },
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Image scale on hover (700ms)." },
+      { "name": "reveal-blur-diagonal", "value": "opacity 0->1, blur 6px->0, translate(-16px,-16px)->0, 700ms", "purpose": "Default enter-on-view." },
+      { "name": "lenis", "value": "lerp 0.09, wheelMultiplier 0.9", "purpose": "Smoothed wheel; off under prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Pill (glass)",
+      "kind": "button",
+      "refersTo": "pill-glass",
+      "description": "The only button shape. Glass by default; used for secondary actions and nav routes.",
+      "html": "<a class=\"ds-pill\" href=\"#\">Projects</a>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 0.5rem; border-radius: 9999px; padding: 0.625rem 1.25rem; font-family: var(--font-commissioner, Commissioner, system-ui, sans-serif); font-size: 15px; font-weight: 500; white-space: nowrap; color: #ebe5e1; background: color-mix(in oklab, white 8%, transparent); border: 1px solid color-mix(in oklab, white 14%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); text-decoration: none; transition: background-color 300ms cubic-bezier(0.33,1,0.68,1), color 300ms, transform 300ms; } .ds-pill:hover { background: color-mix(in oklab, white 15%, transparent); } .ds-pill:active { transform: scale(0.98); } .ds-pill:focus-visible { outline: 2px solid #f49752; outline-offset: 3px; }"
+    },
+    {
+      "name": "Pill (accent)",
+      "kind": "button",
+      "refersTo": "pill-accent",
+      "description": "The single primary action per viewport: Résumé, Read the paper, Email me.",
+      "html": "<a class=\"ds-pill-accent\" href=\"#\">Résumé <span aria-hidden=\"true\">↗</span></a>",
+      "css": ".ds-pill-accent { display: inline-flex; align-items: center; gap: 0.5rem; border-radius: 9999px; padding: 0.625rem 1.25rem; font-family: var(--font-commissioner, Commissioner, system-ui, sans-serif); font-size: 15px; font-weight: 500; white-space: nowrap; color: #171519; background: #f49752; text-decoration: none; transition: background-color 300ms cubic-bezier(0.33,1,0.68,1), transform 300ms; } .ds-pill-accent:hover { background: #f7a86c; } .ds-pill-accent:active { transform: scale(0.98); } .ds-pill-accent:focus-visible { outline: 2px solid #f49752; outline-offset: 3px; }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav-pill-current",
+      "description": "Fixed 80px header: route pills left, italic wordmark centre, accent Résumé right. Current route pill takes the 15% fill.",
+      "html": "<nav class=\"ds-nav\"><ul class=\"ds-nav-list\"><li><a class=\"ds-nav-pill ds-nav-pill--current\" href=\"#\" aria-current=\"page\">Home</a></li><li><a class=\"ds-nav-pill\" href=\"#\">Story</a></li><li><a class=\"ds-nav-pill\" href=\"#\">Projects</a></li></ul><a class=\"ds-wordmark\" href=\"#\">Harshdip<span> Saha</span></a><a class=\"ds-nav-accent\" href=\"#\">Résumé ↗</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; height: 80px; padding: 0 2rem; background: linear-gradient(to bottom, rgba(23,21,25,0.7), transparent); } .ds-nav-list { display: flex; gap: 0.5rem; list-style: none; margin: 0; padding: 0; } .ds-nav-pill { display: inline-flex; border-radius: 9999px; padding: 0.5rem 1rem; font-family: var(--font-commissioner, Commissioner, system-ui, sans-serif); font-size: 14px; font-weight: 500; color: #ebe5e1; background: color-mix(in oklab, white 8%, transparent); border: 1px solid color-mix(in oklab, white 14%, transparent); backdrop-filter: blur(16px); text-decoration: none; transition: background-color 300ms; } .ds-nav-pill:hover, .ds-nav-pill--current { background: color-mix(in oklab, white 15%, transparent); } .ds-nav-pill:focus-visible { outline: 2px solid #f49752; outline-offset: 3px; } .ds-wordmark { font-family: var(--font-instrument, 'Instrument Serif', Georgia, serif); font-style: italic; font-size: 1.55rem; letter-spacing: -0.03em; line-height: 1; color: #ebe5e1; text-decoration: none; } .ds-wordmark span { color: color-mix(in oklab, #ebe5e1 45%, transparent); } .ds-nav-accent { display: inline-flex; border-radius: 9999px; padding: 0.5rem 1rem; font-size: 14px; font-weight: 500; color: #171519; background: #f49752; text-decoration: none; } .ds-nav-accent:hover { background: #f7a86c; }"
+    },
+    {
+      "name": "Label",
+      "kind": "chip",
+      "refersTo": "label",
+      "description": "Section label and viewer chrome: 13px caps, 0.2em tracking, paper 45%.",
+      "html": "<p class=\"ds-label\">The result</p>",
+      "css": ".ds-label { font-family: var(--font-commissioner, Commissioner, system-ui, sans-serif); font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: color-mix(in oklab, #ebe5e1 45%, transparent); margin: 0; }"
+    },
+    {
+      "name": "Photo card",
+      "kind": "card",
+      "refersTo": "card-photo",
+      "description": "Sticky-stack card: full-bleed photo under a bottom gradient, white title, one glass pill.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-grad\"></div><div class=\"ds-card-body\"><h3>Neuro-oncology imaging</h3><p>Longitudinal MRI, response classification, and the pipelines around them.</p><a class=\"ds-card-pill\" href=\"#\">Read the paper →</a></div></article>",
+      "css": ".ds-card { position: relative; height: 320px; border-radius: 1.75rem; overflow: hidden; border: 1px solid color-mix(in oklab, white 10%, transparent); background: #211e23 radial-gradient(circle at 30% 20%, #4a454c, #211e23 70%); } .ds-card-grad { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.1)); } .ds-card-body { position: absolute; inset: auto 0 0 0; padding: 2rem; font-family: var(--font-commissioner, Commissioner, system-ui, sans-serif); } .ds-card-body h3 { margin: 0; font-size: 2.2rem; font-weight: 600; line-height: 1; letter-spacing: -0.02em; color: #fff; text-shadow: 0 2px 12px rgb(0 0 0 / 0.9), 0 6px 40px rgb(0 0 0 / 0.75); } .ds-card-body p { margin: 1rem 0 1.5rem; max-width: 36rem; color: rgba(255,255,255,0.85); line-height: 1.6; text-shadow: 0 2px 12px rgb(0 0 0 / 0.9); } .ds-card-pill { display: inline-flex; gap: 0.5rem; border-radius: 9999px; padding: 0.625rem 1.25rem; font-size: 15px; font-weight: 500; color: #ebe5e1; background: color-mix(in oklab, white 8%, transparent); border: 1px solid color-mix(in oklab, white 14%, transparent); backdrop-filter: blur(16px); text-decoration: none; } .ds-card-pill:hover { background: color-mix(in oklab, white 15%, transparent); }"
+    },
+    {
+      "name": "Display headline",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "Italic Instrument Serif at a fluid clamp, -0.03em, leading 0.95, balanced.",
+      "html": "<h1 class=\"ds-display\">Building ML pipelines</h1>",
+      "css": ".ds-display { margin: 0; font-family: var(--font-instrument, 'Instrument Serif', Georgia, serif); font-style: italic; font-weight: 400; font-size: clamp(2.75rem, 7.2vw, 8.5rem); line-height: 0.95; letter-spacing: -0.03em; text-wrap: balance; color: #ebe5e1; }"
+    },
+    {
+      "name": "Hairline rule",
+      "kind": "custom",
+      "refersTo": "hairline",
+      "description": "The only divider: 1px white at 10%.",
+      "html": "<hr class=\"ds-hairline\">",
+      "css": ".ds-hairline { border: 0; border-top: 1px solid color-mix(in oklab, white 10%, transparent); margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Reading Room Light-Box",
+    "overview": "A radiologist's reading room is dark so the film can be bright. This site works the same way: one tinted near-black fills every viewport, and the only luminous objects are the words and the brain. The visual world was derived from thine.com (ADR 0011) and kept its discipline rather than its palette: an italic serif for anything that speaks, a humanist sans for anything that explains, pills as the only button shape, a fixed nav behind a ramped blur, a scroll-scrubbed image sequence as the centrepiece, and a sticky card stack. Every neutral on the site is paper or white at an alpha; there is deliberately no grey ramp and one accent.\n\nDensity is low and the pace is slow. Sections are separated by 7–10rem of ink, display type is set fluidly and never snaps at a breakpoint, and motion is scroll-linked rather than triggered, so the reader feels they are moving through material, not watching it arrive. The site is an Experience surface: the artifact (the brain, the photographs, the case studies) leads and the interface recedes. Where the interface must appear, it appears as chrome — small, tracked caps in the margin — not as furniture.",
+    "keyCharacteristics": [
+      "One ink, one paper, one tangerine; every other neutral is paper or white at an alpha.",
+      "Instrument Serif italic for display (always italic, -0.03em, leading 0.95), Commissioner for everything else.",
+      "Pills are the only button shape; glass by default, tangerine for the single primary action.",
+      "Motion is scroll-scrubbed or blur-in; nothing bounces, nothing loops except the scroll hint.",
+      "Depth comes from alpha and backdrop blur, never from shadows on flat surfaces."
+    ],
+    "rules": [
+      { "name": "The No-Grey Rule", "body": "There is no grey ramp. Every neutral is paper or white at an alpha (text-paper/60, border-white/10). Introducing a hex grey is a defect.", "section": "colors" },
+      { "name": "The One Accent Rule", "body": "Tangerine appears on at most one pill per viewport and on marks under 8px. If two things are tangerine, one of them is wrong.", "section": "colors" },
+      { "name": "The Italic-Speaks Rule", "body": "Instrument Serif is always italic and is used only for text that speaks in the owner's voice (headlines, the wordmark, prose em). Sans for anything that explains or lists.", "section": "typography" },
+      { "name": "The Fluid Type Rule", "body": "Display sizes are clamp()s; they never snap at a breakpoint. Track at -0.03em for display and -0.015em for sans headings; never tighter than -0.04em.", "section": "typography" },
+      { "name": "The Blur-Is-Depth Rule", "body": "Depth is backdrop blur and alpha, never a shadow. A box-shadow on a card or pill is a defect.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do set every neutral as paper or white at an alpha; the only solid fills are ink, ink-2, and tangerine.",
+      "Do use the italic serif only for headlines and voice; keep sans for explanation, at or under 2rem.",
+      "Do give every animated component a reduced-motion path that renders the same content statically.",
+      "Do keep useScroll-driven useTransform input ranges inside [0, 1].",
+      "Do place copy over imagery only where the image is dark or dimmed; keep the brain and the words in separate regions on desktop.",
+      "Do keep copy in src/content/site.ts; components render, they do not write."
+    ],
+    "donts": [
+      "Don't introduce a hex grey, a second accent, or a gradient on text.",
+      "Don't add a box-shadow to cards, pills, or the nav; depth is blur and alpha.",
+      "Don't add a second button shape; every action is a pill.",
+      "Don't upright the display serif or use it for body copy.",
+      "Don't let two tangerine pills share a viewport."
+    ]
+  }
+}

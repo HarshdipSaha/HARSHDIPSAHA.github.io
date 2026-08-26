@@ -1,0 +1,87 @@
+---
+title: "SAAKSHI — the witness for every rupee"
+publishedAt: "2026-08-10"
+summary: "A read-only forensic layer over India's public spending data, plus a toll-free voice line so any citizen can ask what was spent in their village. Hackathon prototype for TechGig × Optum's Inclusive Innovation for Bharat."
+images:
+  - "/img/projects/saakshi.webp"
+---
+
+## The problem
+
+India already publishes enough data to catch its own leakage. Works, payments, tenders, audit
+observations, grievances and transfers sit on **eleven separate government portals** that never talk
+to each other — even though every one of them has carried the same location key (the LGD code) since
+2016. Nobody has done the join.
+
+The consequence shows up in the state's own dashboards: **62,745 audit observations** recorded on
+AuditOnline nationally, and **zero** Action Taken Reports filed against them. Social audits covered
+**38.58 %** of MGNREGA works in FY2025-26 and still surfaced 61,347 cases of misappropriation. The
+country is not failing to find corruption because it is hard to find. It is failing because there are
+not enough auditors, and the findings that do surface go nowhere.
+
+And the person best placed to check — a villager who can walk to the "farm pond" and see whether it
+exists — usually has no smartphone (only 48.4 % of rural women 15+ own one) and doesn't read English.
+
+## What SAAKSHI is
+
+SAAKSHI (साक्षी, "the witness") is a **read-only forensic and accountability layer** over the data the
+government already publishes, joined on the LGD code, with **a toll-free phone number** that lets any
+citizen interrogate it in their own language. It surfaces evidenced, time-bound *questions* about
+welfare spending — never verdicts — and then asks the one citizen who can see the asset to verify it.
+
+Two rules shape everything: it is **read-only and post-hoc** — it never denies a payment, blocks a job
+card or gates a ration, because a false positive should cost an official an explanation and never a
+citizen her rice; and **every honest limit ships with the capability**.
+
+## How it works
+
+Six named layers, each doing one job:
+
+- **KOSH** (कोष, the treasury) joins the eleven portals into one ledger graph per panchayat.
+- **CHITRAGUPTA** (the divine accountant) runs four independent detectors — the same four checks the
+  auditor-general did by hand: a perceptual hash to catch reused completion photos; a date comparison
+  to catch payments made after a work was "completed"; a `GROUP BY` to catch contracts split to dodge
+  the tender threshold and vendors who keep winning as the only bidder; and a device-itinerary check
+  for one phone geo-tagging attendance at eight sites in an hour. **The four signals are never fused
+  into a single "corruption score."**
+- **NAAM-MILAN** resolves Indic names across sources with calibrated confidence, never a hard match.
+- **VAANI** (voice) is the phone line: an intent router over roughly forty vetted, parameterised
+  queries. **A language model never writes a query** — anything a citizen hears is deterministic.
+- **PRAMAAN** (proof) takes anonymous citizen reports — "there is no pond here" — bound
+  cryptographically so they can't be traced to a person, and turns corroborated ones into training
+  labels. That closes the gap that blocks every procurement-fraud model: there are no confirmed
+  positives to learn from.
+- **GHADI** (the clock) opens an accountability case file: an auto-drafted Right to Information
+  request, a grievance filing, a Gram Sabha agenda item, and a public countdown on the statutory
+  deadlines — with a "what we do not know" section in every file.
+
+## The prototype
+
+The repository ships a runnable prototype that a judge can clone and run in one command — Python
+standard library only, no installs, no network, no API keys. It reconstructs the March 2026 CAG
+Karnataka MGNREGA audit as a synthetic dataset and shows the detectors **independently re-deriving each
+published finding**:
+
+| The auditors found, by hand | SAAKSHI's detector | Result |
+|---|---|---|
+| Identical photos reused across construction stages | perceptual hash | a completion photo reused across two works **61 km apart**, in different districts |
+| Payments for stages on already-completed houses | date comparison | **462 instances · ₹1.19 crore** — matches the published number exactly |
+| A check dam split in two to dodge tendering | threshold-split check | ₹2.4 L + ₹2.9 L = ₹5.3 L, same panchayat and vendor, 11 days apart |
+| *(never published in India)* | single-bid rate | a national single-bid rate of 14 %; one vendor won **11 of its tenders as the sole bidder** |
+| — | device itinerary | one phone geo-tagging attendance at **8 sites in under an hour** |
+
+All five checks are asserted in the demo and in a ten-test suite. The case file it produces for the
+reference work — a ₹4.2 lakh farm pond in Kamalapur, Karnataka — lists four signals with separate
+confidences, then says plainly what it does not know, and ends with a drafted RTI request.
+
+**What is real and what is not, stated as the repository states it:** the dataset is a synthetic
+reconstruction of published audit findings, not live-scraped portal data; the satellite and
+citizen-report signals in the offline demo are simulated inputs; the toll-free number is illustrative.
+
+## Context
+
+Built for **TechGig × Optum — Inclusive Innovation for Bharat**, Theme 05 (GovTech & Public Service
+Delivery). The submission includes an application, an 18-slide deck, a demo video, a pitch website,
+the runnable prototype and a research dossier where every headline number carries a reliability
+marker. The repository is private while the competition runs; the banner is the pitch website.
+MIT licence.

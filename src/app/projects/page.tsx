@@ -18,7 +18,7 @@ export default function ProjectsPage() {
         <Label>Projects</Label>
         <h1 className="display mt-5 max-w-[14ch] text-[clamp(3rem,8vw,6.5rem)] text-paper">Things I've built, {projects.length} so far.</h1>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/65">
-          Research code, hackathon builds, and the occasional game. Newest first; every one links to its repository.
+          Research code, hackathon builds, and the occasional game. Newest first. Each opens to a short write-up of what it does and why, and links to the code.
         </p>
       </Reveal>
       <div className="mt-16 md:mt-20">

@@ -90,6 +90,11 @@
       "w": 762,
       "h": 402
     },
+    "brainwaves-finland": {
+      "src": "/img/projects/brainwaves-finland.webp",
+      "w": 1400,
+      "h": 875
+    },
     "branddiffusion": {
       "src": "/img/projects/branddiffusion.webp",
       "w": 337,
@@ -124,6 +129,11 @@
       "src": "/img/projects/pysdf.webp",
       "w": 322,
       "h": 157
+    },
+    "saakshi": {
+      "src": "/img/projects/saakshi.webp",
+      "w": 1400,
+      "h": 1000
     },
     "tinysafetynet": {
       "src": "/img/projects/tinysafetynet.webp",

@@ -14,7 +14,7 @@ export const person = {
   resume: "/resume.pdf",
   siteUrl: "https://harshdipsaha.github.io",
   description:
-    "Harshdip Saha — undergraduate researcher at NexGenLab NSUT and IIT Madras. Neuro-oncology imaging, scientific computing, and the systems around the research. Open to SDE and research internships.",
+    "Harshdip Saha — machine-learning researcher in medical brain imaging (NexGenLab NSUT, IIT Madras). RECAP-Net placed 3rd worldwide in the BraTS Lighthouse 2025 challenge and was presented at MICCAI 2025. Open to SDE and research internships.",
 };
 
 export const nav = [
@@ -25,31 +25,34 @@ export const nav = [
 ];
 
 export const hero = {
+  // One plain line a recruiter or a PI outside the field can repeat back.
+  kicker: "Machine-learning researcher · medical brain imaging · New Delhi",
   // Two halves, set apart across the viewport like a spread.
   left: "Building ML pipelines",
   right: "& enjoying life through backpropagation",
   subline:
-    "Undergraduate researcher at NexGenLab NSUT and IIT Madras. I work on neuro-oncology imaging and scientific computing — and I build and ship the systems around the research.",
+    "I'm an undergraduate researcher (NSUT and IIT Madras) who builds machine-learning models that read brain MRI scans — my MICCAI 2025 paper placed 3rd worldwide in an international brain-tumour challenge — and I build and ship the software around the research.",
 };
 
 /** Copy that appears over the scroll-scrubbed brain, in order of scroll depth. */
 export const sequence = {
-  eyebrow: "ICBM 152 template · 160 axial slices · scroll to section",
+  eyebrow: "MRI template brain · 160 slices",
+  hint: "scroll to scan through",
   stages: [
     {
       kicker: "The problem",
       title: "One scan says almost nothing.",
-      body: "Two scans, months apart, say everything — if you can tell whether the tumour grew, shrank, or held.",
+      body: "A brain-tumour patient is scanned every few months. The question that matters — did the tumour grow, shrink, or hold? — needs two scans compared, and that comparison is slow and subjective by eye.",
     },
     {
       kicker: "The work",
       title: "RECAP-Net reads the pair.",
-      body: "Swin UNETR segmentation, 3D CNNs, GAN-based class balancing, and the RANO criteria as the ground truth — an end-to-end pipeline for longitudinal glioblastoma response classification.",
+      body: "My model takes two MRI scans of the same patient, months apart, outlines the tumour in each, and classifies the change — progressing, stable, or responding — the way radiologists do under RANO, the standard rulebook for judging treatment response.",
     },
     {
       kicker: "The result",
       title: "World Rank 3.",
-      body: "BraTS Lighthouse 2025 Tumor Progression Challenge. Presented as an oral at MICCAI 2025, South Korea.",
+      body: "3rd of all teams worldwide in the BraTS Lighthouse 2025 Tumor Progression Challenge — an international competition where every team's model is scored on the same hidden MRI data. Presented as an oral talk at MICCAI 2025 in South Korea (the main medical-imaging AI conference) and published in Springer LNCS.",
       links: [
         { label: "Read the paper", href: "https://link.springer.com/10.1007/978-3-032-16370-7_23", accent: true },
         { label: "Code", href: "https://github.com/HARSHDIPSAHA/brats_response_project" },
@@ -64,26 +67,26 @@ export const passage =
 
 export const threads = {
   label: "Three threads",
-  title: "One brain, three ways in.",
-  body: "Research that gets published, engineering that gets deployed, and open source that other labs actually run. The same person does all three, and each one makes the others better.",
+  title: "Publish it. Ship it. Open-source it.",
+  body: "Research that gets peer-reviewed, engineering that gets deployed, and open source that other labs actually run. The same person does all three, and each one makes the others better.",
   cards: [
     {
       title: "Research",
-      body: "Longitudinal glioblastoma response with RECAP-Net; PGGANs for temporal brain MRI; a neuro-symbolic negotiation model in review at EMNLP 2026.",
-      href: "/projects/atomnet",
-      cta: "AtoM-Net",
+      body: "Teaching a model to read two brain-tumour MRI scans months apart and say whether the tumour grew — RECAP-Net, ranked 3rd worldwide in a 2025 international challenge and presented at MICCAI, the main conference for AI in medical imaging.",
+      href: "https://link.springer.com/10.1007/978-3-032-16370-7_23",
+      cta: "Read the RECAP-Net paper",
       image: "gallery:5",
     },
     {
       title: "Engineering",
-      body: "An AI Enablement Agent for 35,000 Optum employees, and PyAMorph — signed distance functions for simulation-ready geometry at IIT Madras.",
+      body: "An internal assistant that helped up to 35,000 employees at a healthcare company find the approved way to use AI for their role; and PyAMorph, a library at IIT Madras that turns images and CAD models into geometry a physics simulation can run on.",
       href: "/projects/pysdf",
       cta: "PyAMorph",
       image: "project:pysdf",
     },
     {
       title: "Open source",
-      body: "Fifteen-plus merged pull requests across the BrainGlobe ecosystem, and a leading contributor to brainglobe-registration.",
+      body: "Fifteen-plus merged pull requests to BrainGlobe, the open-source toolkit neuroscience labs use to map whole-brain microscopy images; a leading contributor to its image-alignment tool.",
       href: "https://github.com/brainglobe/brainglobe-registration",
       cta: "brainglobe-registration",
       image: "gallery:1",
@@ -99,9 +102,9 @@ export const experience = {
       role: "AI Engineer Intern — AI-DLC Pilot Team",
       when: "Jun – Aug 2026",
       points: [
-        "Built an AI Enablement Agent, on Optum's Mesh agents framework in TypeScript, to help up to 35,000 employees find the governed AI patterns for their role.",
-        "Built a deterministic Judge LLM for an internal AI-DLC hackathon that scored how well teams adopted the lifecycle, consistently enough to support the human judges.",
-        "Interviewed seven SME roles — up to six people each — and turned the interviews into role-specific workflows, skills, prompts, and guardrails.",
+        "Built an internal assistant, in TypeScript on the company's agent framework, that helps up to 35,000 employees find the approved, governed way to use AI for their specific role — instead of searching policy documents.",
+        "Built an automated judge for an internal hackathon: a model that scored, consistently and by fixed rules, how well each team followed AI-DLC (the company's development process, where every change carries a written plan and record), so the human judges had a reliable second opinion.",
+        "Interviewed seven kinds of specialist — up to six people each — and turned what they told me into role-specific workflows, prompts, and guardrails the assistant could hand out.",
       ],
     },
     {
@@ -109,16 +112,16 @@ export const experience = {
       role: "Research Intern — Scientific Computing (remote)",
       when: "Jan 2026 – present",
       points: [
-        "Developing PyAMorph, a Python library for 2D/3D signed distance functions that turns images, CAD models, and analytical inputs into simulation-ready geometry.",
-        "CSG operations and STL-to-SDF conversion integrated with AMReX MultiFab, with GPU-accelerated bindings.",
-        "Selected for an oral presentation at INCAM 2026, IIT Kanpur; publication in a Scopus-indexed journal to follow.",
+        "Developing PyAMorph, a Python library that turns images, CAD models, and equations into geometry a physics simulation can run on. It works by computing, for every point in space, how far it is from the nearest surface (a signed distance function).",
+        "Added shape combination (union, subtraction, intersection), conversion from standard 3D mesh files (STL), and GPU-accelerated bindings, all plugged into AMReX — the US Department of Energy's framework for large simulations on supercomputers.",
+        "The work was selected for an oral presentation at INCAM 2026, India's national applied-mathematics conference, at IIT Kanpur; a journal paper is in preparation.",
       ],
     },
     {
       company: "Amazon",
       role: "Amazon ML Summer School",
       when: "Jul – Aug 2026",
-      points: ["Selected for Amazon's ML Summer School cohort."],
+      points: ["Selected for Amazon's competitive machine-learning summer programme for students."],
     },
   ],
 };
@@ -131,39 +134,39 @@ export const selectedProjects = {
 
 export const closing = {
   title: "Open to what's next.",
-  body: "SDE and research internships for 2026–27. If you work on medical imaging, scientific computing, or agents that have to be right, I'd like to hear from you.",
+  body: "Looking for software-engineering and research internships in 2026–27. If you work on medical imaging, scientific computing, or AI systems that have to be right, I'd like to hear from you.",
 };
 
 export const story = {
   title: "Story",
   intro: [
-    "I'm a pre-final-year Computer Science student, specialising in AI, at Netaji Subhas University of Technology in Delhi, and an undergraduate researcher at NexGenLab NSUT. My work sits where machine learning meets medicine: computer vision, neuroimaging, and the pipelines that make a model's answer trustworthy enough to check against a radiologist's.",
-    "Most of it started with one question — can a model tell, from two MRI scans months apart, whether a glioblastoma is progressing? That became RECAP-Net, a World Rank 3 finish in the BraTS Lighthouse 2025 Tumor Progression Challenge, and an oral presentation at MICCAI 2025 in South Korea.",
+    "I'm a pre-final-year Computer Science student, specialising in AI, at Netaji Subhas University of Technology in Delhi, and an undergraduate researcher at NexGenLab NSUT. My work sits where machine learning meets medicine: computer vision, brain imaging, and the pipelines that make a model's answer trustworthy enough to check against a radiologist's.",
+    "Most of it started with one question — can a model tell, from two MRI scans months apart, whether a brain tumour is growing? That became RECAP-Net. It finished 3rd worldwide in the BraTS Lighthouse 2025 Tumor Progression Challenge — an international competition where every team's model is scored on the same hidden set of brain-tumour scans — and I presented it as a talk at MICCAI 2025 in South Korea, the main conference for AI in medical imaging.",
   ],
   statement:
     "I like research that ends in something running, and engineering that ends in something published.",
   more: [
-    "Since then the work has widened. At IIT Madras I develop PyAMorph, a signed-distance-function library for simulation-ready geometry. At Optum I spent a summer on the pilot team bringing AI-DLC — a development lifecycle where every change carries its written rationale — to a 35,000-person organisation. And in open source I'm one of the top contributors to the BrainGlobe ecosystem, where neuroscience labs register whole-brain images.",
-    "Away from the keyboard: 1000+ solved problems across LeetCode and GeeksforGeeks, All India Rank 14 in BRAINDEAD, and a top-30 finish at the AI4Humanity Summit. I'm open to SDE and research internships.",
+    "Since then the work has widened. At IIT Madras I develop PyAMorph, a library that turns images and CAD models into geometry a physics simulation can run on. At Optum (UnitedHealth Group) I spent a summer on the team piloting AI-DLC — a way of building software where every change carries a written plan and record — across a 35,000-person organisation. And in open source I'm one of the top contributors to BrainGlobe, the toolkit neuroscience labs use to align whole-brain microscopy images to a standard atlas.",
+    "Away from the keyboard: 1000+ solved programming problems across LeetCode and GeeksforGeeks, All India Rank 14 in the BRAINDEAD data-science competition, and a top-30 finish among 150+ teams at the AI4Humanity Summit. I'm open to software-engineering and research internships.",
   ],
   education: [
-    { name: "Netaji Subhas University of Technology, New Delhi", detail: "B.Tech CSE (AI) · GPA 8.78 · class of 2027" },
+    { name: "Netaji Subhas University of Technology, New Delhi", detail: "B.Tech CSE (AI) · GPA 8.78 of 10 · class of 2027" },
     { name: "Kendriya Vidyalaya No. 2, Delhi Cantt", detail: "Class XII, 95.6% · Class X, 98.4%" },
   ],
   achievements: [
     {
       title: "Top open-source contributor, BrainGlobe",
-      body: "15+ merged pull requests across the ecosystem; leading contributor to brainglobe-registration.",
+      body: "15+ merged pull requests across the ecosystem; leading contributor to brainglobe-registration, the tool that aligns a lab's brain images to a reference atlas.",
       href: "https://github.com/brainglobe/brainglobe-registration",
     },
     {
       title: "All India Rank 14 — BRAINDEAD, Unstop",
-      body: "Two builds in one competition: an EDA-and-ML pipeline and an LLM-based hybrid summariser.",
+      body: "A national data-science competition. Two builds in one entry: a data-analysis-and-prediction pipeline and a text summariser that pairs a language model with classical methods.",
       href: "https://github.com/HARSHDIPSAHA/braindead_1-2",
     },
     {
       title: "Top 30 of 150+ teams — AI4Humanity Summit",
-      body: "Pitched Accurate Precise Timely, an AI-powered hospital scheduling system, offline at the summit held with the Israel Embassy.",
+      body: "Pitched Accurate Precise Timely, an AI-powered hospital scheduling system, in person at the summit held with the Israel Embassy.",
       href: "https://github.com/HARSHDIPSAHA/APT",
     },
   ],
@@ -183,9 +186,9 @@ export const story = {
 };
 
 export const publication = {
-  title: "RECAP-Net: longitudinal glioblastoma response classification",
-  venue: "MICCAI 2025, South Korea — oral presentation",
-  result: "World Rank 3, BraTS Lighthouse 2025 Tumor Progression Challenge",
+  title: "RECAP-Net: does the tumour grow? Classifying glioblastoma response from paired MRI scans",
+  venue: "MICCAI 2025, South Korea — oral presentation. Published in Springer Lecture Notes in Computer Science.",
+  result: "3rd worldwide, BraTS Lighthouse 2025 Tumor Progression Challenge — every team's model scored on the same hidden brain-tumour scans.",
   links: [
     { label: "Paper", href: "https://link.springer.com/10.1007/978-3-032-16370-7_23" },
     { label: "Code", href: "https://github.com/HARSHDIPSAHA/brats_response_project" },
@@ -196,39 +199,61 @@ export const footer = {
   colophon: [
     "Set in Instrument Serif and Commissioner.",
     "The brain is the ICBM 152 Nonlinear Symmetric 2009a T1 template, © 1993–2009 Louis Collins, McConnell Brain Imaging Centre, Montreal Neurological Institute, McGill University. Used with permission under its distribution licence.",
-    "Built with Next.js, Motion and Lenis; statically exported to GitHub Pages. Every change to this site is recorded as an AI-DLC effort and every structural decision as an ADR — see /process.",
+    "Built with Next.js, Motion and Lenis; statically exported to GitHub Pages. Every change to this site is planned and recorded before it ships, and every structural decision is written down — see /process for how.",
   ],
 };
 
 export const process = {
   title: "Process",
   headline:
-    "This site is also a worked example. It's built with AI-DLC — the AI-Driven Development Lifecycle I worked on at Optum — where every change is a numbered effort and every structural decision is written down as an ADR before it's forgotten.",
+    "You can retrace every change ever made to this site. It's built with AI-DLC (the AI-Driven Development Lifecycle): a way of working where each change starts as a short written plan, is approved, built, checked, and closed with a record — and where every decision about how the site is put together is written down as an ADR (an Architecture Decision Record: one page saying what was chosen, what else was considered, and why).",
+  why: "I keep this page because the habit matters more than the website. It's the same discipline I use on a research pipeline: leave enough of a written trail that a reviewer can retrace every step without asking me. The site is the worked example you can open.",
   stats: [
-    { value: "13", label: "efforts recorded" },
-    { value: "11", label: "decisions (ADRs)" },
-    { value: "5", label: "repo layers" },
-    { value: "1", label: "CI gate that rejects undocumented change" },
+    { value: "15", label: "changes recorded, numbered 001–015, since January 2026" },
+    { value: "11", label: "decisions written down, numbered 0001–0011" },
+    { value: "2", label: "of those decisions later replaced — kept in the record, marked superseded" },
+    { value: "1", label: "automated check that blocks any change arriving without its record" },
   ],
-  layers: [
-    { name: "Context", purpose: "How any agent should behave in this repo", paths: ["AGENTS.md", "CLAUDE.md", "CONTEXT.md", "AGENT_WORKFLOWS.md"] },
-    { name: "Knowledge", purpose: "Decisions and documentation that outlive the commit", paths: ["docs/adr/", "docs/how-to/", "docs/reference/", "docs/explanation/"] },
-    { name: "Record", purpose: "One folder per change, with intent, stages and verification", paths: ["aidlc-docs/efforts/", "aidlc-docs/registry.md", "aidlc-docs/audit.md"] },
-    { name: "Product", purpose: "The software itself", paths: ["src/", "content/", "scripts/"] },
-    { name: "Quality gates", purpose: "What must hold before anything ships", paths: [".github/workflows/aidlc-check.yml", ".github/workflows/deploy.yml"] },
+  flowLabel: "How one change moves through",
+  flow: [
+    {
+      step: "Inception",
+      body: "Once, at the start: write down what the site must do, how it's structured, and what it runs on. Everything after is measured against this baseline.",
+      artefact: "aidlc-docs/inception/",
+    },
+    {
+      step: "Plan",
+      body: "Every change gets a number and a short note: what changes against the baseline, and which files are expected to move.",
+      artefact: "aidlc-docs/efforts/NNN/requirements-delta.md",
+    },
+    {
+      step: "Approve",
+      body: "A person reads the plan and says go. The approval is logged, with the date.",
+      artefact: "aidlc-docs/audit.md",
+    },
+    {
+      step: "Build",
+      body: "The actual code and copy change. All text lives in one typed file and project write-ups in one folder, so nothing is buried inside components.",
+      artefact: "src/  ·  content/",
+    },
+    {
+      step: "Verify",
+      body: "The type-check and full build must pass. An automated check then refuses any change that arrives without its record, so the paperwork can't quietly fall behind the code.",
+      artefact: "npm run typecheck  ·  .github/workflows/aidlc-check.yml",
+    },
+    {
+      step: "Decide and close",
+      body: "If the change altered how the site is put together, the reasoning becomes a numbered ADR. The change is marked complete and indexed, so the history reads in order.",
+      artefact: "docs/adr/  ·  effort-state.md  ·  registry.md",
+    },
   ],
+  decisionsLabel: "Decisions, in one line each",
   decisions: [
-    { id: "0001", title: "Once UI / Next.js portfolio template", status: "Superseded" },
-    { id: "0002", title: "Static export to GitHub Pages", status: "Accepted" },
-    { id: "0003", title: "Flatten template into repo root", status: "Accepted" },
-    { id: "0004", title: "Content-as-code with a typed schema", status: "Accepted" },
-    { id: "0005", title: "Drop-zone image pipeline", status: "Accepted" },
-    { id: "0006", title: "Prune template demo content", status: "Accepted" },
-    { id: "0007", title: "MDX per project content model", status: "Accepted" },
-    { id: "0008", title: "Adopt AI-DLC and a docs-first structure", status: "Accepted" },
-    { id: "0009", title: "CI-enforced AI-DLC recording", status: "Accepted" },
-    { id: "0010", title: "Segmentation-overlay design system", status: "Superseded" },
-    { id: "0011", title: "Rebuild from scratch on the thine.com model", status: "Accepted" },
+    { id: "0002", title: "Publish as plain static files on GitHub Pages", why: "nothing to host, patch, or pay for on a site that changes a few times a year." },
+    { id: "0004", title: "Keep every word of copy in one typed file", why: "a renamed field fails the build instead of rendering as a blank." },
+    { id: "0009", title: "Let an automated check block undocumented change", why: "the advisory version of this rule was skipped within hours; a gate is not." },
+    { id: "0011", title: "Rebuild the site from scratch on a new visual model", why: "two redesigns on the old template hit the same ceiling; this decision replaces two earlier ones." },
   ],
+  decisionsNote: "Two earlier decisions (0001, 0010) were later reversed. They stay in the register, marked superseded, so the history stays honest and readable.",
   repo: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io",
 };

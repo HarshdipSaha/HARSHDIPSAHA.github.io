@@ -5,7 +5,8 @@ import { process } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Process",
-  description: "How this site is built: AI-DLC efforts, architecture decision records, and a docs-first repo.",
+  description:
+    "How this site is made: every change is planned, approved, built, checked and recorded, and every structural decision is written down. The site is the worked example.",
   alternates: { canonical: "/process" },
 };
 
@@ -31,30 +32,20 @@ export default function ProcessPage() {
 
       <Reveal>
         <section>
-          <Label>Repository layers</Label>
-          <ul className="hairline mt-4 divide-y divide-white/10 border-y">
-            {process.layers.map((l) => (
-              <li key={l.name} className="grid gap-2 py-5 md:grid-cols-[9rem_1fr]">
-                <p className="font-medium text-paper">{l.name}</p>
-                <div>
-                  <p className="text-paper/75">{l.purpose}</p>
-                  <p className="mt-2 font-mono text-[12.5px] text-paper/45">{l.paths.join("  ·  ")}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </Reveal>
-
-      <Reveal>
-        <section>
-          <Label>Decisions</Label>
+          <Label>{process.flowLabel}</Label>
           <ol className="hairline mt-4 divide-y divide-white/10 border-y">
-            {process.decisions.map((d) => (
-              <li key={d.id} className="flex items-baseline gap-5 py-3.5">
-                <span className="font-mono text-[12.5px] text-paper/45 tabular-nums">{d.id}</span>
-                <span className="flex-1 text-paper/85">{d.title}</span>
-                <span className={d.status === "Accepted" ? "text-xs text-seafoam" : "text-xs text-paper/40"}>{d.status}</span>
+            {process.flow.map((f, i) => (
+              <li key={f.step} className="grid gap-2 py-5 md:grid-cols-[9rem_1fr]">
+                <p className="font-medium text-paper">
+                  <span aria-hidden="true" className="mr-3 font-mono text-[12.5px] text-paper/45 tabular-nums">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {f.step}
+                </p>
+                <div>
+                  <p className="text-paper/75">{f.body}</p>
+                  <p className="mt-2 font-mono text-[12.5px] text-paper/45 [overflow-wrap:anywhere]">{f.artefact}</p>
+                </div>
               </li>
             ))}
           </ol>
@@ -62,12 +53,34 @@ export default function ProcessPage() {
       </Reveal>
 
       <Reveal>
+        <section>
+          <Label>{process.decisionsLabel}</Label>
+          <ol className="hairline mt-4 divide-y divide-white/10 border-y">
+            {process.decisions.map((d) => (
+              <li key={d.id} className="flex items-baseline gap-5 py-4">
+                <span className="font-mono text-[12.5px] text-paper/45 tabular-nums">{d.id}</span>
+                <p className="flex-1 leading-relaxed">
+                  <span className="text-paper/85">{d.title}</span>
+                  <span className="text-paper/55"> — {d.why}</span>
+                </p>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-4 text-sm leading-relaxed text-paper/55">{process.decisionsNote}</p>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <p className="prose">{process.why}</p>
+      </Reveal>
+
+      <Reveal>
         <div className="flex flex-wrap gap-3">
           <Pill href={process.repo} variant="accent">
-            Read the repository ↗
+            Open the repository ↗
           </Pill>
-          <Pill href={`${process.repo}/tree/main/docs/adr`}>All ADRs ↗</Pill>
-          <Pill href={`${process.repo}/tree/main/aidlc-docs`}>Effort records ↗</Pill>
+          <Pill href={`${process.repo}/tree/main/docs/adr`}>All 11 decisions ↗</Pill>
+          <Pill href={`${process.repo}/tree/main/aidlc-docs/efforts`}>All 15 change records ↗</Pill>
         </div>
       </Reveal>
     </article>

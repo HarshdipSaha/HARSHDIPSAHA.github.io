@@ -9,4 +9,55 @@ link: "https://github.com/HARSHDIPSAHA/Agentic-Loan-Assistant-Chatbot"
 
 ## Overview
 
-Agentic loan assistant chatbot built for EY Hackathon 2025.
+An AI-powered loan origination system that lets users apply for a loan through either a website chat or WhatsApp. Both channels feed into a single Master Agent, which orchestrates verification, risk assessment, underwriting and document generation, and returns the outcome (including the sanction letter) on whichever channel the user started from.
+
+Demo video: [YouTube](https://www.youtube.com/watch?v=liPhNCAfjFg)
+
+## What it does
+
+- Website chat and WhatsApp chat support
+- AI-driven conversation using a Groq LLM
+- KYC and document verification
+- Credit and risk assessment using XGBoost
+- Automated loan approval or rejection
+- Sanction letter PDF generation, delivered via WhatsApp or as a website download
+- Multilingual support via Deeptranslator
+
+The WhatsApp user flow, as described in the README:
+
+1. User sends "Hi"; the bot creates a new session
+2. Bot asks for a phone number and validates it
+3. Bot collects loan amount, loan purpose and monthly income
+4. Bot requests KYC documents, which are then verified
+5. Credit score is fetched and the XGBoost risk model is executed
+6. Loan is approved or rejected; if approved, a sanction letter PDF is generated and sent via WhatsApp, with a website download link provided as well
+
+## How it's built
+
+High-level architecture:
+
+- Website Chat → Flask API
+- WhatsApp → Twilio → Flask webhook
+- Flask → Master Agent → specialized agents → backend systems
+- Output → website / WhatsApp
+
+Stack:
+
+| Layer | Technology |
+| --- | --- |
+| Backend | Flask (Python) |
+| AI | Groq LLM |
+| Risk model | XGBoost |
+| Messaging | Twilio WhatsApp API |
+| Tunneling | Ngrok |
+| PDF generation | ReportLab |
+| Document parsing | OCR / NLP |
+| Frontend | React + TypeScript (Vite) |
+| Authentication | Firebase |
+| Multilingual | Deeptranslator |
+
+For WhatsApp, a separate Flask server (`whatsapp_bot.py`) runs on port 5000, is exposed publicly through Ngrok, and its `/webhook` URL is registered in the Twilio WhatsApp Sandbox.
+
+## Context
+
+Built for EY Hackathon 2025.

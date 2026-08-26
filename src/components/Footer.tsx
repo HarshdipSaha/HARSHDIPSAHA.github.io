@@ -2,11 +2,11 @@ import Link from "next/link";
 import { footer, nav, person } from "@/content/site";
 import { Container } from "./ui";
 
+// Résumé lives in the header pill and the Closing CTA row, not here — one home per item.
 const elsewhere = [
   { label: "GitHub", href: person.github },
   { label: "LinkedIn", href: person.linkedin },
   { label: "Email", href: `mailto:${person.email}` },
-  { label: "Résumé", href: person.resume },
 ];
 
 export function Footer() {

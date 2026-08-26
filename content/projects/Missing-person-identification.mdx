@@ -9,4 +9,29 @@ link: "https://github.com/HARSHDIPSAHA/Missing-person-identification-and-managem
 
 ## Overview
 
-AI-powered system for detecting missing persons in crowds using facial recognition. Top 45 at SIH 2024.
+A face-recognition surveillance and communication system for locating missing persons at Simhastha Ujjain, a mass gathering attended by millions of people. It automates identification of missing persons from live video feeds, notifies police and families when a match is found, and gives both the public and police staff a simple interface for filing reports and monitoring alerts.
+
+A frontend deployment is available at [missing-person-identification.netlify.app](https://missing-person-identification.netlify.app/); the backend deployment was removed due to insufficient Azure credits.
+
+## What it does
+
+- **Real-time face recognition:** identifies missing persons from live video feeds, speeding up detection.
+- **Live video monitoring:** continuously compares detected faces against stored records for potential matches.
+- **Image enhancement:** GFPGAN improves the quality of user-uploaded photos to support accurate identification.
+- **Instant communication:** Twilio sends notifications to police and families when a match is detected.
+- **Centralized dashboard:** police can access missing-person reports, live feeds and real-time alerts in one place.
+- **Scalable architecture:** designed to handle the volume of data generated at an event the size of Simhastha Ujjain.
+- **User-friendly interfaces:** separate, accessible interfaces for the public (filing reports) and police staff (monitoring alerts).
+
+## How it's built
+
+Technologies used, as listed in the README:
+
+- **Backend / frontend:** Django, React JS, MySQL
+- **Vision:** OpenCV, Google Cloud Vision API, Hugging Face's GFPGAN
+- **Messaging:** Twilio
+- **Cloud and infrastructure:** Google Cloud, Azure Blob Storage, Redis
+
+## Context
+
+Built by team "ERROR 404 : CHANGE FOUND?" (six members, led by me) for Smart India Hackathon 2024, where it placed in the top 45.

@@ -29,6 +29,12 @@ function ProgressiveBlur() {
   );
 }
 
+/** "Home" leads the route list in the header only. The `nav` array in site.ts
+ *  feeds the footer and sitemap too, and the footer already lists Home
+ *  separately, so the header adds it here instead of in the shared array. */
+const HOME = { label: "Home", href: "/" };
+const routes = [HOME, ...nav];
+
 export function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -41,23 +47,34 @@ export function Nav() {
     };
   }, [open]);
 
+  const isCurrent = (href: string) => (href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`));
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-20">
       <ProgressiveBlur />
       <nav className="relative mx-auto flex h-full max-w-[1400px] items-center justify-between px-5 md:px-8" aria-label="Primary">
         <ul className="hidden items-center gap-2 md:flex">
-          {nav.map((n) => (
-            <li key={n.href}>
-              <Pill href={n.href} size="sm" className={clsx(pathname === n.href && "bg-white/15")}>
-                {n.label}
-              </Pill>
-            </li>
-          ))}
+          {routes.map((n) => {
+            const current = isCurrent(n.href);
+            return (
+              <li key={n.href}>
+                <Pill
+                  href={n.href}
+                  size="sm"
+                  aria-current={current ? "page" : undefined}
+                  className={clsx(current && "bg-white/15 text-paper hover:bg-white/20")}
+                >
+                  {current && <span aria-hidden="true" className="size-1.5 rounded-full bg-tangerine" />}
+                  {n.label}
+                </Pill>
+              </li>
+            );
+          })}
         </ul>
 
         <Link
           href="/"
-          className="display text-[1.55rem] leading-none text-paper md:absolute md:left-1/2 md:-translate-x-1/2"
+          className="display text-[1.55rem] leading-none text-paper transition-colors hover:text-white md:absolute md:left-1/2 md:-translate-x-1/2"
           aria-label={`${person.name} — home`}
         >
           {person.firstName}
@@ -88,13 +105,21 @@ export function Nav() {
         )}
       >
         <ul className="flex flex-col gap-1">
-          {nav.map((n) => (
-            <li key={n.href}>
-              <Link href={n.href} className="display block py-3 text-5xl text-paper">
-                {n.label}
-              </Link>
-            </li>
-          ))}
+          {routes.map((n) => {
+            const current = isCurrent(n.href);
+            return (
+              <li key={n.href}>
+                <Link
+                  href={n.href}
+                  aria-current={current ? "page" : undefined}
+                  className={clsx("display flex items-center gap-4 py-3 text-5xl", current ? "text-paper" : "text-paper/70")}
+                >
+                  {n.label}
+                  {current && <span aria-hidden="true" className="size-2 rounded-full bg-tangerine" />}
+                </Link>
+              </li>
+            );
+          })}
           <li className="pt-6">
             <Pill href={person.resume} variant="accent">
               Résumé <span aria-hidden="true">↗</span>

@@ -42,7 +42,7 @@ export function CardStack({ cards }: { cards: StackCard[] }) {
 
   if (reduced) {
     return (
-      <div className="flex flex-col gap-8 px-4 md:px-8">
+      <div ref={ref} className="flex flex-col gap-8 px-4 md:px-8">
         {cards.map((c) => (
           <Card key={c.title} card={c} />
         ))}
@@ -76,7 +76,18 @@ function StickyCard({ card, index, total, progress }: { card: StackCard; index: 
 function Card({ card }: { card: StackCard }) {
   return (
     <article className="relative h-[76vh] max-h-[820px] w-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-ink-2">
-      <img src={card.src} alt="" className="absolute inset-0 h-full w-full object-cover" decoding="async" />
+      {/* The one slow moment on the page: the photograph settles from 1.1 to 1
+          over three seconds the first time the card is seen (power3.out). */}
+      <motion.img
+        src={card.src}
+        alt=""
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
+        initial={{ scale: 1.1 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true, amount: 0.35 }}
+        transition={{ duration: 3, ease: [0.215, 0.61, 0.355, 1] }}
+      />
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
       <div className="absolute inset-x-0 bottom-0 p-7 md:p-12">
         <h3 className="over-photo text-[2.6rem] font-semibold leading-none tracking-tight text-white md:text-[3.25rem]">{card.title}</h3>

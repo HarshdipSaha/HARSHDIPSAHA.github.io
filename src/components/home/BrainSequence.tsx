@@ -23,6 +23,51 @@ const WINDOWS: [number, number][] = [
   [0.72, 0.96],
 ];
 
+/**
+ * Illustrative segmentation: during the "RECAP-Net reads the pair" stage, a
+ * soft tangerine outline grows and shrinks across ~40 slices over the right
+ * parietal region, the way a tumour's cross-section appears and disappears as
+ * you pass through it. It is drawn on a population-average template brain and
+ * labelled as illustrative — there is no patient data anywhere on this site.
+ */
+const SEG = { from: 58, to: 102, u: 0.635, v: 0.42, r: 0.075 };
+function drawSegmentation(ctx: CanvasRenderingContext2D, frame: number, x0: number, y0: number, s: number, dpr: number) {
+  const t = (frame - SEG.from) / (SEG.to - SEG.from);
+  if (t <= 0 || t >= 1) return;
+  const a = Math.sin(Math.PI * t); // 0 → 1 → 0 across the slices
+  const cx = x0 + s * SEG.u, cy = y0 + s * SEG.v, R = s * SEG.r * (0.35 + 0.65 * a);
+  ctx.save();
+  ctx.beginPath();
+  for (let k = 0; k <= 72; k++) {
+    const th = (k / 72) * Math.PI * 2;
+    const r = R * (1 + 0.16 * Math.sin(3 * th + 1.3) + 0.09 * Math.sin(5 * th + 0.4) + 0.06 * Math.sin(7 * th + 2.1));
+    const px = cx + Math.cos(th) * r, py = cy + Math.sin(th) * r * 0.92;
+    k === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.globalAlpha = Math.min(1, a * 1.6);
+  ctx.fillStyle = "rgba(244, 151, 82, 0.14)";
+  ctx.fill();
+  ctx.shadowColor = "rgba(244, 151, 82, 0.9)";
+  ctx.shadowBlur = 14 * dpr;
+  ctx.strokeStyle = "#f49752";
+  ctx.lineWidth = 1.75 * dpr;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  // Leader line + label, to the right of the outline.
+  const lx = cx + R * 1.25, ly = cy - R * 0.9, ex = lx + 28 * dpr;
+  ctx.strokeStyle = "rgba(244, 151, 82, 0.7)";
+  ctx.lineWidth = 1 * dpr;
+  ctx.beginPath(); ctx.moveTo(cx + R * 0.7, cy - R * 0.55); ctx.lineTo(lx, ly); ctx.lineTo(ex, ly); ctx.stroke();
+  ctx.font = `500 ${11 * dpr}px ui-monospace, Menlo, monospace`;
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "rgba(235, 229, 225, 0.85)";
+  ctx.fillText("tumour region", ex + 6 * dpr, ly - 7 * dpr);
+  ctx.fillStyle = "rgba(235, 229, 225, 0.5)";
+  ctx.fillText("illustrative · template brain", ex + 6 * dpr, ly + 7 * dpr);
+  ctx.restore();
+}
+
 const frameSrc = (tier: string, i: number) => `/brain/${tier}/${String(i).padStart(3, "0")}.webp`;
 
 /**
@@ -31,7 +76,7 @@ const frameSrc = (tier: string, i: number) => `/brain/${tier}/${String(i).padSta
  * so scrubbing works from the first decoded image instead of waiting for all
  * of them.
  */
-export function BrainSequence({ stages, eyebrow }: { stages: Stage[]; eyebrow: string }) {
+export function BrainSequence({ stages, eyebrow, hint }: { stages: Stage[]; eyebrow: string; hint: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const readoutRef = useRef<HTMLSpanElement>(null);
@@ -57,9 +102,13 @@ export function BrainSequence({ stages, eyebrow }: { stages: Stage[]; eyebrow: s
     const { width: w, height: h } = canvas;
     ctx.fillStyle = BG;
     ctx.fillRect(0, 0, w, h);
-    // Contain, with a touch of zoom so the brain fills a phone's width.
+    // Contain, with a touch of zoom so the brain fills a phone's width. In
+    // landscape the brain sits at 63% of the width so the left column stays
+    // clear for the stage copy; in portrait it is centred under a bottom scrim.
     const s = Math.min(w, h) * (w < h ? 1.12 : 1.02);
-    ctx.drawImage(img, (w - s) / 2, (h - s) / 2, s, s);
+    const cx = w > h ? w * 0.63 : w / 2;
+    ctx.drawImage(img, cx - s / 2, (h - s) / 2, s, s);
+    drawSegmentation(ctx, want, cx - s / 2, (h - s) / 2, s, Math.min(window.devicePixelRatio || 1, 1.5));
     if (readoutRef.current) readoutRef.current.textContent = `${String(want + 1).padStart(3, "0")} / ${FRAMES}`;
   };
 
@@ -126,7 +175,7 @@ export function BrainSequence({ stages, eyebrow }: { stages: Stage[]; eyebrow: s
 
   if (reduced) {
     return (
-      <section className="relative px-6 py-24 md:px-12">
+      <section ref={ref} className="relative px-6 py-24 md:px-12">
         <img src={frameSrc("1080", 84)} alt="Axial MRI slice through the ICBM 152 template brain" className="mx-auto w-full max-w-2xl rounded-2xl" width={1080} height={1080} />
         <div className="mx-auto mt-16 grid max-w-5xl gap-14 md:grid-cols-3">
           {stages.map((s) => (
@@ -145,11 +194,23 @@ export function BrainSequence({ stages, eyebrow }: { stages: Stage[]; eyebrow: s
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
         <motion.div aria-hidden="true" className="absolute inset-0 bg-black" style={{ opacity: dim }} />
 
-        {/* Viewer chrome */}
-        <div className="pointer-events-none absolute inset-x-0 top-24 flex items-start justify-between px-6 md:top-28 md:px-12">
-          <span className="label hidden !text-[11px] sm:block">{eyebrow}</span>
-          <span className="label !text-[11px] tabular-nums">
-            {pct < 100 ? `loading ${pct}%` : <>slice <span ref={readoutRef}>001 / {FRAMES}</span></>}
+        {/* Scrims: a bottom ramp under the overlay copy in portrait, a
+            left-to-right ramp behind the copy column in landscape. */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[62vh] bg-gradient-to-t from-ink via-ink/75 to-transparent md:landscape:hidden" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 hidden w-[52vw] bg-gradient-to-r from-ink via-ink/70 to-transparent md:landscape:block" />
+
+        {/* Viewer chrome: caption left, live slice readout right. */}
+        <div className="pointer-events-none absolute inset-x-0 top-24 flex items-center justify-between gap-3 px-5 md:top-28 md:px-12">
+          <span className="glass hidden items-center gap-2 rounded-full px-3.5 py-1.5 sm:inline-flex">
+            <span className="label !text-[11px] !text-paper/60">{eyebrow}</span>
+            <span aria-hidden="true" className="h-3 w-px bg-white/15" />
+            <span className="label !text-[11px]">{hint}</span>
+          </span>
+          <span className="glass inline-flex items-center gap-2 rounded-full px-3.5 py-1.5">
+            <span aria-hidden="true" className={pct < 100 ? "size-1.5 rounded-full bg-paper/40" : "size-1.5 rounded-full bg-tangerine"} />
+            <span className="label !text-[11px] !text-paper/70 tabular-nums">
+              {pct < 100 ? `loading ${pct}%` : <>slice <span ref={readoutRef}>001 / {FRAMES}</span></>}
+            </span>
           </span>
         </div>
 
@@ -170,9 +231,14 @@ function Overlay({ stage, progress, window: [a, b] }: { stage: Stage; progress: 
   const y = useTransform(progress, range, [28, 0, 0, -28]);
   const filter = useTransform(progress, range, ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"]);
   return (
-    <motion.div style={{ opacity, y, filter }} className="absolute inset-x-0 bottom-[10vh] px-6 md:bottom-[14vh] md:left-[8vw] md:right-auto md:max-w-[34rem] md:px-0">
-      <StageCopy stage={stage} interactive />
-    </motion.div>
+    // Portrait: bottom overlay above the scrim. Landscape (md+): a vertically
+    // centred left column, 7vw in, at most 42vw wide so it never reaches the
+    // brain drawn at 63%.
+    <div className="pointer-events-none absolute inset-x-0 bottom-[8vh] px-6 md:landscape:inset-y-0 md:landscape:left-[7vw] md:landscape:right-auto md:landscape:flex md:landscape:w-[min(34rem,42vw)] md:landscape:items-center md:landscape:px-0">
+      <motion.div style={{ opacity, y, filter }}>
+        <StageCopy stage={stage} interactive />
+      </motion.div>
+    </div>
   );
 }
 
@@ -181,7 +247,7 @@ function StageCopy({ stage, interactive }: { stage: Stage; interactive?: boolean
     <div className={interactive ? "pointer-events-auto" : undefined}>
       <p className="label mb-4">{stage.kicker}</p>
       <h2 className="display text-[clamp(2.4rem,5.5vw,4.6rem)] text-paper">{stage.title}</h2>
-      <p className="mt-5 max-w-[30rem] text-[1.05rem] leading-relaxed text-paper/80 md:text-lg">{stage.body}</p>
+      <p className="mt-5 max-w-[32rem] text-[1rem] leading-relaxed text-paper/85 md:text-[1.1rem]">{stage.body}</p>
       {stage.links && (
         <div className="mt-7 flex flex-wrap gap-3">
           {stage.links.map((l) => (

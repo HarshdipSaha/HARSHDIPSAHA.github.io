@@ -22,4 +22,10 @@ next-env.d.ts
 .github/skills/impeccable/
 .github/agents/impeccable-*
 .github/hooks/
-.impeccable/
+# impeccable working files: design.json + critique snapshots ARE committed (they pair with DESIGN.md);
+# screenshot reviews and live-mode config are scratch.
+.impeccable/review/
+.impeccable/live/
+
+# UI/UX Pro Max skill (nextlevelbuilder/ui-ux-pro-max-skill) — third-party, reinstall with `npx uipro-cli init`
+.github/skills/ui-ux-pro-max/

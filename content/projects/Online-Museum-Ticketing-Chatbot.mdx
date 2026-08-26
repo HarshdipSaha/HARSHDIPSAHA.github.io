@@ -9,4 +9,26 @@ link: "https://github.com/HARSHDIPSAHA/Online-Museum-Ticketing-Chatbot"
 
 ## Overview
 
-AI-powered chatbot for museum ticketing to avoid crowds.
+An online chatbot-based ticketing system for museums. Visitors can complete payment, receive their ticket and get personalised recommendations in one place, from phone or desktop, through a multilingual chatbot that is available around the clock. Visit data is also used to predict busy periods and warn upcoming travellers.
+
+A deployment was previously available at [willowy-toffee-89c6b8.netlify.app](https://willowy-toffee-89c6b8.netlify.app/); it has been removed due to insufficient AWS and Google Cloud credits.
+
+## What it does
+
+- Accessible on phone and desktop; payment, ticket generation and personalised recommendations happen in a single flow.
+- 24×7 multilingual chatbot support based on natural language processing.
+- Records every visitor's museum selection in the database to predict which times are most crowded, and alerts upcoming travellers.
+- Uses machine learning to tolerate spelling errors, and generative AI to block hateful content.
+- Uses Gemini 1.5 Flash to give a welcoming description of the chosen museum and keep the conversation engaging.
+- Museum data collected by web scraping official government sites.
+- The ticket PDF link stays active for only one minute to prevent reuse.
+
+## How it's built
+
+- **Backend:** Django (Python), with database migrations and an admin superuser
+- **Frontend:** React (react-scripts, react-router-dom, axios for backend integration)
+- **LLM:** Gemini 1.5 Flash
+
+## Context
+
+Built by team "ERROR 404 : CHANGE FOUND" (six members, led by me).
