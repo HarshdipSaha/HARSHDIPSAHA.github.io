@@ -22,7 +22,7 @@
 | 016 | 016-lexsi-additions | Additive motion and craft details from the lexsi.ai teardown | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
 | 017 | 017-project-case-studies | Project case studies written from their READMEs | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
 | 018 | 018-morph-and-segmentation | Shared-element morph and illustrative segmentation | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
-| 019 | 019-two-new-case-studies | Two new case studies: BrainwavesFinland and the Optum enablement agent | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
+| 019 | 019-two-new-case-studies | New case studies: BrainwavesFinland (SAAKSHI pending) | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
 
 ## Status summary
 
