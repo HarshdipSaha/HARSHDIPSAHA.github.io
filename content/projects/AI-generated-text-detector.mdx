@@ -9,4 +9,24 @@ link: "https://github.com/HARSHDIPSAHA/AI-generated-text-detector"
 
 ## Overview
 
-Fine-tuned models to detect AI-generated text.
+Code for fine-tuning a BERT model to detect AI-generated text. The resulting classifier labels a piece of text as either **student**-written or **AI**-generated.
+
+## What it does
+
+- A Jupyter notebook (`berttttt.ipynb`) that trains the model end to end and runs predictions.
+- A pre-trained model and tokenizer (`bert_finetuned_model`, `bert_tokenizer`) stored via Git LFS, so the classifier can be used without re-running training.
+- A small prediction helper: tokenize the input (truncated/padded to a maximum of 512 tokens), run the model without gradients, and take the argmax over logits, mapping `0 → student` and `1 → ai`.
+
+The README shows two example predictions: a sentence about blockchain "revolutionizing education" is labelled `ai` (1), and "Let us eat together any burger." is labelled `student` (0).
+
+## How it's built
+
+- **Model:** `BertForSequenceClassification` from Hugging Face Transformers, fine-tuned for binary classification
+- **Tokenizer:** `BertTokenizer`
+- **Framework:** PyTorch
+- **Environment:** Python 3.12, Jupyter Notebook; a CUDA-enabled GPU is optional but recommended for faster training
+- **Distribution:** Git LFS for the fine-tuned weights and tokenizer
+
+## Results
+
+The README does not report evaluation metrics; only the two qualitative examples above are given.

@@ -9,4 +9,21 @@ link: "https://github.com/HARSHDIPSAHA/AquilaOptimiserOptimised"
 
 ## Overview
 
-Evolutionary optimization inspired by Aquila prey-catching behavior.
+Implementations and analyses of optimization algorithms centred on the Aquila Optimizer (AO), a metaheuristic inspired by the hunting strategies of Aquilas, together with a modified variant developed in this work. The repository compares these algorithms on benchmark functions with statistical evaluation, and applies the modified variant to classical engineering design problems.
+
+## What it does
+
+- **Algorithm implementations** (`7algos/`): the Aquila Optimizer (AO), Equilibrium Optimizer (EO), Grasshopper Optimization Algorithm (GOA) and Particle Swarm Optimization (PSO), along with comparison graphs across all benchmark functions.
+- **Modified Aquila variant** (`MVAO/`): a Jupyter notebook demonstrating the modified optimizer, plus the accompanying research paper (`AQUILA_OPTIMISER_2025`).
+- **Variant comparison** (`Variants_Comparison/`): a script comparing the modified variants, with Wilcoxon test results stored as CSV.
+- **Benchmark evaluation** (`matrixEval_vs_cec/`): notes on the benchmark evaluations and Wilcoxon results for all function pairs.
+- **Engineering problems** (`mvao_on_engineering_problems/`): the modified optimizer applied to clutch brake design, speed reducer design, pressure vessel design, spring design and truss design.
+- **Reference material** (`original_aquila/`): the original Aquila optimizer code and the base paper.
+
+## How it's built
+
+Pure Python, depending only on `numpy`, `matplotlib` and `scipy`. Each algorithm is a standalone script (for example `python AO.py`), and the statistical comparisons are produced as CSV files. Licensed under MIT.
+
+## Results
+
+The README does not quote numerical results; the Wilcoxon test outputs are provided as CSV files in the repository rather than summarised in prose.

@@ -9,4 +9,29 @@ link: "https://github.com/HARSHDIPSAHA/Zombies-learning-progression-PGGAN-for-te
 
 ## Overview
 
-PGGAN-based approach for temporal brain MRI synthesis.
+An end-to-end pipeline for augmenting longitudinal brain MRI data with a Two-Generator Progressive GAN (PGGAN). The GAN generates anatomically consistent baseline and follow-up MRI pairs, and this synthetic data is used to augment limited real datasets for two downstream tasks: 3D tumor segmentation and RANO classification.
+
+Research paper (Overleaf): [read-only link](https://www.overleaf.com/read/ympnckjqwkht#db481f)
+
+## What it does
+
+The pipeline runs in five stages:
+
+1. **Train the GAN** on preprocessed real MRI volumes (`CACHED128`).
+2. **Generate synthetic data**: baseline–follow-up pairs written to `generated1070` as `.npz` files (each containing baseline and follow-up T1ce).
+3. **Train a 3D segmentation model** (CoTrSeg / nnU-Net / DynUNet) on real MRI data.
+4. **Run inference on the synthetic images** with the trained segmentation model (`visualisation128aug`).
+5. **Train a RANO classifier** with XGBoost on real plus synthetic images, their segmentation masks and radiomics features, using SMOTE to handle class imbalance.
+
+## How it's built
+
+- **Dual generators:** `G_B` generates a baseline MRI from a latent vector `z`; `G_F` generates the follow-up MRI from `z` plus baseline features, conditioned at all scales.
+- **Dual discriminators:** `D_B` for baseline and `D_F` for follow-up, trained with WGAN-GP for stability.
+- **Loss:** adversarial + λ₁·L1 + λ₂·SSIM, chosen to enforce anatomical consistency and temporal realism.
+- **Volumes:** all processing is on 128 × 128 × 128 3D volumes.
+- **Data format:** each real sample is a 10-channel `.npz` of shape `(10, 128, 128, 128)`: baseline T1/T1ce/T2/FLAIR (channels 0–3), follow-up T1/T1ce/T2/FLAIR (4–7), and baseline/follow-up masks (8–9) with labels 0 = background, 1 = edema, 2 = tumor. The T1ce channels are the ones used by the GAN and segmentation.
+- **Code layout:** `pggan/` (config, dataset, networks, train, generate), `train_cotrseg.py` / `model_cotrseg.py` for segmentation, and `train_classifier_radiomics.py` for the RANO classifier.
+
+## Results
+
+Quantitative results are not given in the README; they are deferred to the linked paper.

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { Reveal } from "@/components/motion/Reveal";
+import { MorphTarget } from "@/components/Morph";
 import { Arrow, Container, Label, Pill } from "@/components/ui";
 import { getProject, getProjects } from "@/lib/projects";
 
@@ -56,7 +57,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
 
       {p.image && (
         <Container className="mt-14 max-w-[1100px]">
-          <Reveal variant="fade">
+          <MorphTarget name={`project-${p.slug}`}>
             <img
               src={p.image.src}
               alt=""
@@ -64,7 +65,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
               height={p.image.h}
               className="w-full rounded-[1.5rem] border border-white/10 bg-ink-2 object-cover"
             />
-          </Reveal>
+          </MorphTarget>
         </Container>
       )}
 

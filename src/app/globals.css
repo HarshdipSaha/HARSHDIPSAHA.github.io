@@ -264,3 +264,31 @@ body {
 .corners > span:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; }
 .corners > span:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; }
 .corners > span:nth-child(4) { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+/* Shared-element morph between a project thumbnail and its case-study hero
+   (native View Transitions, see src/components/Morph.tsx). The page itself
+   crossfades quickly; the named image travels for 480ms with a touch of blur
+   mid-flight to hide pixel interpolation. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+}
+::view-transition-group(*) {
+  animation-duration: 480ms;
+  animation-timing-function: var(--ease-out-expo);
+}
+::view-transition-image-pair(*):not(:only-child) {
+  animation-name: via-blur;
+}
+@keyframes via-blur {
+  30% {
+    filter: blur(3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

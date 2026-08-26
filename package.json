@@ -10,7 +10,8 @@
     "start": "npx serve out",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "images": "node scripts/build-images.mjs",
-    "check:aidlc": "node scripts/check-aidlc-sync.mjs"
+    "check:aidlc": "node scripts/check-aidlc-sync.mjs",
+    "postbuild": "node scripts/postbuild-segments.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

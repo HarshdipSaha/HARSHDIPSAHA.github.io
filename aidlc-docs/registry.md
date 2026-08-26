@@ -20,17 +20,19 @@
 | 014 | 014-scroll-performance | Scroll performance, passage copy, hydration-safe reduced motion | complete | 2026-08-25 | 2026-08-25 | none | branch `extremechange` |
 | 015 | 015-ux-clarity-pass | UX clarity pass: plain-language copy, way home, brain layout | complete | 2026-08-25 | 2026-08-25 | none | branch `extremechange` |
 | 016 | 016-lexsi-additions | Additive motion and craft details from the lexsi.ai teardown | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
+| 017 | 017-project-case-studies | Project case studies written from their READMEs | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
+| 018 | 018-morph-and-segmentation | Shared-element morph and illustrative segmentation | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 16 |
+| complete | 18 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **16** |
+| **Total** | **18** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -39,4 +41,4 @@ All of efforts 001-006 and 008 were retrofitted into effort format after the fac
 
 Effort 007 was recorded as it happened (planning gate logged live) but its registry/audit entries fell out of sync with the merged PR until effort 009's cleanup. Effort 009 was the first recorded start-to-finish with no drift; effort 010 makes that mandatory — the `aidlc-check` CI gate (ADR 0009) now fails any PR whose substantive diff ships without an `aidlc-docs/` update.
 
-Next effort number: 017
+Next effort number: 019

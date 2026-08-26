@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { MorphLink } from "@/components/Morph";
 import clsx from "clsx";
 import { Group, Item } from "@/components/motion/Reveal";
 import type { Project } from "@/lib/projects";
@@ -8,11 +8,11 @@ export function ProjectGrid({ projects, columns = 3 }: { projects: Project[]; co
     <Group className={clsx("grid gap-x-8 gap-y-14 sm:grid-cols-2", columns === 3 && "lg:grid-cols-3")} stagger={0.07} amount={0.05}>
       {projects.map((p) => (
         <Item key={p.slug}>
-          <Link href={`/projects/${p.slug}`} className="group hover-trigger relative block">
+          <MorphLink href={`/projects/${p.slug}`} name={`project-${p.slug}`} className="group hover-trigger relative block">
             <span aria-hidden="true" className="corners">
               <span /><span /><span /><span />
             </span>
-            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-ink-2">
+            <div data-morph className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-ink-2">
               {p.image ? (
                 <img
                   src={p.image.src}
@@ -32,7 +32,7 @@ export function ProjectGrid({ projects, columns = 3 }: { projects: Project[]; co
               <span className="shrink-0 text-sm text-paper/40 tabular-nums">{p.year}</span>
             </div>
             <p className="mt-2 line-clamp-2 text-[0.98rem] leading-relaxed text-paper/60">{p.summary}</p>
-          </Link>
+          </MorphLink>
         </Item>
       ))}
     </Group>

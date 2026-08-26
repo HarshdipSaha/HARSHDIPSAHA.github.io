@@ -23,6 +23,51 @@ const WINDOWS: [number, number][] = [
   [0.72, 0.96],
 ];
 
+/**
+ * Illustrative segmentation: during the "RECAP-Net reads the pair" stage, a
+ * soft tangerine outline grows and shrinks across ~40 slices over the right
+ * parietal region, the way a tumour's cross-section appears and disappears as
+ * you pass through it. It is drawn on a population-average template brain and
+ * labelled as illustrative — there is no patient data anywhere on this site.
+ */
+const SEG = { from: 58, to: 102, u: 0.635, v: 0.42, r: 0.075 };
+function drawSegmentation(ctx: CanvasRenderingContext2D, frame: number, x0: number, y0: number, s: number, dpr: number) {
+  const t = (frame - SEG.from) / (SEG.to - SEG.from);
+  if (t <= 0 || t >= 1) return;
+  const a = Math.sin(Math.PI * t); // 0 → 1 → 0 across the slices
+  const cx = x0 + s * SEG.u, cy = y0 + s * SEG.v, R = s * SEG.r * (0.35 + 0.65 * a);
+  ctx.save();
+  ctx.beginPath();
+  for (let k = 0; k <= 72; k++) {
+    const th = (k / 72) * Math.PI * 2;
+    const r = R * (1 + 0.16 * Math.sin(3 * th + 1.3) + 0.09 * Math.sin(5 * th + 0.4) + 0.06 * Math.sin(7 * th + 2.1));
+    const px = cx + Math.cos(th) * r, py = cy + Math.sin(th) * r * 0.92;
+    k === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.globalAlpha = Math.min(1, a * 1.6);
+  ctx.fillStyle = "rgba(244, 151, 82, 0.14)";
+  ctx.fill();
+  ctx.shadowColor = "rgba(244, 151, 82, 0.9)";
+  ctx.shadowBlur = 14 * dpr;
+  ctx.strokeStyle = "#f49752";
+  ctx.lineWidth = 1.75 * dpr;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  // Leader line + label, to the right of the outline.
+  const lx = cx + R * 1.25, ly = cy - R * 0.9, ex = lx + 28 * dpr;
+  ctx.strokeStyle = "rgba(244, 151, 82, 0.7)";
+  ctx.lineWidth = 1 * dpr;
+  ctx.beginPath(); ctx.moveTo(cx + R * 0.7, cy - R * 0.55); ctx.lineTo(lx, ly); ctx.lineTo(ex, ly); ctx.stroke();
+  ctx.font = `500 ${11 * dpr}px ui-monospace, Menlo, monospace`;
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "rgba(235, 229, 225, 0.85)";
+  ctx.fillText("tumour region", ex + 6 * dpr, ly - 7 * dpr);
+  ctx.fillStyle = "rgba(235, 229, 225, 0.5)";
+  ctx.fillText("illustrative · template brain", ex + 6 * dpr, ly + 7 * dpr);
+  ctx.restore();
+}
+
 const frameSrc = (tier: string, i: number) => `/brain/${tier}/${String(i).padStart(3, "0")}.webp`;
 
 /**
@@ -63,6 +108,7 @@ export function BrainSequence({ stages, eyebrow, hint }: { stages: Stage[]; eyeb
     const s = Math.min(w, h) * (w < h ? 1.12 : 1.02);
     const cx = w > h ? w * 0.63 : w / 2;
     ctx.drawImage(img, cx - s / 2, (h - s) / 2, s, s);
+    drawSegmentation(ctx, want, cx - s / 2, (h - s) / 2, s, Math.min(window.devicePixelRatio || 1, 1.5));
     if (readoutRef.current) readoutRef.current.textContent = `${String(want + 1).padStart(3, "0")} / ${FRAMES}`;
   };
 
