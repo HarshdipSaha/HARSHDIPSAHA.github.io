@@ -42,6 +42,7 @@ const PROJECT_MAP = {
   "yotube langchain.jpg": "youtube-langchain",
   "zombies learning.png": "zombies-learning",
   "brainwaves finland.png": "brainwaves-finland",
+  "saakshi.png": "saakshi",
 };
 
 const cache = await readFile(CACHE, "utf8").then(JSON.parse).catch(() => ({}));
