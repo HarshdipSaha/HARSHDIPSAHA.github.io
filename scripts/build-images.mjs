@@ -41,6 +41,8 @@ const PROJECT_MAP = {
   "tomato disease.webp": "tomato-disease",
   "yotube langchain.jpg": "youtube-langchain",
   "zombies learning.png": "zombies-learning",
+  "optum ai enablement.png": "optum-ai-enablement",
+  "brainwaves finland.png": "brainwaves-finland",
 };
 
 const cache = await readFile(CACHE, "utf8").then(JSON.parse).catch(() => ({}));

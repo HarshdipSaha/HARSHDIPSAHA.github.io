@@ -1,0 +1,59 @@
+---
+title: "AI Enablement Agent — Optum"
+publishedAt: "2026-08-01"
+summary: "An internal assistant that helps up to 35,000 employees find the approved way to use AI for their role, plus an automated judge for an AI-DLC hackathon. Built on the AI-DLC pilot team."
+images:
+  - "/img/projects/optum-ai-enablement.webp"
+---
+
+## Overview
+
+Large companies have a specific AI problem: not a shortage of tools, but a shortage of *permission that
+people can find*. There are approved models, approved prompts, security rules and role-specific
+guidance — spread across policy documents that nobody reads at the moment they need them. So people
+either don't use AI, or use it in ways nobody sanctioned.
+
+During my internship on Optum's AI-DLC pilot team (June–August 2026) I built an **AI Enablement Agent**:
+an internal assistant that answers one question for any employee — *"what is the approved, governed
+way for someone in my role to use AI for this?"* — and hands them the pattern, the prompt, the guardrail
+and the place to start. It is designed to serve up to 35,000 employees.
+
+## How it works, simply
+
+1. **It knows who is asking.** The agent reads the employee's role and identity from the company's
+   systems, so an AI engineer, a data engineer and a product manager asking the same question get
+   different, correct answers.
+2. **It answers from a curated library, not from the open internet.** Behind it sits a library of
+   role-specific *workflows, skills, prompts and safety guardrails* — the governed patterns the
+   organisation has actually approved.
+3. **The library was built from people, not guesswork.** I interviewed seven kinds of specialist —
+   AI/ML engineers, technical programme managers, software engineers, data engineers and others, up to
+   six people per role — about how they really work and where AI helped or hurt. Those interviews
+   became the role-specific content the agent hands out, and a library structure that new roles and
+   teams can be added to.
+4. **It's built on the company's own agent framework** (internal "Mesh" agents) in TypeScript, so it
+   runs where the rest of the organisation's agents run and inherits their governance.
+
+## The second build: a judge that scores process, not just output
+
+The pilot team ran an internal hackathon on **AI-DLC** — the AI-Driven Development Lifecycle, a way of
+working where every change starts as a written plan, is approved, built, checked and closed with a
+record. Judging that fairly is hard: the question is not "does the demo work?" but "did the team
+actually follow the lifecycle?"
+
+I built a **deterministic Judge LLM** for it: a model that reads each team's repository and record,
+scores adherence to the AI-DLC stages against fixed rubrics, and produces consistent, explainable
+scores. It ran alongside the human judges as a reliable second opinion — the same submission always
+gets the same score, and every score comes with the evidence it was based on.
+
+## What I learned along the way
+
+- Completed **Codex 101 and 201**, a deep dive into the Codex CLI, and worked hands-on with Claude
+  Code subagents and skills — Wayfinder, Superpowers, AI-DLC, LLM Council — alongside GitHub Spec Kit.
+- AI-DLC stuck with me: this website is now built the same way. Every change here is a numbered,
+  written-up effort and every structural decision an ADR — see [/process](/process).
+
+## Context
+
+Optum (UnitedHealth Group), AI Engineer Intern, AI-DLC Pilot Team, June–August 2026. Internal work:
+there is no public repository. The banner is a schematic of the agent's flow, not a screenshot.
