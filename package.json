@@ -11,7 +11,10 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "images": "node scripts/build-images.mjs",
     "check:aidlc": "node scripts/check-aidlc-sync.mjs",
-    "postbuild": "node scripts/postbuild-segments.mjs"
+    "postbuild": "node scripts/postbuild-segments.mjs",
+    "test:smoke": "playwright test",
+    "lighthouse:desktop": "lhci autorun --config=lighthouserc.desktop.json",
+    "lighthouse:mobile": "lhci autorun --config=lighthouserc.mobile.json"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -25,11 +28,14 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20.17.30",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.5",
     "playwright": "^1.62.1",
+    "serve": "^14.2.6",
     "sharp": "^0.35.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.8.3"

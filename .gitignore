@@ -29,3 +29,11 @@ next-env.d.ts
 
 # UI/UX Pro Max skill (nextlevelbuilder/ui-ux-pro-max-skill) — third-party, reinstall with `npx uipro-cli init`
 .github/skills/ui-ux-pro-max/
+
+# quality gates (npm run test:smoke / npm run lighthouse:*)
+/.lighthouseci/
+/test-results/
+/playwright-report/
+
+# subagent worktrees
+/.claude/worktrees/

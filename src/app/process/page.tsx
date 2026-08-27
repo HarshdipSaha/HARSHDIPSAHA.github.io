@@ -37,14 +37,14 @@ export default function ProcessPage() {
             {process.flow.map((f, i) => (
               <li key={f.step} className="grid gap-2 py-5 md:grid-cols-[9rem_1fr]">
                 <p className="font-medium text-paper">
-                  <span aria-hidden="true" className="mr-3 font-mono text-[12.5px] text-paper/45 tabular-nums">
+                  <span aria-hidden="true" className="mr-3 font-mono text-[12.5px] text-paper/55 tabular-nums">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   {f.step}
                 </p>
                 <div>
                   <p className="text-paper/75">{f.body}</p>
-                  <p className="mt-2 font-mono text-[12.5px] text-paper/45 [overflow-wrap:anywhere]">{f.artefact}</p>
+                  <p className="mt-2 font-mono text-[12.5px] text-paper/55 [overflow-wrap:anywhere]">{f.artefact}</p>
                 </div>
               </li>
             ))}
@@ -58,7 +58,7 @@ export default function ProcessPage() {
           <ol className="hairline mt-4 divide-y divide-white/10 border-y">
             {process.decisions.map((d) => (
               <li key={d.id} className="flex items-baseline gap-5 py-4">
-                <span className="font-mono text-[12.5px] text-paper/45 tabular-nums">{d.id}</span>
+                <span className="font-mono text-[12.5px] text-paper/55 tabular-nums">{d.id}</span>
                 <p className="flex-1 leading-relaxed">
                   <span className="text-paper/85">{d.title}</span>
                   <span className="text-paper/55"> — {d.why}</span>
@@ -79,8 +79,8 @@ export default function ProcessPage() {
           <Pill href={process.repo} variant="accent">
             Open the repository ↗
           </Pill>
-          <Pill href={`${process.repo}/tree/main/docs/adr`}>All 11 decisions ↗</Pill>
-          <Pill href={`${process.repo}/tree/main/aidlc-docs/efforts`}>All 15 change records ↗</Pill>
+          <Pill href={`${process.repo}/tree/main/docs/adr`}>All 12 decisions ↗</Pill>
+          <Pill href={`${process.repo}/tree/main/aidlc-docs/efforts`}>All 22 change records ↗</Pill>
         </div>
       </Reveal>
     </article>

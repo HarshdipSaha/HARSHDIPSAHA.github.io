@@ -22,7 +22,7 @@ export default function ProjectsPage() {
         </p>
       </Reveal>
       <div className="mt-16 md:mt-20">
-        <ProjectGrid projects={projects} />
+        <ProjectGrid projects={projects} headingLevel="h2" />
       </div>
     </Container>
   );

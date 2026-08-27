@@ -1,7 +1,7 @@
 # AGENTS.md
 
 Personal portfolio site for Harshdip Saha — Next.js App Router, statically exported to GitHub Pages.
-Live: https://harshdipsaha.github.io and https://harshdipsaha.tech/
+Live: https://harshdipsaha.tech/ (`harshdipsaha.github.io` 301-redirects there; `person.siteUrl` is the `.tech` origin)
 
 ## Setup & commands
 
@@ -12,16 +12,21 @@ npm run dev            # predev runs scripts/build-images.mjs, then next dev on 
 npm run build          # prebuild runs scripts/build-images.mjs, then next build -> out/
 npm run typecheck      # tsc --noEmit -p tsconfig.json (run this before claiming done)
 npm run images         # rebuild public/img/ + src/data/images.json without starting dev
-npm run check:aidlc    # node scripts/check-aidlc-sync.mjs — the CI gate, run locally
+npm run check:aidlc    # node scripts/check-aidlc-sync.mjs — the record gate, run locally
+
+npm run test:smoke          # playwright test — every route in out/ loads, renders, scrolls, zero errors (build first)
+npm run lighthouse:desktop  # lhci autorun — Lighthouse CI over out/ against lighthouserc.desktop.json (build first)
+npm run lighthouse:mobile   # same, mobile emulation, lighthouserc.mobile.json
 ```
 
-There is no lint or format script. Nothing else is wired up.
+There is no lint or format script.
 
 Stack: Next.js 16.3 (App Router, `output: "export"`), React 19.2, TypeScript 5.8, Tailwind CSS v4
 (`@tailwindcss/postcss`; tokens in `@theme` inside `src/app/globals.css`), Motion 13 (`motion/react`),
 Lenis (`lenis/react`), `next-mdx-remote/rsc` + `remark-gfm`, `gray-matter`, `clsx`. Dev-only: `sharp`
-(build-time images), `playwright` (screenshots). Fonts: Instrument Serif (italic display) + Commissioner
-via `next/font/google` in `src/app/layout.tsx`. No Once UI, no Sass, no Biome, no ESLint config.
+(build-time images), `playwright` (screenshots), `@playwright/test` (smoke gate, `tests/`), `@lhci/cli`
+(Lighthouse CI gate), `serve` (static server both gates run against). Fonts: Instrument Serif (italic
+display) + Commissioner via `next/font/google` in `src/app/layout.tsx`. No Once UI, no Sass, no Biome, no ESLint config.
 
 ## Architecture constraints (static export)
 
@@ -34,7 +39,14 @@ via `next/font/google` in `src/app/layout.tsx`. No Once UI, no Sass, no Biome, n
 | GitHub Pages host | Static files only; no redirects/rewrites middleware |
 | Motion 13 scroll timelines | Every `useTransform` input range driven by `useScroll` must stay within `[0, 1]` — it throws otherwise |
 
-CI: `.github/workflows/deploy.yml` — Node 20, `npm install`, `npm run build`, uploads `out/`, deploys to Pages on push to `main`.
+CI (all Node 20):
+
+- `.github/workflows/deploy.yml` — on push to `main`: `npm install`, `npm run build`, deploys `out/` to Pages.
+- `.github/workflows/aidlc-check.yml` — on PR to `main`: the record gate (ADR 0009).
+- `.github/workflows/quality-gates.yml` — on PR to `main`: **Build** (typecheck + export, `out/` as artifact) →
+  **Smoke (Playwright)** (`tests/smoke.spec.ts`, desktop + Pixel 7) and **Lighthouse (desktop | mobile)**
+  (`@lhci/cli`, thresholds in `lighthouserc.*.json`, median of 3 runs on six routes). ADR 0012.
+  Lowering a Lighthouse threshold needs an effort record that says why.
 
 ## Conventions
 
@@ -93,14 +105,17 @@ background), `--color-ink-2/3`, `--color-paper` (#ebe5e1), `--color-tangerine` (
 accent, used for the primary pill CTA and small marks), plus `--color-sunny/seafoam/cerulean` for tiny
 marks only. Rule: every neutral is `paper` or white at an alpha (`text-paper/60`, `border-white/10`) —
 there is no grey ramp and no ad-hoc hex. Utility classes: `.display` (serif italic, -0.03em, lh 0.95),
-`.label` (13px caps, 0.2em tracking, 45% paper), `.glass`, `.hairline`, `.measure` (40rem), `.prose`,
+`.label` (13px caps, 0.2em tracking, 55% paper — the AA floor at that size), `.glass`, `.hairline`, `.measure` (40rem), `.prose`,
 `.over-photo`. Shared primitives: `Pill`, `Label`, `Container`, `Arrow` in `src/components/ui.tsx`.
 
 **Motion.** Enter-on-view is `Reveal` / `Group` / `Item` (`src/components/motion/Reveal.tsx`,
 blur-diagonal default); per-word blur-in is `TextAnimate`; scroll-linked word highlight is `ScrollWords`.
 Every animated component checks `useReducedMotion()` and renders static markup when set; `SmoothScroll`
 (Lenis) disables itself on `prefers-reduced-motion`. Inline-block word spans must have their separating
-space **outside** the span. Keep `useScroll`-driven `useTransform` ranges inside `[0, 1]`.
+space **outside** the span. Keep `useScroll`-driven `useTransform` ranges inside `[0, 1]`. Split-text
+components give assistive tech the whole string once via a visually-hidden `<span class="sr-only">` and
+mark the fragments `aria-hidden` — never `aria-label` on a `<p>`/`<span>` (prohibited ARIA; axe
+`aria-prohibited-attr`, and it malforms the accessibility tree).
 
 **Brain sequence.** `src/components/home/BrainSequence.tsx` scrubs 160 axial slices on a canvas. The
 frames (`public/brain/1080/NNN.webp`, `public/brain/640/NNN.webp`, `public/brain/manifest.json`, ~3.8 MB)
@@ -150,12 +165,14 @@ Deleting a file, moving content between sections, or changing a link target is *
 
 1. `npm run typecheck` — clean.
 2. `npm run build` — succeeds and `out/` contains the affected route.
-3. New/changed copy lives in `src/content/site.ts` or a `content/projects/*.mdx` file, not hardcoded in a component.
-4. New route: `src/app/<route>/page.tsx` **and** a `nav` entry in `src/content/site.ts` both present.
-5. New project image: `PROJECT_MAP` entry present; `images[0]` basename matches it.
-6. No hand-edits under `public/img/`, `.cache/`, `src/data/images.json`, or `out/`.
-7. Animated components honour `useReducedMotion()`; `useScroll`-driven ranges stay within `[0, 1]`.
-8. **Change lifecycle complete** — effort record + registry + audit in the same PR; ADR and
+3. `npm run test:smoke` — passes against that `out/`. If you touched layout, images, motion, scripts or
+   shared chrome, also `npm run lighthouse:desktop`. CI runs both on the PR (ADR 0012).
+4. New/changed copy lives in `src/content/site.ts` or a `content/projects/*.mdx` file, not hardcoded in a component.
+5. New route: `src/app/<route>/page.tsx` **and** a `nav` entry in `src/content/site.ts` both present.
+6. New project image: `PROJECT_MAP` entry present; `images[0]` basename matches it.
+7. No hand-edits under `public/img/`, `.cache/`, `src/data/images.json`, or `out/`.
+8. Animated components honour `useReducedMotion()`; `useScroll`-driven ranges stay within `[0, 1]`.
+9. **Change lifecycle complete** — effort record + registry + audit in the same PR; ADR and
    CONTEXT.md/docs sync done *iff* needed (see above). `npm run check:aidlc` passes locally.
 
 <!-- BEGIN:nextjs-agent-rules -->
