@@ -24,17 +24,18 @@
 | 018 | 018-morph-and-segmentation | Shared-element morph and illustrative segmentation | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
 | 019 | 019-two-new-case-studies | Two new case studies: BrainwavesFinland and SAAKSHI | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
 | 020 | 020-accessibility-aa-pass | Accessibility AA pass: label and footer contrast, logo accessible name | complete | 2026-08-27 | 2026-08-27 | none | branch `extremechange` |
+| 022 | 022-resume-and-gallery-refresh | Résumé refresh and seven new gallery photos | complete | 2026-08-27 | 2026-08-27 | none | branch `worktree-agent-a07651e4a36a62a49` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 20 |
+| complete | 21 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **20** |
+| **Total** | **21** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -43,4 +44,4 @@ All of efforts 001-006 and 008 were retrofitted into effort format after the fac
 
 Effort 007 was recorded as it happened (planning gate logged live) but its registry/audit entries fell out of sync with the merged PR until effort 009's cleanup. Effort 009 was the first recorded start-to-finish with no drift; effort 010 makes that mandatory — the `aidlc-check` CI gate (ADR 0009) now fails any PR whose substantive diff ships without an `aidlc-docs/` update.
 
-Next effort number: 021
+Next effort number: 023
