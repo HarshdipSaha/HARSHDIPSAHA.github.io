@@ -12,7 +12,7 @@ export const person = {
   github: "https://github.com/HARSHDIPSAHA",
   linkedin: "https://www.linkedin.com/in/harshdip-saha",
   resume: "/resume.pdf",
-  siteUrl: "https://harshdipsaha.github.io",
+  siteUrl: "https://harshdipsaha.tech",
   description:
     "Harshdip Saha — machine-learning researcher in medical brain imaging (NexGenLab NSUT, IIT Madras). RECAP-Net placed 3rd worldwide in the BraTS Lighthouse 2025 challenge and was presented at MICCAI 2025. Open to SDE and research internships.",
 };
@@ -209,10 +209,10 @@ export const process = {
     "You can retrace every change ever made to this site. It's built with AI-DLC (the AI-Driven Development Lifecycle): a way of working where each change starts as a short written plan, is approved, built, checked, and closed with a record — and where every decision about how the site is put together is written down as an ADR (an Architecture Decision Record: one page saying what was chosen, what else was considered, and why).",
   why: "I keep this page because the habit matters more than the website. It's the same discipline I use on a research pipeline: leave enough of a written trail that a reviewer can retrace every step without asking me. The site is the worked example you can open.",
   stats: [
-    { value: "15", label: "changes recorded, numbered 001–015, since January 2026" },
-    { value: "11", label: "decisions written down, numbered 0001–0011" },
+    { value: "22", label: "changes recorded, numbered 001–022, since January 2026" },
+    { value: "12", label: "decisions written down, numbered 0001–0012" },
     { value: "2", label: "of those decisions later replaced — kept in the record, marked superseded" },
-    { value: "1", label: "automated check that blocks any change arriving without its record" },
+    { value: "3", label: "automated gates on every proposed change: its record exists, every page still works, Lighthouse scores hold" },
   ],
   flowLabel: "How one change moves through",
   flow: [
@@ -238,8 +238,8 @@ export const process = {
     },
     {
       step: "Verify",
-      body: "The type-check and full build must pass. An automated check then refuses any change that arrives without its record, so the paperwork can't quietly fall behind the code.",
-      artefact: "npm run typecheck  ·  .github/workflows/aidlc-check.yml",
+      body: "The type-check and full build must pass. Then three automated gates run on the proposed change: one refuses it if it arrives without its record; one opens every page in a real browser, scrolls through, and fails on any error; one runs Google's Lighthouse and fails if accessibility, SEO, best-practice or performance scores drop below where they stand today.",
+      artefact: "npm run typecheck  ·  aidlc-check.yml  ·  quality-gates.yml",
     },
     {
       step: "Decide and close",
@@ -253,6 +253,7 @@ export const process = {
     { id: "0004", title: "Keep every word of copy in one typed file", why: "a renamed field fails the build instead of rendering as a blank." },
     { id: "0009", title: "Let an automated check block undocumented change", why: "the advisory version of this rule was skipped within hours; a gate is not." },
     { id: "0011", title: "Rebuild the site from scratch on a new visual model", why: "two redesigns on the old template hit the same ceiling; this decision replaces two earlier ones." },
+    { id: "0012", title: "Gate every change on a browser smoke test and Lighthouse scores", why: "a build that succeeds can still ship a page that throws or an accessibility regression — it did, once; the gate catches both before merge." },
   ],
   decisionsNote: "Two earlier decisions (0001, 0010) were later reversed. They stay in the register, marked superseded, so the history stays honest and readable.",
   repo: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io",

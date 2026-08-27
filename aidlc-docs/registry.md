@@ -24,18 +24,19 @@
 | 018 | 018-morph-and-segmentation | Shared-element morph and illustrative segmentation | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
 | 019 | 019-two-new-case-studies | Two new case studies: BrainwavesFinland and SAAKSHI | complete | 2026-08-26 | 2026-08-26 | none | branch `extremechange` |
 | 020 | 020-accessibility-aa-pass | Accessibility AA pass: label and footer contrast, logo accessible name | complete | 2026-08-27 | 2026-08-27 | none | branch `extremechange` |
-| 022 | 022-resume-and-gallery-refresh | Résumé refresh and seven new gallery photos | complete | 2026-08-27 | 2026-08-27 | none | branch `worktree-agent-a07651e4a36a62a49` |
+| 021 | 021-quality-gates-and-lighthouse-fixes | PR quality gates (smoke + Lighthouse CI) and the defects they found | complete | 2026-08-27 | 2026-08-27 | 0012 | branch `extremechange` |
+| 022 | 022-resume-and-gallery-refresh | Résumé refresh and seven new gallery photos | complete | 2026-08-27 | 2026-08-27 | none | `560bca6`, merged into branch `extremechange` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 21 |
+| complete | 22 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **21** |
+| **Total** | **22** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 

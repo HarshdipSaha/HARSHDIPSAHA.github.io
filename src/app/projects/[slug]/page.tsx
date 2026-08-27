@@ -50,7 +50,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
                 Repository ↗
               </Pill>
             )}
-            <span className="text-sm text-paper/50">{date}</span>
+            <span className="text-sm text-paper/55">{date}</span>
           </div>
         </Reveal>
       </Container>

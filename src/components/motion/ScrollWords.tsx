@@ -17,7 +17,10 @@ export function ScrollWords({ text, className }: { text: string; className?: str
   const words = text.split(" ");
 
   return (
-    <p ref={ref} className={clsx("flex flex-wrap gap-x-[0.28em] gap-y-[0.1em]", className)} aria-label={text.replaceAll("*", "")}>
+    <p ref={ref} className={clsx("flex flex-wrap gap-x-[0.28em] gap-y-[0.1em]", className)}>
+      {/* The clean string, once, for assistive tech. A visually-hidden span rather
+          than aria-label, which is prohibited on a <p> without a role. */}
+      <span className="sr-only">{text.replaceAll("*", "")}</span>
       {words.map((raw, i) => {
         const accent = raw.startsWith("*") && raw.replace(/[^*]/g, "").length >= 2;
         const w = raw.replaceAll("*", "");
@@ -32,7 +35,7 @@ export function ScrollWords({ text, className }: { text: string; className?: str
 /**
  * The ghost is a ::before pseudo-element drawing `data-word`, so it sizes the
  * box but is not a text node: copy/paste and assistive tech see the lit copy
- * only, once. (The <p>'s aria-label carries the clean string anyway.)
+ * only, once. (The <p>'s visually-hidden span carries the clean string anyway.)
  */
 function Word({ word, accent, progress, range, reduced }: { word: string; accent: boolean; progress: MotionValue<number>; range: [number, number]; reduced: boolean }) {
   const opacity = useTransform(progress, range, [0, 1]);
