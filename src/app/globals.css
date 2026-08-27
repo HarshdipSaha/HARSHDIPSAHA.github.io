@@ -56,13 +56,14 @@ body {
   text-wrap: balance;
 }
 
-/* 14px caps with 0.2em tracking at 40% — the section label. */
+/* 14px caps with 0.2em tracking — the section label. 55% paper on ink clears
+   WCAG AA (5.14:1) at this small size; 45% read at 3.86:1 and failed. */
 .label {
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: color-mix(in oklab, var(--color-paper) 45%, transparent);
+  color: color-mix(in oklab, var(--color-paper) 55%, transparent);
 }
 
 /* Unprefixed last: the CSS minifier (Lightning CSS) keeps only the last of a

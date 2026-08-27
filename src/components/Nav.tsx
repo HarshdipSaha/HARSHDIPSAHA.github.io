@@ -75,10 +75,10 @@ export function Nav() {
         <Link
           href="/"
           className="display text-[1.55rem] leading-none text-paper transition-colors hover:text-white md:absolute md:left-1/2 md:-translate-x-1/2"
-          aria-label={`${person.name} — home`}
         >
           {person.firstName}
-          <span className="text-paper/45"> Saha</span>
+          <span className="text-paper/60"> Saha</span>
+          <span className="sr-only">, home</span>
         </Link>
 
         <div className="flex items-center gap-2">
