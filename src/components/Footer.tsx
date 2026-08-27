@@ -51,11 +51,11 @@ export function Footer() {
       <Container className="pb-12">
         <div className="hairline mx-auto w-[97%] border-t pt-8">
           {footer.colophon.map((line) => (
-            <p key={line} className="mt-2 max-w-3xl text-[13px] leading-relaxed text-paper/40">
+            <p key={line} className="mt-2 max-w-3xl text-[13px] leading-relaxed text-paper/55">
               {line}
             </p>
           ))}
-          <p className="mt-6 text-[13px] text-paper/40">© {new Date().getFullYear()} {person.name}</p>
+          <p className="mt-6 text-[13px] text-paper/55">© {new Date().getFullYear()} {person.name}</p>
         </div>
       </Container>
     </footer>
