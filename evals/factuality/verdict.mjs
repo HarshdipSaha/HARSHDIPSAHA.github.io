@@ -89,7 +89,9 @@ export function indexBaseline(baseline) {
  *   unverifiableReason: string | null,
  *   claims: Array<{value: string, normalised: string, kind: string, phrase: string, status: Status, reason: string | null}>,
  *   counts: Record<Status, number>,
- *   usedBaselineKeys: string[]
+ *   usedBaselineKeys: string[],
+ *   presentKeys: string[],
+ *   groundedKeys: string[]
  * }}
  */
 export function classifyCaseStudy({
@@ -103,10 +105,13 @@ export function classifyCaseStudy({
   const extracted = extractClaims(body);
   const counts = { grounded: 0, baselined: 0, ungrounded: 0, unverifiable: 0 };
   const usedBaselineKeys = [];
+  const presentKeys = [];
+  const groundedKeys = [];
 
   const claims = extracted.map((claim) => {
     const key = baselineKey(file, claim.normalised);
     const entry = baseline?.get(key);
+    presentKeys.push(key);
 
     // No source at all: every claim in the file is unverifiable, and that is
     // reported by name rather than skipped silently (spec #12, user story 5).
@@ -120,11 +125,11 @@ export function classifyCaseStudy({
     }
 
     if (isGrounded(claim, source)) {
-      // A grounded claim needs no baseline entry. If one exists it is stale in
-      // spirit, but not an error: the content may have been corrected to match
-      // the source. It is simply not "used", so the stale-entry check will
-      // flag it — which is the behaviour we want.
+      // A grounded claim needs no baseline entry. If one exists it is
+      // *redundant* — reported as an advisory, not an error, because the
+      // content may simply have been corrected to match the source.
       counts.grounded += 1;
+      groundedKeys.push(key);
       return { ...claim, status: /** @type {Status} */ ("grounded"), reason: sourceRef };
     }
 
@@ -149,27 +154,55 @@ export function classifyCaseStudy({
     claims,
     counts,
     usedBaselineKeys,
+    presentKeys,
+    groundedKeys,
   };
 }
 
 /**
- * Baseline entries that no live claim matched.
+ * Baseline entries whose claim no longer appears anywhere in the content.
  *
  * A baseline is a record of accepted exceptions; an entry whose claim has been
  * deleted from the content is a lie waiting to be reused. Reporting it as an
  * error is what stops the baseline rotting (ticket #16).
  *
+ * Staleness is keyed on the claim still *existing*, not on the entry having
+ * been *used*. Those differ whenever a source becomes unfetchable: the claim is
+ * then `unverifiable` rather than `baselined`, and calling its entry stale
+ * would turn a private or renamed repository into a spurious factuality
+ * failure. That is precisely what happened on this gate's first CI run, when
+ * `ComPhysGroup/PyAMorph` proved unreadable with the workflow token.
+ *
  * @param {Map<string, BaselineEntry>} baseline
- * @param {Iterable<string>} usedKeys
+ * @param {Iterable<string>} presentKeys  every claim key found in the content
  * @returns {BaselineEntry[]}
  */
-export function staleBaselineEntries(baseline, usedKeys) {
-  const used = new Set(usedKeys);
+export function staleBaselineEntries(baseline, presentKeys) {
+  const present = new Set(presentKeys);
   const stale = [];
   for (const [key, entry] of baseline) {
-    if (!used.has(key)) stale.push(entry);
+    if (!present.has(key)) stale.push(entry);
   }
   return stale;
+}
+
+/**
+ * Baseline entries whose claim is now grounded in its source.
+ *
+ * Advisory, not an error: the entry is simply no longer doing any work, and
+ * deleting it is a tidy-up rather than a correction.
+ *
+ * @param {Map<string, BaselineEntry>} baseline
+ * @param {Iterable<string>} groundedKeys
+ * @returns {BaselineEntry[]}
+ */
+export function redundantBaselineEntries(baseline, groundedKeys) {
+  const redundant = [];
+  for (const key of new Set(groundedKeys)) {
+    const entry = baseline.get(key);
+    if (entry) redundant.push(entry);
+  }
+  return redundant;
 }
 
 /**

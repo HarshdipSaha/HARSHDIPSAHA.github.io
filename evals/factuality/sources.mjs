@@ -24,11 +24,14 @@ export class NetworkExhaustedError extends Error {
 /**
  * Resolve a GitHub token.
  *
- * In CI this is the workflow's `GITHUB_TOKEN`. Locally it falls back to the
- * `gh` CLI's stored token so a developer never has to export anything.
+ * In CI this is the workflow's `GITHUB_TOKEN`, which can only read the
+ * repository the workflow belongs to. Locally it falls back to the `gh` CLI's
+ * stored token, which usually carries the owner's own access.
  *
- * Note: every repository this suite reads is public, so an unauthenticated run
- * also works — the token exists only to buy a sane rate limit.
+ * The consequence is that the same case study can be `grounded` locally and
+ * `unverifiable` in CI, when its source repository is private to the owner
+ * (`ComPhysGroup/PyAMorph` is one). Both runs are correct and both exit 0: a
+ * source the run cannot read is reported as unverifiable, never guessed at.
  *
  * @returns {{token: string | null, origin: string}}
  */

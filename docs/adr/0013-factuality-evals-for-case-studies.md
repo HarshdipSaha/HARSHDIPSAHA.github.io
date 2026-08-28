@@ -41,8 +41,11 @@ owner's résumé, nor `src/content/site.ts` — exactly the failure mode predict
 2. **Ground truth is the source repository's README, fetched at run time through the GitHub API,**
    identified by the `link` field already in each case study's frontmatter. Nothing is vendored: a
    committed copy would drift from the source and reintroduce exactly the staleness the gate exists to
-   prevent. Every repository read is public, so the workflow's `GITHUB_TOKEN` (which cannot read other
-   repositories) is sufficient; it buys a rate limit, not access.
+   prevent. Authentication is `GITHUB_TOKEN` in CI, the `gh` CLI's token locally, unauthenticated
+   otherwise. **The token's reach is part of the verdict, not a bug:** CI's `GITHUB_TOKEN` can only
+   read this repository, so a source that is private to the owner reads locally and 404s in CI. The
+   same case study is then `grounded` locally and `unverifiable` in CI — both correct, both exit 0,
+   both stated in the report. A run never guesses at a source it cannot read.
 
 3. **Claim extraction is deterministic and quantitative.** The extractor pulls digit-bearing claims —
    measurements, percentages, counts, currency, ranks, years — from the MDX body, keeping the
@@ -65,8 +68,17 @@ owner's résumé, nor `src/content/site.ts` — exactly the failure mode predict
 
 6. **Case studies with no fetchable source are `unverifiable`, reported by name.** Two exist
    (BrainwavesFinland, SAAKSHI); both point at private repositories and carry no `link`. A 404 from
-   GitHub — repository gone, renamed or made private — is handled the same way, with the reason
-   printed. "Unverified" is a visible number in the report rather than an absence.
+   GitHub — repository gone, renamed, or not readable with the token in use — is handled the same
+   way, with the reason printed. "Unverified" is a visible number in the report rather than an
+   absence.
+
+   **Staleness is keyed on the claim still existing in the content, not on its baseline entry having
+   been used.** Those two definitions differ exactly when a source becomes unfetchable, and the
+   difference is not academic: the first CI run of this gate went red because `ComPhysGroup/PyAMorph`
+   404s to the workflow token, which turned a baselined claim into an unverifiable one and then
+   called its perfectly good baseline entry stale. A private source must not be able to manufacture a
+   factuality failure. An entry whose claim is now *grounded* is reported as **redundant** — an
+   advisory tidy-up, not an error.
 
 7. **An optional LLM-judge tier, gated on an API key being present, and advisory only.** When a key
    exists, prose assertions are judged against the source with a rubric and reported. When no key
@@ -104,6 +116,9 @@ owner's résumé, nor `src/content/site.ts` — exactly the failure mode predict
   every run. That is a visible limit rather than a silent one.
 - Case studies whose numbers are all grounded pass silently, so editing prose without adding claims
   costs nothing.
+- Counts differ between a local run and CI wherever a source is private to the owner. `pySdf.mdx`
+  reads 2 grounded + 1 baselined locally and 3 unverifiable in CI. That divergence is visible in the
+  report on every run rather than hidden.
 - One devDependency was added, `@anthropic-ai/sdk`, used only by the judge tier and imported
   dynamically so a checkout without it still runs the suite end to end.
 
@@ -124,3 +139,7 @@ owner's résumé, nor `src/content/site.ts` — exactly the failure mode predict
 - The gate was proved to gate: adding an invented figure to a case study on a scratch commit turned
   the run red naming the file, the claim and the source; reverting turned it green. Recorded in
   effort 023's verification table.
+- The gate also found a defect in itself. Its first CI run failed — not on a claim, but on the
+  stale-baseline rule, because `ComPhysGroup/PyAMorph` is not readable with the workflow's
+  `GITHUB_TOKEN`. Fixed by redefining staleness as "the claim is gone from the content", which is
+  what ticket #16 actually asks for, with a regression test naming this incident.

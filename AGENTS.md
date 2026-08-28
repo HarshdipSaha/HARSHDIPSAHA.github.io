@@ -75,8 +75,11 @@ number is true but comes from somewhere other than the README — a résumé lin
 competition certificate — add it to `evals/factuality/baseline.json` **with a reason naming where it
 does come from**; an entry left with the `TODO` placeholder fails the gate, and an entry whose claim
 has been deleted from the content fails as stale. Run `npm run eval:factuality` before you push.
-The two case studies with private sources (`BrainwavesFinland`, `SAAKSHI`) have no `link` and are
-reported as `unverifiable` by name.
+Case studies whose source cannot be read are reported as `unverifiable` **by name**, never skipped:
+`BrainwavesFinland` and `SAAKSHI` have no `link` at all (private repositories), and in CI
+`pySdf`'s source (`ComPhysGroup/PyAMorph`) returns 404 to the workflow token, which can only read
+this repository. Expect that file's counts to differ between a local run (owner's `gh` token) and
+CI; both are correct and both exit 0.
 
 **Images are built, never hand-copied.** Drop files in the drop-zones; `scripts/build-images.mjs`
 (sharp, runs on `predev`/`prebuild`, cached in `.cache/`) publishes them:

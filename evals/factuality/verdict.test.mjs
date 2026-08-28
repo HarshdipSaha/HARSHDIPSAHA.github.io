@@ -12,6 +12,7 @@ import {
   baselineKey,
   classifyCaseStudy,
   indexBaseline,
+  redundantBaselineEntries,
   staleBaselineEntries,
   summarise,
 } from "./verdict.mjs";
@@ -61,10 +62,50 @@ test("a baseline entry whose claim no longer exists is reported as stale", () =>
     ],
   });
   const r = classifyCaseStudy({ file: FILE, body: BODY, source: SOURCE, baseline: map });
-  const stale = staleBaselineEntries(map, r.usedBaselineKeys);
+  const stale = staleBaselineEntries(map, r.presentKeys);
   assert.equal(stale.length, 1);
   assert.equal(stale[0].claim, "42kg");
   assert.equal(summarise([r], stale, []).ok, false);
+});
+
+test("an unfetchable source does not make its baseline entries stale", () => {
+  // Regression: the first CI run of this gate went red because
+  // ComPhysGroup/PyAMorph was unreadable with the workflow token, which turned
+  // a baselined claim into an unverifiable one and then called its entry stale.
+  // Staleness must mean "the claim is gone from the content", nothing else.
+  const { map } = indexBaseline({
+    entries: [{ file: FILE, claim: "99.7%", reason: "Table 3 of the published paper." }],
+  });
+  const r = classifyCaseStudy({
+    file: FILE,
+    body: BODY,
+    source: null,
+    unverifiableReason: "GitHub returned 404 — repository not readable",
+    baseline: map,
+  });
+  assert.equal(r.counts.unverifiable, 2);
+  assert.deepEqual(staleBaselineEntries(map, r.presentKeys), []);
+  assert.equal(summarise([r], staleBaselineEntries(map, r.presentKeys), []).ok, true);
+});
+
+test("a baseline entry whose claim is now grounded is redundant, not an error", () => {
+  const { map } = indexBaseline({
+    entries: [{ file: FILE, claim: "1.4cm", reason: "was ungrounded before the README was updated" }],
+  });
+  const r = classifyCaseStudy({
+    file: FILE,
+    body: "We measured 1.4 cm median error.",
+    source: SOURCE,
+    baseline: map,
+  });
+  assert.equal(statusOf(r, "1.4cm"), "grounded");
+  const redundant = redundantBaselineEntries(map, r.groundedKeys);
+  assert.equal(redundant.length, 1);
+  assert.equal(redundant[0].claim, "1.4cm");
+  // Advisory only: not stale, and the run still passes.
+  const stale = staleBaselineEntries(map, r.presentKeys);
+  assert.deepEqual(stale, []);
+  assert.equal(summarise([r], stale, []).ok, true);
 });
 
 test("a baseline entry with an empty reason is an error, not an accepted exception", () => {

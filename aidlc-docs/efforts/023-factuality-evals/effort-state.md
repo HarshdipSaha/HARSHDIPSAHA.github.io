@@ -31,7 +31,7 @@ claim is not traceable to that source. ADR 0013 records the decisions.
 | Stage | Outcome |
 |-------|---------|
 | Planning | Read spec #12 and tickets #14–#17. Inventoried the content: 20 MDX files, 18 with a `link`, two (BrainwavesFinland, SAAKSHI) without because their repositories are private. Confirmed `gray-matter` is already a dependency and that no test framework exists, so `node --test` (built in on Node 20) is the runner. Chose the pure-core seam — extraction and grounding separated from fetching — so the pass/fail logic is testable with no network. |
-| #14 Pure core | `evals/factuality/claims.mjs` (`normalise`, `stripMarkdown`, `extractClaims`, `isGrounded`) and `evals/factuality/verdict.mjs` (classification, baseline indexing, stale rule). Neither imports anything — a test asserts that. 32 `node --test` cases over two local fixtures. |
+| #14 Pure core | `evals/factuality/claims.mjs` (`normalise`, `stripMarkdown`, `extractClaims`, `isGrounded`) and `evals/factuality/verdict.mjs` (classification, baseline indexing, stale rule). Neither imports anything — a test asserts that. 34 `node --test` cases over two local fixtures. |
 | #15 CLI | `evals/factuality/run.mjs` reads the MDX with `gray-matter`, resolves a token (`GITHUB_TOKEN`/`GH_TOKEN`, else `gh auth token`, else unauthenticated), fetches each README with exponential backoff, classifies, prints a human report and writes JSON. Four exit codes; network exhaustion is deliberately distinct from a factuality failure. Optional judge tier in `judge.mjs`, advisory and skipped without a key. |
 | #16 Triage & baseline | First run: 22 grounded, 0 baselined, **8 ungrounded**, 43 unverifiable. Every ungrounded claim triaged by hand against the README, `resume.pdf`, `src/content/site.ts` and the effort records. Two real defects fixed in the content; three claims baselined with their real source named; two more baselined as README config literals; four contained extractor precision fixes made. |
 | #17 CI, docs, record | `.github/workflows/evals.yml` (**Evals / factuality**, path-filtered, report uploaded as an artifact). `AGENTS.md` commands block, CI list, Definition of done, and the evidence rule restated as enforced. `CONTEXT.md` glossary. `evals/README.md` rewritten — it previously claimed "there is no test runner wired up", which is no longer true. PR template line. ADR 0013. This record. |
@@ -43,7 +43,7 @@ claim is not traceable to that source. ADR 0013 records the decisions.
 - [x] `evals/factuality/sources.mjs` — the only network code: token resolution, README fetch, retry/backoff, 404 → `unverifiable`
 - [x] `evals/factuality/judge.mjs` — optional LLM tier, advisory, skipped without an API key
 - [x] `evals/factuality/run.mjs` — the CLI, the report, the exit codes, `--write-baseline`
-- [x] `evals/factuality/claims.test.mjs` + `verdict.test.mjs` — 32 cases, no network
+- [x] `evals/factuality/claims.test.mjs` + `verdict.test.mjs` — 34 cases, no network
 - [x] `evals/factuality/fixtures/` — synthetic case study + source
 - [x] `evals/factuality/baseline.json` — 5 entries, each with a written reason
 - [x] `content/projects/Missing-person-identification.mdx` — **defect fixed** (see below)
@@ -118,14 +118,40 @@ the reason printed, rather than skipped silently.
 |---|---|
 | `npm run typecheck` | clean, exit 0 |
 | `npm run build` | succeeds, 30 static pages, postbuild mirrored 25 prefetch payloads |
-| `npm run test:unit` | 32 tests, 32 pass, 0 fail (`node --test evals`, no network) |
+| `npm run test:unit` | 34 tests, 34 pass, 0 fail (`node --test evals`, no network) |
 | `npm run eval:factuality` | exit 0 — 21 grounded, 5 baselined, 0 ungrounded, 41 unverifiable |
 | Judge tier with no API key | skipped with a printed notice; run still exits 0 |
 | Private-source case studies | `BrainwavesFinland.mdx` and `SAAKSHI.mdx` reported by name as unverifiable |
 | **The gate actually gates** | Scratch commit `9692e3a` added an invented sentence to `BrandDiffusion.mdx` — *"scoring 97.3 % on brand compliance across 1,842 generated layouts"*. Run went **red, exit 1**, `2 ungrounded`, naming the file, both claims (`97.3 %` percentage, `1,842` count), the surrounding phrase and the source (`Cubix33/brand-aware-generation README`). Scratch commit reverted and dropped: **exit 0**, `21 grounded · 5 baselined · 0 ungrounded · 41 unverifiable`. |
 | Stale baseline entry | Covered by a unit test; deleting a baselined claim from the content makes the run exit 1 with the entry named |
+| First CI run | **failed**, and correctly — see "The gate found a defect in itself" below |
+| Second CI run | all checks green |
 | `npm run check:aidlc` | passes |
 | `npm run test:smoke` / Lighthouse | not run locally — no rendering code was touched and the ports were in use by a parallel effort; CI's *Quality gates* workflow covers both |
+
+## The gate found a defect in itself (first CI run)
+
+The first `Evals / factuality` run on the PR went red, and not on a claim. `ComPhysGroup/PyAMorph` —
+the source for `pySdf.mdx` — returns **404 to the workflow's `GITHUB_TOKEN`**, which can only read
+this repository. Locally, the owner's `gh` token reads it fine. So in CI all three of that file's
+claims became `unverifiable`, the baselined `2026` was no longer "used", and the stale-entry check
+reported its perfectly good baseline entry as stale — exit 1.
+
+That was a design defect, not a content defect. Ticket #16 defines a stale entry as one *"whose claim
+no longer appears in any case study"*, and the implementation had keyed it on the entry having been
+*used* instead. Those two definitions coincide until a source becomes unfetchable, at which point a
+private repository can manufacture a factuality failure — the exact ambiguity the exit-code design
+exists to prevent.
+
+Fixed by keying staleness on `presentKeys` (every claim found in the content) rather than
+`usedBaselineKeys`, with a regression test that names this incident. A baseline entry whose claim is
+now *grounded* is reported separately as **redundant**: an advisory tidy-up, not an error.
+
+Also corrected: the workflow comment, `sources.mjs`, `AGENTS.md`, `CONTEXT.md`, `evals/README.md` and
+ADR 0013 all asserted or implied that every source repository is public and readable with
+`GITHUB_TOKEN`. That is false, and ticket #17 requires no untrue claim in the docs about this gate.
+They now state the divergence plainly: `pySdf.mdx` reads 2 grounded + 1 baselined locally and 3
+unverifiable in CI, and both runs exit 0.
 
 ## Notes
 

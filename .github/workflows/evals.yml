@@ -51,8 +51,10 @@ jobs:
 
       - name: Factuality eval
         env:
-          # Every source repository read here is public, so the workflow token
-          # is enough — it buys a rate limit, not extra read access.
+          # The workflow token can only read THIS repository. Most sources are
+          # public and read fine; one (ComPhysGroup/PyAMorph) is not readable
+          # with it and comes back 404, which the harness reports as
+          # `unverifiable` with the reason printed rather than failing.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set +e

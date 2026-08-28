@@ -34,7 +34,13 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 
-import { classifyCaseStudy, indexBaseline, staleBaselineEntries, summarise } from "./verdict.mjs";
+import {
+  classifyCaseStudy,
+  indexBaseline,
+  redundantBaselineEntries,
+  staleBaselineEntries,
+  summarise,
+} from "./verdict.mjs";
 import { NetworkExhaustedError, fetchReadme, parseRepo, resolveToken } from "./sources.mjs";
 import { judgeCaseStudy, judgeAvailable, judgeSkipReason } from "./judge.mjs";
 
@@ -118,7 +124,8 @@ async function main() {
   console.log("");
 
   const results = [];
-  const usedBaselineKeys = [];
+  const presentKeys = [];
+  const groundedKeys = [];
   const judgeInputs = [];
 
   for (const name of files) {
@@ -154,11 +161,13 @@ async function main() {
       baseline,
     });
     results.push(result);
-    usedBaselineKeys.push(...result.usedBaselineKeys);
+    presentKeys.push(...result.presentKeys);
+    groundedKeys.push(...result.groundedKeys);
     if (source) judgeInputs.push({ file: rel, body: content, source });
   }
 
-  const stale = staleBaselineEntries(baseline, usedBaselineKeys);
+  const stale = staleBaselineEntries(baseline, presentKeys);
+  const redundant = redundantBaselineEntries(baseline, groundedKeys);
   const summary = summarise(results, stale, baselineErrors);
 
   // --- optional judge tier -------------------------------------------
@@ -180,8 +189,15 @@ async function main() {
     const entries = [];
     for (const file of results) {
       for (const claim of file.claims) {
-        if (claim.status !== "ungrounded" && claim.status !== "baselined") continue;
         const key = `${file.file}::${claim.normalised}`;
+        const keep =
+          claim.status === "ungrounded" ||
+          claim.status === "baselined" ||
+          // An unverifiable claim keeps any entry it already has: the source
+          // was simply unreachable this run, and dropping the entry would lose
+          // a written reason for no reason.
+          (claim.status === "unverifiable" && existingReason.has(key));
+        if (!keep) continue;
         entries.push({
           file: file.file,
           claim: claim.normalised,
@@ -206,7 +222,7 @@ async function main() {
   }
 
   // --- report ---------------------------------------------------------
-  printReport(results, summary, judge);
+  printReport(results, summary, judge, redundant);
 
   const report = {
     generatedAt: new Date().toISOString(),
@@ -224,6 +240,7 @@ async function main() {
     })),
     failures: summary.failures.map(({ index, ...rest }) => rest),
     staleBaselineEntries: summary.stale,
+    redundantBaselineEntries: redundant,
     baselineErrors: summary.baselineErrors,
     judge,
   };
@@ -241,7 +258,7 @@ const BASELINE_COMMENT =
 
 /* ------------------------------------------------------------------ */
 
-function printReport(results, summary, judge) {
+function printReport(results, summary, judge, redundant = []) {
   const { counts } = summary;
 
   for (const file of results) {
@@ -285,6 +302,13 @@ function printReport(results, summary, judge) {
     console.log(c.red(c.bold(`${summary.stale.length} stale baseline entr(ies) — the claim is no longer in the content:`)));
     for (const e of summary.stale) console.log(`  - ${e.file} :: ${e.value ?? e.claim}`);
     console.log("  Remove them from evals/factuality/baseline.json.");
+  }
+
+  if (redundant.length > 0) {
+    console.log("");
+    console.log(c.yellow(`${redundant.length} redundant baseline entr(ies) — the claim is now grounded in its source:`));
+    for (const e of redundant) console.log(`  - ${e.file} :: ${e.value ?? e.claim}`);
+    console.log(c.dim("  Advisory only. Deleting them is a tidy-up, not a correction."));
   }
 
   if (summary.baselineErrors.length > 0) {
