@@ -2,33 +2,77 @@
 
 ## What these are for
 
-Two things:
+This directory holds two different things. Read the distinction before adding to either.
 
-1. **The repo's conventions actually hold.** `AGENTS.md` asserts a set of invariants — images are built not hand-copied, copy lives in `src/content/site.ts` or project MDX, every route is a page plus a `nav` entry, `public/img/**` and `src/data/images.json` are generated, every animated component honours reduced motion. Assertions decay. These checks catch the decay.
-2. **An agent reading `AGENTS.md` would do the right thing.** The checks are written so that a violation points at the instruction that failed to prevent it. A repeated failure is a bug in the documentation, not just in the commit.
+## 1. `factuality/` — an executable gate (spec #12)
 
-These are not unit tests. There is no application logic to unit-test here — the site is content plus layout plus motion. What is worth testing is whether the *pipeline and the conventions* are intact.
+A regression gate over the **project case studies**. It extracts every quantitative claim from each
+`content/projects/*.mdx`, fetches that project's source repository README through the GitHub API, and
+fails when a claim is not traceable to that source.
 
-## Honest status: no runner
+```bash
+npm run test:unit          # node --test evals — the pure core, no network, milliseconds
+npm run eval:factuality    # the real thing: fetches READMEs, prints a report, sets an exit code
+```
 
-**There is no test runner wired up.** These are markdown-defined checks: a table of assertions, each with a command or a manual procedure. Nothing executes them automatically, and nothing fails a build if one regresses — with one exception: process integrity is partly enforced by `aidlc-check` in CI (`scripts/check-aidlc-sync.mjs`). Everything else is manual.
+| File | What it is |
+| --- | --- |
+| `factuality/claims.mjs` | Pure core: `extractClaims(body)`, `isGrounded(claim, source)`, `normalise`, `stripMarkdown`. Imports nothing. |
+| `factuality/verdict.mjs` | Pure classification: grounded / baselined / ungrounded / unverifiable, plus the stale-baseline rule. |
+| `factuality/sources.mjs` | The only network code: GitHub README fetch, token resolution, retry with backoff. |
+| `factuality/judge.mjs` | Optional LLM tier. Advisory, skipped when no API key is set. |
+| `factuality/run.mjs` | The CLI behind `npm run eval:factuality`. |
+| `factuality/baseline.json` | Committed record of accepted ungrounded claims, each with a written reason. |
+| `factuality/fixtures/` | The synthetic case study and source the unit tests run against. |
+| `factuality/*.test.mjs` | `node --test` suites. No network, no GitHub. |
 
-## How to run them
+**Exit codes are the contract.** `0` every claim grounded, baselined or unverifiable · `1` a
+factuality failure (ungrounded claim, stale baseline entry, malformed baseline entry) · `2` network
+exhaustion — deliberately distinct, so a red check is never ambiguous between "the network broke" and
+"you published a false claim" · `3` the harness itself is broken.
 
-Open [repo-conventions.eval.md](repo-conventions.eval.md) and work down the table. Each row has a shell one-liner where one is practical, or `manual` where it is not. Run them from the repo root.
+**Four verdicts.**
 
-Do this before closing an AI-DLC effort that touched content, images, routes, motion components or the build script.
+- **grounded** — the claim's normalised numeric core appears in the source README.
+- **baselined** — ungrounded, but recorded in `baseline.json` with a reason naming its real source
+  (a résumé line, an effort record, a figure from a paper). The gate fails on any ungrounded claim
+  *absent* from the baseline, which is what makes this a regression gate rather than a purity gate.
+- **ungrounded** — not in the source and not baselined. This fails the run.
+- **unverifiable** — no source to check against. Two case studies (BrainwavesFinland, SAAKSHI) have no
+  `link` because their repositories are private. A `link` that returns 404 — repository gone, renamed,
+  or not readable with the available token — lands here too, with the reason printed. In CI,
+  `pySdf`'s source (`ComPhysGroup/PyAMorph`) is one: the workflow's `GITHUB_TOKEN` can only read this
+  repository, so that file's claims are `unverifiable` in CI and `grounded`/`baselined` locally.
+  Reported by name either way, never skipped silently.
 
-## How they would slot into CI
+**Adding a baseline entry.** Run `node evals/factuality/run.mjs --write-baseline` to regenerate the
+skeleton, then write the reason by hand. The `TODO` placeholder the skeleton leaves behind fails the
+gate — an unexplained baseline entry is a mute button, and the baseline must not become one. An entry
+whose claim no longer appears in any case study fails the gate as **stale**, so the baseline cannot
+silently rot.
 
-Two options, both straightforward when the checks become scripts:
+**Scope.** Case-study content only, and digit-bearing claims only. Prose assertions without numbers
+are out of scope for the deterministic tier — a regex cannot judge them, and pretending otherwise
+would produce false confidence. That is what the optional judge tier is for, and its verdicts are
+advisory: they never change the exit code.
 
-- **A step in `.github/workflows/deploy.yml`**, after `npm install` and before `npm run build`. Fails the deploy on a violation. Strongest, and the most disruptive.
-- **A step in `.github/workflows/aidlc-check.yml`**, which already runs on pull requests only, so `main` deploys are never blocked by a convention check. Safer starting point.
+CI: `.github/workflows/evals.yml` runs both scripts on pull requests to `main`, filtered to diffs
+that touch `content/projects/**` or `evals/**`, and uploads the JSON report as an artifact.
 
-Either way the prerequisite is the same: turn each row into a script with an exit code. Until then, `Automatable` in the check table marks which rows are ready for that and which need a human.
+## 2. `repo-conventions.eval.md` — markdown-defined checks, no runner
 
-## Check categories
+Assertions that the repo's own conventions hold: images are built not hand-copied, copy lives in
+`src/content/site.ts` or project MDX, every route is a page plus a `nav` entry, every animated
+component honours reduced motion. Assertions decay; these checks catch the decay.
+
+**There is no runner for these.** They are a table of assertions, each with a shell one-liner or a
+manual procedure. Open [repo-conventions.eval.md](repo-conventions.eval.md) and work down the table
+from the repo root, before closing an AI-DLC effort that touched content, images, routes, motion
+components or the build script. The one exception is process integrity, partly enforced by
+`aidlc-check` in CI (`scripts/check-aidlc-sync.mjs`). Turning a row into a script with an exit code is
+the prerequisite for CI-ing it — `Automatable` in the check table marks which rows are ready.
+
+### Check categories (`repo-conventions.eval.md`)
 
 | Category | What it covers |
 | --- | --- |

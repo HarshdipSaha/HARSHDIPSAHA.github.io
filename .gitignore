@@ -37,3 +37,6 @@ next-env.d.ts
 
 # subagent worktrees
 /.claude/worktrees/
+
+# factuality eval report (npm run eval:factuality); uploaded as a CI artifact, never committed
+/.evals/
