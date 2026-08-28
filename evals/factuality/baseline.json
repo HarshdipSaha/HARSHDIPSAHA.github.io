@@ -1,0 +1,45 @@
+{
+  "$comment": "Accepted ungrounded claims. Every entry needs a reason naming where the number actually comes from. Regenerate the skeleton with `node evals/factuality/run.mjs --write-baseline`, then write the reasons by hand. An entry whose claim no longer appears in the content fails the gate as stale.",
+  "entries": [
+    {
+      "file": "content/projects/APT.mdx",
+      "claim": "30",
+      "value": "30",
+      "kind": "rank",
+      "phrase": "…shika Singh and me, as team leader). Selected among the top 30 at the AI4Humanity Summit. Presentation Video demonstration…",
+      "reason": "True but not in the README. The rank comes from the owner's résumé (`resume.pdf`, Projects → Accurate Precise Timely: \"Selected among the top 30 teams to pitch offline at the AI4Humanity Summit ... in a hackathon of 150+ teams (Certificate)\") and is restated in `src/content/site.ts` (`experience` achievements: \"Top 30 of 150+ teams — AI4Humanity Summit\"). The APT README lists only team, stack and links, and records no competition result."
+    },
+    {
+      "file": "content/projects/AtomNet.mdx",
+      "claim": "2026",
+      "value": "2026",
+      "kind": "year",
+      "phrase": "…mates across games. Work is currently in review at EMNLP 2026.",
+      "reason": "True but not in the README. The submission status was supplied by the owner and recorded in `aidlc-docs/efforts/006-atomnet-project/effort-state.md` (\"Status published as 'in review at EMNLP 2026'\") and `requirements-delta.md` R-027. The AtomNet README describes the architecture and results but never states a venue; its only EMNLP mention is a citation of ASTRA (Kwon et al., EMNLP 2025), a different paper."
+    },
+    {
+      "file": "content/projects/pySdf.mdx",
+      "claim": "2026",
+      "value": "2026",
+      "kind": "year",
+      "phrase": "…L → SDF conversion. Selected for oral presentation at INCAM 2026 (IIT Kanpur), with the work to be published in a Scopus-i…",
+      "reason": "True but not in the README. The venue comes from the owner's résumé (`resume.pdf`, Research Intern – IIT Madras: \"Selected for oral presentation at INCAM 2026, at IIT Kanpur, then to be published in Scopus indexed journal\") and is restated in `src/content/site.ts` line 117. The PyAMorph README documents the library's API only and mentions no conference."
+    },
+    {
+      "file": "content/projects/tinySafetyNet.mdx",
+      "claim": "22050hz",
+      "value": "22050 Hz",
+      "kind": "measurement",
+      "phrase": "…osa for MFCC extraction, PyAudio; configurable sample rate (22050 Hz, matching training), chunk duration (0.5 s) and MQTT topic.…",
+      "reason": "In the README, but as a configuration literal rather than a measurement: the Configuration section shows `\"sample_rate\": 22050,  # Audio Hz (Must match model training)`. The value and its unit are on opposite sides of a comment marker, so the grounding rule — which deliberately requires a unit to sit next to its number — cannot bind them. Accepted rather than relaxing that rule, because a false \"grounded\" verdict is the failure mode this suite exists to prevent."
+    },
+    {
+      "file": "content/projects/tinySafetyNet.mdx",
+      "claim": "0.5s",
+      "value": "0.5 s",
+      "kind": "measurement",
+      "phrase": "…sample rate (22050 Hz, matching training), chunk duration (0.5 s) and MQTT topic. IoT. Paho-MQTT publishing to a HiveMQ b…",
+      "reason": "In the README, but as a configuration literal with no unit attached: the Configuration section shows `\"chunk_duration\": 0.5,  # Responsiveness (Lower = Faster updates)`. The seconds unit is stated in the surrounding prose of the case study, not in the README line, so the number cannot be bound to `s` in the source. Accepted for the same reason as the sample rate above."
+    }
+  ]
+}
