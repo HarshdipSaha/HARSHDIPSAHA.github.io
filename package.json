@@ -12,8 +12,9 @@
     "images": "node scripts/build-images.mjs",
     "llms": "node scripts/build-llms-txt.mjs",
     "check:aidlc": "node scripts/check-aidlc-sync.mjs",
+    "test:unit": "node --test evals scripts",
+    "eval:factuality": "node evals/factuality/run.mjs",
     "postbuild": "node scripts/postbuild-segments.mjs",
-    "test:unit": "node --test scripts",
     "test:smoke": "playwright test",
     "lighthouse:desktop": "lhci autorun --config=lighthouserc.desktop.json",
     "lighthouse:mobile": "lhci autorun --config=lighthouserc.mobile.json"
@@ -30,6 +31,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.122.0",
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.3.3",

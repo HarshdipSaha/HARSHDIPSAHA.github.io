@@ -19,6 +19,10 @@ npm run test:unit           # node --test scripts — pure-function tests (the l
 npm run test:smoke          # playwright test — every route in out/ loads, renders, scrolls, zero errors (build first)
 npm run lighthouse:desktop  # lhci autorun — Lighthouse CI over out/ against lighthouserc.desktop.json (build first)
 npm run lighthouse:mobile   # same, mobile emulation, lighthouserc.mobile.json
+
+npm run test:unit           # node --test evals — the factuality eval's pure core (no network, milliseconds)
+npm run eval:factuality     # the content-correctness gate: every number in content/projects/*.mdx checked
+                            # against its source repo's README, fetched live from the GitHub API
 ```
 
 There is no lint or format script.
@@ -27,7 +31,8 @@ Stack: Next.js 16.3 (App Router, `output: "export"`), React 19.2, TypeScript 5.8
 (`@tailwindcss/postcss`; tokens in `@theme` inside `src/app/globals.css`), Motion 13 (`motion/react`),
 Lenis (`lenis/react`), `next-mdx-remote/rsc` + `remark-gfm`, `gray-matter`, `clsx`. Dev-only: `sharp`
 (build-time images), `playwright` (screenshots), `@playwright/test` (smoke gate, `tests/`), `@lhci/cli`
-(Lighthouse CI gate), `serve` (static server both gates run against). Fonts: Instrument Serif (italic
+(Lighthouse CI gate), `serve` (static server both gates run against), `@anthropic-ai/sdk` (only the
+factuality eval's optional judge tier, which is skipped when no API key is set). Fonts: Instrument Serif (italic
 display) + Commissioner via `next/font/google` in `src/app/layout.tsx`. No Once UI, no Sass, no Biome, no ESLint config.
 
 ## Architecture constraints (static export)
@@ -49,6 +54,11 @@ CI (all Node 20):
   **Smoke (Playwright)** (`tests/smoke.spec.ts`, desktop + Pixel 7) and **Lighthouse (desktop | mobile)**
   (`@lhci/cli`, thresholds in `lighthouserc.*.json`, median of 3 runs on six routes). ADR 0012.
   Lowering a Lighthouse threshold needs an effort record that says why.
+- `.github/workflows/evals.yml` — on PR to `main`, **only** when the diff touches `content/projects/**`,
+  `evals/**`, the workflow itself or the manifests: **Evals / factuality** (`npm run test:unit`, then
+  `npm run eval:factuality`; JSON report uploaded as the `factuality-report` artifact). ADR 0013.
+  Exit 1 = a claim is not traceable to its source; exit 2 = GitHub was unreachable, which is *not* a
+  factuality failure.
 
 ## Conventions
 
@@ -57,6 +67,21 @@ CI (all Node 20):
 `closing`, `story`, `publication`, `footer`, `process`). Components render it; they do not invent copy.
 Project case studies are `content/projects/*.mdx`. `content/writing/*.mdx` holds three old blog posts
 that are **not rendered anywhere** — content only.
+
+**Evidence rule — enforced, not advisory.** A case study may only state what its source can support.
+The owner's rule, in his words: *"tell me if u can actually fetch their details using github api if
+not then don't make up and write."* Since effort 023 this is a gate, not a request: `Evals /
+factuality` extracts every number from every `content/projects/*.mdx`, fetches that project's source
+repository README through the GitHub API, and **fails the PR** on any number it cannot trace. If a
+number is true but comes from somewhere other than the README — a résumé line, a published paper, a
+competition certificate — add it to `evals/factuality/baseline.json` **with a reason naming where it
+does come from**; an entry left with the `TODO` placeholder fails the gate, and an entry whose claim
+has been deleted from the content fails as stale. Run `npm run eval:factuality` before you push.
+Case studies whose source cannot be read are reported as `unverifiable` **by name**, never skipped:
+`BrainwavesFinland` and `SAAKSHI` have no `link` at all (private repositories), and in CI
+`pySdf`'s source (`ComPhysGroup/PyAMorph`) returns 404 to the workflow token, which can only read
+this repository. Expect that file's counts to differ between a local run (owner's `gh` token) and
+CI; both are correct and both exit 0.
 
 **Images are built, never hand-copied.** Drop files in the drop-zones; `scripts/build-images.mjs`
 (sharp, runs on `predev`/`prebuild`, cached in `.cache/`) publishes them:
@@ -186,7 +211,12 @@ Deleting a file, moving content between sections, or changing a link target is *
 2. `npm run build` — succeeds and `out/` contains the affected route.
 3. `npm run test:smoke` — passes against that `out/`. If you touched layout, images, motion, scripts or
    shared chrome, also `npm run lighthouse:desktop`. CI runs both on the PR (ADR 0012).
+<<<<<<< HEAD
    If you touched `scripts/lib/`, `npm run test:unit` too.
+=======
+   Touched `content/projects/*.mdx` or `evals/`? `npm run test:unit` and `npm run eval:factuality`
+   must both exit 0. CI runs them as *Evals / factuality* (ADR 0013).
+>>>>>>> 1e7b6fa7f82c621e59e120d7802ae45fd25c20f0
 4. New/changed copy lives in `src/content/site.ts` or a `content/projects/*.mdx` file, not hardcoded in a component.
 5. New route: `src/app/<route>/page.tsx` **and** a `nav` entry in `src/content/site.ts` both present.
 6. New project image: `PROJECT_MAP` entry present; `images[0]` basename matches it.
