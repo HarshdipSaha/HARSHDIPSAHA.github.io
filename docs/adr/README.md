@@ -15,6 +15,7 @@
 | [0011](0011-rebuild-from-scratch-on-thine-model.md) | Rebuild the site from scratch on the thine.com model | Accepted | 2026-08-25 |
 | [0012](0012-pr-quality-gates-smoke-and-lighthouse.md) | PR quality gates: browser smoke test and Lighthouse CI | Accepted | 2026-08-27 |
 | [0013](0013-factuality-evals-for-case-studies.md) | Factuality evals: case-study claims gated against their source repositories | Accepted | 2026-08-28 |
+| [0014](0014-agent-facing-site-llms-txt-and-webmcp.md) | An agent-facing surface: generated `llms.txt`, and WebMCP as progressive enhancement | Accepted | 2026-08-28 |
 
 Every record uses the same four-part shape — a `Status / Date / Supersedes` line, then
 `Context`, `Decision`, `Consequences`, and an optional `Evidence` section citing the commits

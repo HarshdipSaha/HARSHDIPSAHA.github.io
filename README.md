@@ -30,14 +30,15 @@ Quality      evals/ · .github/workflows/                               what mus
 
 ```bash
 npm install
-npm run dev          # predev builds images into public/img/; serves on :3000
+npm run dev          # predev builds images into public/img/ and llms.txt into public/; serves on :3000
 ```
 
 ## Build & deploy
 
 ```bash
 npm run typecheck    # tsc --noEmit — the gate
-npm run build        # prebuild builds images, then exports to out/
+npm run build        # prebuild builds images + llms.txt, then exports to out/
+npm run test:unit    # node --test scripts — the llms.txt renderer
 ```
 
 Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages.
@@ -60,6 +61,7 @@ Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages.
 | `content/writing/` | Three old blog posts, kept as content — not rendered |
 | `src/components/` | `Nav`, `Footer`, `ui` (Pill/Label/Container/Arrow), `SmoothScroll`, `ProjectGrid`, `Gallery`, `motion/*`, `home/*` |
 | `src/lib/projects.ts` | Reads project MDX + the image manifest |
+| `scripts/build-llms-txt.mjs` | Writes the agent-facing `public/llms.txt` and `public/llms-full.txt` on `prebuild` (gitignored; ADR 0014) |
 | `src/data/images.json` | **Generated** image manifest (committed) — do not hand-edit |
 | `gallery/`, `project_images/`, `me.jpg` | Image drop-zones — `scripts/build-images.mjs` publishes them |
 | `scripts/` | `build-images.mjs` (sharp, predev/prebuild), `render-brain-frames.py` (manual), `check-aidlc-sync.mjs` (CI gate) |
