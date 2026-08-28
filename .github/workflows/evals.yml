@@ -1,0 +1,77 @@
+name: Evals
+
+# Content correctness gate (spec #12). typecheck proves the code compiles, the
+# smoke test proves the page renders, Lighthouse proves it is fast and
+# accessible — none of them proves it is TRUE. This one does:
+#
+#   unit        — the pure claim-extraction / grounding core, no network
+#   factuality  — every quantitative claim in content/projects/*.mdx checked
+#                 against its source repository's README, fetched live
+#
+# Path-filtered on purpose: running it on a diff that cannot change the result
+# spends GitHub API budget for nothing.
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "content/projects/**"
+      - "evals/**"
+      - ".github/workflows/evals.yml"
+      - "package.json"
+      - "package-lock.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evals-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  factuality:
+    name: factuality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests (pure core, no network)
+        run: npm run test:unit
+
+      - name: Factuality eval
+        env:
+          # Every source repository read here is public, so the workflow token
+          # is enough — it buys a rate limit, not extra read access.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          npm run eval:factuality
+          code=$?
+          set -e
+          case "$code" in
+            0) echo "::notice title=Evals::every claim is grounded, baselined or unverifiable" ;;
+            1) echo "::error title=Factuality failure::a claim is not traceable to its source — see the summary above and the factuality-report artifact" ;;
+            2) echo "::error title=Network exhaustion::GitHub could not be reached after retries. This is NOT a factuality failure — no claim was judged false. Re-run the job." ;;
+            *) echo "::error title=Eval harness error::the suite itself failed to run (exit $code)" ;;
+          esac
+          exit $code
+
+      - name: Upload factuality report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: factuality-report
+          path: .evals/factuality-report.json
+          if-no-files-found: warn
+          retention-days: 7
