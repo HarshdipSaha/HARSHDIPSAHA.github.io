@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { WebMcpTools } from "@/components/agent/WebMcpTools";
 import { Reveal } from "@/components/motion/Reveal";
 import { ProjectGrid } from "@/components/ProjectGrid";
 import { Container, Label } from "@/components/ui";
+import { person } from "@/content/site";
+import { toAgentProject } from "@/lib/agentProjects";
 import { getProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
@@ -24,6 +27,9 @@ export default function ProjectsPage() {
       <div className="mt-16 md:mt-20">
         <ProjectGrid projects={projects} headingLevel="h2" />
       </div>
+      {/* Renders nothing. Registers a WebMCP `searchProjects` tool for agentic
+          browsers, over the same list the grid above shows. See ADR 0014. */}
+      <WebMcpTools projects={projects.map((p) => toAgentProject(p, person.siteUrl))} />
     </Container>
   );
 }
