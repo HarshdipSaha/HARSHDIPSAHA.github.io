@@ -6,69 +6,35 @@ Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS
 
 ---
 
-## This repo is also a worked example
+# Harshdip Saha — Portfolio
 
-The site is built with **AI-DLC** (AI-Driven Development Lifecycle) on top of the agent-repo
-structure playbook. Every change after the baseline is a numbered *effort*; every structural
-decision is an *ADR*. The build story is published on the site itself at
-**[/process](https://harshdipsaha.tech/process)**.
+Personal portfolio site: **[harshdipsaha.tech](https://harshdipsaha.tech/)**
 
-Why bother: this repo's first ~20 commits have messages like `lets see`, `hmmm`, `okays`, `soz` —
-including one 12,517-line commit. None of them recorded *why*. Every structural decision had to be
-reverse-engineered from diffs in August 2026. ADRs 0001–0007 and efforts 001–004 are honest
-reconstructions from that archaeology; everything after is recorded as it happens.
+A modern, highly interactive portfolio built with Next.js 16, React 19, TypeScript, Tailwind CSS v4, and Motion. The platform showcases professional experiences, projects, and a unique 3D/glassmorphism design aesthetic.
 
-```
-Context      AGENTS.md · CLAUDE.md · CONTEXT.md · AGENT_WORKFLOWS.md   how agents behave here
-Capabilities .claude/skills · AGENT_WORKFLOWS.md                       what agents can do
-Knowledge    docs/ (tutorials · how-to · reference · explanation · adr) decisions that persist
-Product      src/ · content/ · scripts/ · public/                      the software
-Quality      evals/ · .github/workflows/                               what must hold to ship
-```
+---
 
-## Run locally
+## An Innovative Approach: AI-DLC
 
-```bash
-npm install
-npm run dev          # predev builds images into public/img/ and llms.txt into public/; serves on :3000
-```
+This repository is more than just a portfolio; it serves as a practical demonstration of **AI-DLC** (AI-Driven Development Lifecycle). This methodology introduces a transparent and structured development history, prioritizing documentation and reasoning alongside the codebase.
 
-## Build & deploy
+By capturing architectural decisions and effort states systematically, the project avoids the common pitfalls of undocumented changes and opaque commit histories.
 
-```bash
-npm run typecheck    # tsc --noEmit — the gate
-npm run build        # prebuild builds images + llms.txt, then exports to out/
-npm run test:unit    # node --test scripts — the llms.txt renderer
-```
+- **Architecture Decision Records (ADRs):** Every major structural decision is documented as an ADR, ensuring the reasoning behind every choice remains accessible and maintainable over time.
+- **Effort Tracking:** Every iteration and major change is tracked as a numbered *effort*, creating a clear audit trail of intent and execution.
+- **Living Documentation:** The build story and engineering process are published on the site itself at **[/process](https://harshdipsaha.tech/process)**, demonstrating the value of the AI-DLC methodology in practice.
 
-Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages.
+This structured approach ensures that any contributor—human or AI agent—can understand the system's shape, the rationale behind past decisions, and the expected conventions for future work without relying on guesswork.
 
-## Project layout
+## Exploring the Repository
 
-| Path | Purpose |
-|------|---------|
-| `AGENTS.md` | Front door for any agent: commands, conventions, boundaries |
-| `CONTEXT.md` | Durable project context + domain glossary |
-| `AGENT_WORKFLOWS.md` | Named multi-skill recipes this repo actually runs |
-| `aidlc-docs/inception/` | The baseline — requirements, architecture, components, stack |
-| `aidlc-docs/efforts/` | One folder per unit of work, with state + requirements delta |
-| `docs/adr/` | Architecture decision records — the "why" log |
-| `docs/` | Tutorials, how-to guides, reference, explanation (Diátaxis) |
-| `evals/` | Behaviour checks that the repo's conventions still hold |
-| `src/app/` | Routes: `/`, `/story`, `/projects`, `/projects/[slug]`, `/gallery`, `/process`, 404, sitemap, robots; `globals.css` holds the design tokens |
-| `src/content/site.ts` | Single source of truth for all site copy that isn't a project; the `nav` array drives Nav, Footer and sitemap |
-| `content/projects/` | One `.mdx` per project (18); lowercased filename = URL slug |
-| `content/writing/` | Three old blog posts, kept as content — not rendered |
-| `src/components/` | `Nav`, `Footer`, `ui` (Pill/Label/Container/Arrow), `SmoothScroll`, `ProjectGrid`, `Gallery`, `motion/*`, `home/*` |
-| `src/lib/projects.ts` | Reads project MDX + the image manifest |
-| `scripts/build-llms-txt.mjs` | Writes the agent-facing `public/llms.txt` and `public/llms-full.txt` on `prebuild` (gitignored; ADR 0014) |
-| `src/data/images.json` | **Generated** image manifest (committed) — do not hand-edit |
-| `gallery/`, `project_images/`, `me.jpg` | Image drop-zones — `scripts/build-images.mjs` publishes them |
-| `scripts/` | `build-images.mjs` (sharp, predev/prebuild), `render-brain-frames.py` (manual), `check-aidlc-sync.mjs` (CI gate) |
-| `public/` | `img/` is **generated** (gitignored); `brain/` frames and `resume.pdf` are committed |
+The project is organized to separate context, knowledge, and execution:
 
-## Contributing to this repo (or asking an agent to)
+- **Context & Capabilities:** Defined in `AGENTS.md`, `CLAUDE.md`, and `CONTEXT.md`. These files outline how AI agents should interact with the repository.
+- **Knowledge Base:** The `docs/` directory contains structured guides (tutorials, how-tos, references, and explanations), alongside the `docs/adr/` folder which acts as the architectural "why" log.
+- **Lifecycle Records:** The `aidlc-docs/` directory contains the baseline inception documents and all recorded efforts.
+- **Core Product:** The actual website source code resides in `src/`, with content managed via MDX in the `content/` directory.
 
-Start at [`AGENTS.md`](./AGENTS.md). For a change of any size, open an effort — see
-[`docs/how-to/run-an-aidlc-effort.md`](./docs/how-to/run-an-aidlc-effort.md). Decisions go in
-[`docs/adr/`](./docs/adr/).
+## Contributing
+
+For changes of any size, please follow the AI-DLC methodology. Start by reading [`AGENTS.md`](./AGENTS.md) and refer to the guide on [running an AI-DLC effort](./docs/how-to/run-an-aidlc-effort.md) before making modifications.

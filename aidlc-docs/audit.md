@@ -2,13 +2,13 @@
 
 Records every approval-gate response in the project's history.
 
-**Honesty note.** Efforts 001-004 predate AI-DLC adoption in this repo. No approval gates existed at the time — there was no planning stage, no construction gate, and no review step; changes were committed directly with messages like "lets see" and "hmmm". Their rows below are **reconstructions of what happened, not records of approvals**, and are marked `n/a — pre-adoption`. No genuine approval was given or recorded for those efforts. Efforts 005 and 006 were gated by GitHub PR review. Effort 007 is the first to run an explicit AI-DLC scope-approval gate.
+**Honesty note.** Efforts 001-004 predate AI-DLC adoption in this repo. No approval gates existed at the time — there was no planning stage, no construction gate, and no review step; changes were committed directly without documented scope. Their rows below are **reconstructions of what happened, not records of approvals**, and are marked `n/a — pre-adoption`. No genuine approval was given or recorded for those efforts. Efforts 005 and 006 were gated by GitHub PR review. Effort 007 is the first to run an explicit AI-DLC scope-approval gate.
 
 | Date | Effort | Gate | Response | Notes |
 |------|--------|------|----------|-------|
-| 2026-01-27 | 001 | Planning | `n/a — pre-adoption` | No approval gate existed at the time. Reconstructed 2026-08-23 from commits `d9e0d8a`..`faf40ff`. No rationale recorded. |
-| 2026-01-27 | 001 | Construction | `n/a — pre-adoption` | No gate. Committed direct to default branch; two corrective `deploy.yml` commits followed. |
-| 2026-01-28 | 002 | Planning | `n/a — pre-adoption` | No approval gate existed at the time. Reconstructed from the rename/deletion sets in `e3d7eea`..`c91a044`. |
+| 2026-01-27 | 001 | Planning | `n/a — pre-adoption` | No approval gate existed at the time. Reconstructed 2026-08-23. No rationale recorded. |
+| 2026-01-27 | 001 | Construction | `n/a — pre-adoption` | No gate. Committed direct to default branch; two corrective deployment commits followed. |
+| 2026-01-28 | 002 | Planning | `n/a — pre-adoption` | No approval gate existed at the time. Reconstructed from the rename/deletion sets. |
 | 2026-01-28 | 002 | Construction | `n/a — pre-adoption` | No gate. The decision to abandon upstream rebase (ADR 0003) was never reviewed at the time. |
 | 2026-01-28 | 003 | Planning | `n/a — pre-adoption` | No approval gate existed at the time. Reconstructed from `7eba8fd`..`e6629aa`. |
 | 2026-01-28 | 003 | Construction | `n/a — pre-adoption` | No gate. The JSX-in-content trade-off (ADR 0004) was written retroactively, not approved up front. |

@@ -3,11 +3,7 @@
 Status: Accepted   Date: 2026-08-23   Supersedes: —
 
 ## Context
-The repo's first twenty-odd commits carry messages like "lets see", "hmmm", "okays" and "soz",
-one of them 12,517 insertions across 137 files. None of them records why anything was chosen.
-Writing ADRs 0001-0007 required reverse-engineering intent from diffs — reading which files a
-commit deleted to infer what was rejected. That is a recoverable cost once and an unpayable one
-at scale.
+Early commits in this repository lacked clear, descriptive messages and did not record the reasoning behind architectural decisions. For instance, a single early commit included over 12,000 insertions across more than 100 files without detailing the intent. Writing ADRs 0001-0007 required reverse-engineering intent from diffs — reading which files a commit deleted to infer what was rejected. That is a recoverable cost once and an unpayable one at scale.
 
 Options considered:
 
@@ -36,8 +32,6 @@ publicly on the site's `/process` page, so it is written for an external reader 
 a future maintainer.
 
 ## Evidence
-- `1613523` (2023-10-30) through `0814927` (2026-01-28) — the ad-hoc era: "first commit",
-  "lets see" x2, "personalise", "okays", "hmmm", "pic".
-- `ce54d2a` (2026-01-27) — 12,517 insertions under a two-word message; the single largest
-  undocumented decision in the history.
+- `1613523` (2023-10-30) through `0814927` (2026-01-28) — the ad-hoc era: early undocumented commits.
+- `ce54d2a` (2026-01-27) — 12,517 insertions under a two-word message; the single largest undocumented decision in the history.
 - `6799e4b`, `1cde09f` (2026-08-23) — the first content changes made under this structure.

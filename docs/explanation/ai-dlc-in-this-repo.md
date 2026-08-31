@@ -12,9 +12,9 @@ Architectural decisions are split out into ADRs under `docs/adr/`, because a dec
 
 Not as an aspiration. As a repair.
 
-The first roughly twenty commits of this repository have messages like `lets see`, `hmmm`, `okays`, and `soz`. One of them is 12,517 lines. Those commits contain real, deliberate architectural decisions — adopt the Once UI Next.js template, flatten it into the repo root, commit to static export on GitHub Pages, build a drop-zone image sync pipeline, model projects as per-project MDX, prune the template's demo content. Every one of those was a choice with alternatives that were considered and rejected.
+Early commits in this repository lacked clear, descriptive messages and did not record the reasoning behind architectural decisions. For instance, a single early commit included over 12,000 insertions across more than 100 files without detailing the intent. Those commits contain real, deliberate architectural decisions — adopt the Once UI Next.js template, flatten it into the repo root, commit to static export on GitHub Pages, build a drop-zone image sync pipeline, model projects as per-project MDX, prune the template's demo content. Every one of those was a choice with alternatives that were considered and rejected.
 
-None of that reasoning was written down. In August 2026 it had to be reconstructed by reading commit diffs — inferring intent from what changed, which is guesswork dressed up as archaeology. A 12,517-line commit called `okays` tells you nothing about why the template was chosen over a from-scratch build, or what else was tried first.
+None of that reasoning was written down. In August 2026 it had to be reconstructed by reading commit diffs — inferring intent from what changed, which is guesswork dressed up as archaeology. A massive undocumented commit tells you nothing about why the template was chosen over a from-scratch build, or what else was tried first.
 
 That cost is the whole argument. The code was recoverable at any time; the *reasoning* was not, and a diff cannot tell you what was rejected. When the rationale is gone, every future change re-litigates settled questions, or worse, silently violates a constraint nobody remembers agreeing to.
 
@@ -65,7 +65,7 @@ The largest test of the process so far is the from-scratch rebuild of the site (
 
 ## Surfaced publicly
 
-This story is not internal. It is published on the site's `/process` page: how the repo is layered, what the effort log contains, what the decision log contains. A portfolio that describes engineering judgment is more credible when it demonstrates it on itself, including the part where the first twenty commits were called `hmmm`.
+This story is not internal. It is published on the site's `/process` page: how the repo is layered, what the effort log contains, what the decision log contains. A portfolio that describes engineering judgment is more credible when it demonstrates it on itself, including the transition from undocumented early work to a structured lifecycle.
 
 ## See also
 

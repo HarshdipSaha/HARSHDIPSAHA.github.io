@@ -42,7 +42,7 @@
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
-- **001-004** — reconstructed from commit diffs alone. The commits (`lets see`, `hmmm`, `okays`, `soz`) recorded no rationale, so intent was inferred from what the code does.
+- **001-004** — reconstructed from commit diffs alone. Early commits recorded no rationale, so intent was inferred from what the code does.
 - **005-006, 008** — reconstructed from PR #1, #2, and #4, which do carry written rationale. These are the more reliable records.
 
 Effort 007 was recorded as it happened (planning gate logged live) but its registry/audit entries fell out of sync with the merged PR until effort 009's cleanup. Effort 009 was the first recorded start-to-finish with no drift; effort 010 makes that mandatory — the `aidlc-check` CI gate (ADR 0009) now fails any PR whose substantive diff ships without an `aidlc-docs/` update.

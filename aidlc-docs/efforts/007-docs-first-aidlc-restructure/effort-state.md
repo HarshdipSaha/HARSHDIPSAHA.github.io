@@ -36,7 +36,7 @@ Adopt the Agent-Repo Structure Playbook layout and the AI-DLC methodology across
 `npx tsc --noEmit -p tsconfig.json` clean; `npm run build` succeeds; `/process` renders and is reachable from the site nav (confirmed 2026-08-23 during effort 009 audit).
 
 ## Notes
-- Motivation: the repo's first ~20 commits carry messages like "lets see", "hmmm", "okays", "soz" attached to 12,000-line diffs, with zero recorded rationale. Every structural decision in efforts 001-004 had to be reverse-engineered from diffs during this backfill.
+- Motivation: early commits in the repository were undocumented, some with massive diffs, leaving zero recorded rationale. Every structural decision in efforts 001-004 had to be reverse-engineered from diffs during this backfill.
 - Efforts 001-007 in `aidlc-docs/efforts/` are reconstructions, not contemporaneous records. They are marked as such in each `effort-state.md`.
 - The `/process` route needs two edits, not one — a missed nav entry in `src/components/Header.tsx` yields a page that builds but is unreachable.
 - Ownership split during this effort: `aidlc-docs/README.md` and `aidlc-docs/inception/**` are owned by a separate agent and are not written here.
