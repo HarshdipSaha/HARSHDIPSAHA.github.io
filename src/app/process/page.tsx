@@ -79,8 +79,8 @@ export default function ProcessPage() {
           <Pill href={process.repo} variant="accent">
             Open the repository ↗
           </Pill>
-          <Pill href={`${process.repo}/tree/main/docs/adr`}>All 12 decisions ↗</Pill>
-          <Pill href={`${process.repo}/tree/main/aidlc-docs/efforts`}>All 22 change records ↗</Pill>
+          <Pill href={`${process.repo}/tree/main/docs/adr`}>All 14 decisions ↗</Pill>
+          <Pill href={`${process.repo}/tree/main/aidlc-docs/efforts`}>All 24 change records ↗</Pill>
         </div>
       </Reveal>
     </article>
