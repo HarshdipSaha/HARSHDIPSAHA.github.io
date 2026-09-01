@@ -1,17 +1,45 @@
-Creative Commons Attribution-NonCommercial 4.0 International  
-CC BY-NC 4.0
+## Code and infrastructure — MIT
 
-By using this work, you agree to the following terms:  
+The source code, scripts, configuration, CI workflows, and tooling in this
+repository are licensed under the MIT License (below).
 
-You are free to:  
-- **Share** — copy and redistribute the material in any medium or format  
-- **Adapt** — remix, transform, and build upon the material  
+## Personal content — All Rights Reserved
 
-Under the following conditions:  
-- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made.  
-- **NonCommercial** — You may not use the material for **commercial purposes**.  
+The following are personal content of Harshdip Saha and are **not** covered
+by the MIT license. They may not be copied, reused, or redistributed
+without explicit written permission:
 
-No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.  
+- Case studies and project write-ups (`content/projects/*.mdx`)
+- Site copy (`src/content/site.ts` — the text, not the schema)
+- Effort records and audit trail (`aidlc-docs/`)
+- Architecture Decision Records (`docs/adr/`)
+- Résumé data and the compiled PDF (`resume.pdf`, `resume/`)
+- Photographs (`gallery/`, `me.jpg`)
+- The brain-sequence frames (`public/brain/`) — rendered from the ICBM 152
+  template, whose own licence notice appears in the site's footer
 
-Full license text available at:  
-[https://creativecommons.org/licenses/by-nc/4.0/legalcode](https://creativecommons.org/licenses/by-nc/4.0/legalcode)  
+If you want to build something similar, take the code. The words are mine.
+
+---
+
+MIT License
+
+Copyright (c) 2026 Harshdip Saha
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.  
