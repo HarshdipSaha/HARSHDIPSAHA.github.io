@@ -210,12 +210,9 @@ Deleting a file, moving content between sections, or changing a link target is *
 2. `npm run build` — succeeds and `out/` contains the affected route.
 3. `npm run test:smoke` — passes against that `out/`. If you touched layout, images, motion, scripts or
    shared chrome, also `npm run lighthouse:desktop`. CI runs both on the PR (ADR 0012).
-<<<<<<< HEAD
-   If you touched `scripts/lib/`, `npm run test:unit` too.
-=======
-   Touched `content/projects/*.mdx` or `evals/`? `npm run test:unit` and `npm run eval:factuality`
-   must both exit 0. CI runs them as *Evals / factuality* (ADR 0013).
->>>>>>> 1e7b6fa7f82c621e59e120d7802ae45fd25c20f0
+   If you touched `scripts/lib/`, `npm run test:unit` too. Touched `content/projects/*.mdx` or
+   `evals/`? `npm run test:unit` and `npm run eval:factuality` must both exit 0. CI runs them as
+   *Evals / factuality* (ADR 0013).
 4. New/changed copy lives in `src/content/site.ts` or a `content/projects/*.mdx` file, not hardcoded in a component.
 5. New route: `src/app/<route>/page.tsx` **and** a `nav` entry in `src/content/site.ts` both present.
 6. New project image: `PROJECT_MAP` entry present; `images[0]` basename matches it.
