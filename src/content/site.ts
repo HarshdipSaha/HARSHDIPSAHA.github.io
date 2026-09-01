@@ -209,10 +209,10 @@ export const process = {
     "You can retrace every change ever made to this site. It's built with AI-DLC (the AI-Driven Development Lifecycle): a way of working where each change starts as a short written plan, is approved, built, checked, and closed with a record — and where every decision about how the site is put together is written down as an ADR (an Architecture Decision Record: one page saying what was chosen, what else was considered, and why).",
   why: "I keep this page because the habit matters more than the website. It's the same discipline I use on a research pipeline: leave enough of a written trail that a reviewer can retrace every step without asking me. The site is the worked example you can open.",
   stats: [
-    { value: "22", label: "changes recorded, numbered 001–022, since January 2026" },
-    { value: "12", label: "decisions written down, numbered 0001–0012" },
+    { value: "24", label: "changes recorded, numbered 001–024, since January 2026" },
+    { value: "14", label: "decisions written down, numbered 0001–0014" },
     { value: "2", label: "of those decisions later replaced — kept in the record, marked superseded" },
-    { value: "3", label: "automated gates on every proposed change: its record exists, every page still works, Lighthouse scores hold" },
+    { value: "4", label: "automated gates on every proposed change: its record exists, every page still works, Lighthouse scores hold, and every number is traceable to its source" },
   ],
   flowLabel: "How one change moves through",
   flow: [
@@ -238,8 +238,8 @@ export const process = {
     },
     {
       step: "Verify",
-      body: "The type-check and full build must pass. Then three automated gates run on the proposed change: one refuses it if it arrives without its record; one opens every page in a real browser, scrolls through, and fails on any error; one runs Google's Lighthouse and fails if accessibility, SEO, best-practice or performance scores drop below where they stand today.",
-      artefact: "npm run typecheck  ·  aidlc-check.yml  ·  quality-gates.yml",
+      body: "The type-check and full build must pass. Then four automated gates run on the proposed change: one refuses it if it arrives without its record; one opens every page in a real browser, scrolls through, and fails on any error; one runs Google's Lighthouse and fails if accessibility, SEO, best-practice or performance scores drop below where they stand today; and one takes every number written about a project, fetches that project's source code, and fails if the number isn't there.",
+      artefact: "npm run typecheck  ·  aidlc-check.yml  ·  quality-gates.yml  ·  evals.yml",
     },
     {
       step: "Decide and close",
@@ -254,6 +254,8 @@ export const process = {
     { id: "0009", title: "Let an automated check block undocumented change", why: "the advisory version of this rule was skipped within hours; a gate is not." },
     { id: "0011", title: "Rebuild the site from scratch on a new visual model", why: "two redesigns on the old template hit the same ceiling; this decision replaces two earlier ones." },
     { id: "0012", title: "Gate every change on a browser smoke test and Lighthouse scores", why: "a build that succeeds can still ship a page that throws or an accessibility regression — it did, once; the gate catches both before merge." },
+    { id: "0013", title: "Check every number on this site against the source it came from", why: "the write-ups were drafted by an AI from each project's own README; a claim it invented would look exactly like a true one. Now it fails the build." },
+    { id: "0014", title: "Publish a plain-text edition of the site for AI agents", why: "an assistant reading this site should not have to scrape twenty styled pages to answer one question about my work." },
   ],
   decisionsNote: "Two earlier decisions (0001, 0010) were later reversed. They stay in the register, marked superseded, so the history stays honest and readable.",
   repo: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io",

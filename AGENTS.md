@@ -15,12 +15,11 @@ npm run images         # rebuild public/img/ + src/data/images.json without star
 npm run llms           # rebuild public/llms.txt + public/llms-full.txt without starting dev
 npm run check:aidlc    # node scripts/check-aidlc-sync.mjs — the record gate, run locally
 
-npm run test:unit           # node --test scripts — pure-function tests (the llms.txt renderer)
+npm run test:unit           # node --test evals scripts — every pure-function test: the factuality
+                            # eval's core and the llms.txt renderer (no network, milliseconds)
 npm run test:smoke          # playwright test — every route in out/ loads, renders, scrolls, zero errors (build first)
 npm run lighthouse:desktop  # lhci autorun — Lighthouse CI over out/ against lighthouserc.desktop.json (build first)
 npm run lighthouse:mobile   # same, mobile emulation, lighthouserc.mobile.json
-
-npm run test:unit           # node --test evals — the factuality eval's pure core (no network, milliseconds)
 npm run eval:factuality     # the content-correctness gate: every number in content/projects/*.mdx checked
                             # against its source repo's README, fetched live from the GitHub API
 ```
