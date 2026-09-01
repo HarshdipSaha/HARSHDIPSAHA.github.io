@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
+import { GatePipeline } from "@/components/process/GatePipeline";
 import { SkillsBubbles } from "@/components/process/SkillsBubbles";
 import { Label, Pill } from "@/components/ui";
 import { process } from "@/content/site";
@@ -29,6 +30,23 @@ export default function ProcessPage() {
             </div>
           ))}
         </dl>
+      </Reveal>
+
+      <Reveal>
+        <section>
+          <Label>{process.skillsLabel}</Label>
+          <p className="prose mt-4">{process.skillsNote}</p>
+          <div className="mt-6">
+            <SkillsBubbles skills={process.skills} />
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section>
+          <Label>{process.gatesLabel}</Label>
+          <GatePipeline gates={process.gates} />
+        </section>
       </Reveal>
 
       <Reveal>
@@ -72,17 +90,34 @@ export default function ProcessPage() {
       </Reveal>
 
       <Reveal>
-        <p className="prose">{process.why}</p>
+        <section>
+          <Label>{process.factsLabel}</Label>
+          <dl className="hairline mt-4 divide-y divide-white/10 border-y">
+            {process.facts.map((f) => (
+              <div key={f.claim} className="py-5">
+                <dt className="text-[1.05rem] font-medium leading-snug text-paper">{f.claim}</dt>
+                <dd className="mt-1.5 text-sm leading-relaxed text-paper/60">
+                  {f.evidence}{" "}
+                  {f.href && (
+                    <a
+                      href={f.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-paper/55 transition-colors hover:text-tangerine"
+                      aria-label={`Source for: ${f.claim}`}
+                    >
+                      ↗
+                    </a>
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
       </Reveal>
 
       <Reveal>
-        <section>
-          <Label>{process.skillsLabel}</Label>
-          <p className="prose mt-4">{process.skillsNote}</p>
-          <div className="mt-6">
-            <SkillsBubbles skills={process.skills} />
-          </div>
-        </section>
+        <p className="prose">{process.why}</p>
       </Reveal>
 
       <Reveal>
@@ -90,8 +125,8 @@ export default function ProcessPage() {
           <Pill href={process.repo} variant="accent">
             Open the repository ↗
           </Pill>
-          <Pill href={`${process.repo}/tree/main/docs/adr`}>All 14 decisions ↗</Pill>
-          <Pill href={`${process.repo}/tree/main/aidlc-docs/efforts`}>All 24 change records ↗</Pill>
+          <Pill href={`${process.repo}/tree/main/docs/adr`}>All 15 decisions ↗</Pill>
+          <Pill href={`${process.repo}/tree/main/aidlc-docs/efforts`}>All 29 change records ↗</Pill>
         </div>
       </Reveal>
     </article>

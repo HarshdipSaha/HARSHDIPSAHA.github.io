@@ -206,13 +206,28 @@ export const footer = {
 export const process = {
   title: "Process",
   headline:
-    "You can retrace every change ever made to this site. It's built with AI-DLC (the AI-Driven Development Lifecycle): a way of working where each change starts as a short written plan, is approved, built, checked, and closed with a record — and where every decision about how the site is put together is written down as an ADR (an Architecture Decision Record: one page saying what was chosen, what else was considered, and why).",
+    "Every change to this site starts as a written plan, gets approved, built, checked by four automated gates, and closed with a record. Every decision about how it's put together is written down. You can retrace all of it.",
   why: "I keep this page because the habit matters more than the website. It's the same discipline I use on a research pipeline: leave enough of a written trail that a reviewer can retrace every step without asking me. The site is the worked example you can open.",
   stats: [
-    { value: "24", label: "changes recorded, numbered 001–024, since January 2026" },
-    { value: "14", label: "decisions written down, numbered 0001–0014" },
+    { value: "29", label: "changes recorded, numbered 001–029, since January 2026" },
+    { value: "15", label: "decisions written down, numbered 0001–0015" },
     { value: "2", label: "of those decisions later replaced — kept in the record, marked superseded" },
-    { value: "4", label: "automated gates on every proposed change: its record exists, every page still works, Lighthouse scores hold, and every number is traceable to its source" },
+    { value: "4", label: "automated gates on every pull request" },
+  ],
+  gatesLabel: "What a PR has to pass",
+  gates: [
+    { label: "Record", detail: "Ships with its own AI-DLC paperwork, or CI rejects it.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/blob/main/.github/workflows/aidlc-check.yml" },
+    { label: "Build + Smoke", detail: "Every route loads in a real browser. Zero errors.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/blob/main/.github/workflows/quality-gates.yml" },
+    { label: "Lighthouse", detail: "Accessibility, SEO, performance. No category drops.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/blob/main/lighthouserc.desktop.json" },
+    { label: "Factuality", detail: "Every number checked against its source repo.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/blob/main/.github/workflows/evals.yml" },
+  ] as { label: string; detail: string; href: string }[],
+  factsLabel: "What's different here",
+  facts: [
+    { claim: "Every number on this site is checked against its source.", evidence: "A factuality gate fetches each project's real README and fails if a case study states a number that repository doesn't support.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/blob/main/evals/factuality/run.mjs" },
+    { claim: "AI agents get their own edition.", evidence: "llms.txt and llms-full.txt are generated at build time from the same content the site renders, so they can't drift.", href: "https://harshdipsaha.tech/llms.txt" },
+    { claim: "Accessibility is 100 on every route, gated.", evidence: "Lighthouse CI runs on every PR. A contrast regression or a missing label fails the build before it ships.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/blob/main/lighthouserc.desktop.json" },
+    { claim: "The brain you scrolled through is 160 real MRI slices.", evidence: "Axial slices of the ICBM 152 Nonlinear Symmetric 2009a T1 template, rendered from the original NIfTI file.", href: "https://harshdipsaha.tech/" },
+    { claim: "Two earlier decisions were wrong. They're still in the record.", evidence: "ADRs 0001 and 0010 were superseded, not deleted. The history stays honest.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/tree/main/docs/adr" },
   ],
   flowLabel: "How one change moves through",
   flow: [
@@ -238,7 +253,7 @@ export const process = {
     },
     {
       step: "Verify",
-      body: "The type-check and full build must pass. Then four automated gates run on the proposed change: one refuses it if it arrives without its record; one opens every page in a real browser, scrolls through, and fails on any error; one runs Google's Lighthouse and fails if accessibility, SEO, best-practice or performance scores drop below where they stand today; and one takes every number written about a project, fetches that project's source code, and fails if the number isn't there.",
+      body: "The type-check and full build must pass. Then four automated gates run — the pipeline above. Nothing ships until all four are green.",
       artefact: "npm run typecheck  ·  aidlc-check.yml  ·  quality-gates.yml  ·  evals.yml",
     },
     {
