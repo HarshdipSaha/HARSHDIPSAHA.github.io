@@ -21,12 +21,12 @@ import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 /** Golden-angle phyllotaxis so the bubbles read as a loose cluster, not a grid. */
 function layoutPosition(index: number, total: number) {
   const angle = index * 137.508;
-  const radius = 6 + (index / Math.max(total - 1, 1)) * 32;
+  const radius = 8 + (index / Math.max(total - 1, 1)) * 38;
   const cx = 50 + radius * Math.cos((angle * Math.PI) / 180);
-  const cy = 50 + radius * Math.sin((angle * Math.PI) / 180) * 0.72;
+  const cy = 50 + radius * Math.sin((angle * Math.PI) / 180) * 0.65;
   return {
-    left: `${Math.min(90, Math.max(10, cx))}%`,
-    top: `${Math.min(86, Math.max(14, cy))}%`,
+    left: `${Math.min(88, Math.max(12, cx))}%`,
+    top: `${Math.min(84, Math.max(16, cy))}%`,
   };
 }
 
@@ -119,7 +119,7 @@ export function SkillsBubbles({ skills }: { skills: string[] }) {
   return (
     <div
       ref={containerRef}
-      className="hairline relative h-[22rem] w-full overflow-hidden rounded-3xl border sm:h-[26rem]"
+      className="hairline relative h-[28rem] w-full overflow-hidden rounded-3xl border sm:h-[30rem]"
     >
       {skills.map((name, i) => (
         <Bubble key={name} name={name} index={i} total={skills.length} containerRef={containerRef} />
