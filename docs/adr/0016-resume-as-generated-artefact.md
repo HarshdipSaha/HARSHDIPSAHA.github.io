@@ -16,7 +16,7 @@ artefacts: one source of truth, a build step, and a record of what changed and w
 Three tickets (#32, #33, #34) broke the work into a tracer-bullet chain: a template + data-mapping
 renderer with tests; CI compilation via an established LaTeX action with PDF text verification; a
 change-triggered automation that opens a review-only PR. This ADR records the decisions spanning all
-three, made while implementing them as one effort (026) and one PR closing all four tickets.
+three, made while implementing them as one effort (028) and one PR closing all four tickets.
 
 **The scope question that shaped everything else:** `site.ts`'s `person`, `experience`, and
 `education` shapes map faithfully only to the résumé's **Header, Education, and Experience** sections.
@@ -159,4 +159,4 @@ in the workflow calls a merge API.
 - Trial of both branches of the ticket #34 gate: a real `experience` edit produced a byte-different
   PDF; an unrelated `site.ts` edit (`hero.left`) produced a byte-identical one. Both shown with real
   `cmp` output in the effort record.
-- Effort record: `aidlc-docs/efforts/026-latex-resume-pipeline/effort-state.md`.
+- Effort record: `aidlc-docs/efforts/028-latex-resume-pipeline/effort-state.md`.
