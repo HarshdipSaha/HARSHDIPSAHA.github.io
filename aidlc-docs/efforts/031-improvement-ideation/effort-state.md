@@ -28,7 +28,13 @@ ideas document with implementation steps for each, not code.
 
 ## Units of work
 
-- [x] `docs/plans/2026-09-01-site-improvement-ideas.md` — new
+- [x] `docs/plans/2026-09-01-site-improvement-ideas.md` — new (10 ideas)
+- [x] Second pass, owner-requested: ideas 11–14 appended (/story polish set) — interests as pills
+  (old `ResearchInterestsBlock` had colored pills, current is one muted joined line), the AIR-14 /
+  top-30 / "open to internships" duplication between `story.more[1]` and the achievements list,
+  education as a journey timeline (old site's `journey-timeline` idiom), and the publication photo
+  — verified recoverable from git (`7eba8fd:public/images/publications/miccai.jpg`, 415,657 bytes).
+  Suggested order updated: the five /story items form the first wave as one effort/PR.
 
 ## Verification
 

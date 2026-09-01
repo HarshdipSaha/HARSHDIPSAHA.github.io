@@ -216,6 +216,111 @@ reuse it).
 
 ---
 
+## 11. Research interests as styled pills, not one muted line
+
+**What.** On `/story` today, Interests renders as a single joined text line
+(`story.interests.join(" · ")` at `text-paper/75`) — eight topics including "LLM safety &
+alignment" compressed into something the eye slides straight past. The pre-rebuild site had a
+dedicated `ResearchInterestsBlock` (commit `7eba8fd`): each interest as its own colored pill
+(cyan/amber/coral/emerald/violet rotation), scannable at a glance.
+
+**Why.** For a research-flavoured portfolio, the interests are a first-class signal for a PI
+deciding whether to reply to an email. Right now they're the most under-dressed section on the
+page. Owner has asked for this directly.
+
+**How.**
+1. Render `story.interests` as pills using the existing `.glass`/`.hairline` rounded-full idiom
+   the Tools section already established — same shape, so the page reads as one system.
+2. Color: do NOT resurrect the old five-hue rotation — the current palette rule is
+   ink/paper/tangerine with sunny/seafoam/cerulean for tiny marks only. Use the ToolkitToy dot
+   pattern: a small accent dot per pill cycling those three mark tokens, text stays `paper/85`.
+3. One consideration against interactivity: the Tools toy sits directly above. Two consecutive
+   interactive pill clusters would read as repetition — keep Interests static pills, visually
+   quieter (no border? smaller?) so hierarchy holds: Tools = toy, Interests = tags.
+4. Data is already in `site.ts`; zero content work.
+
+**Cost.** Two hours. **Risk.** Low.
+
+---
+
+## 12. Say each achievement once — kill the /story duplication
+
+**What.** `story.more[1]` (site.ts line ~150) narrates "1000+ solved problems … All India Rank 14
+in the BRAINDEAD data-science competition, and a top-30 finish among 150+ teams at the AI4Humanity
+Summit. I'm open to software-engineering and research internships." Directly below on the same
+page, the Achievements list states AIR-14 and the top-30 again as linked entries — and "open to
+internships" appears a third time in the home page's closing CTA. Same page, same facts, twice.
+
+**Why.** The site's own copy rule (effort 015 era) was "say each thing once." A reader hits the
+same two ranks eleven lines apart; repetition reads as padding and dilutes both mentions.
+
+**How.**
+1. Rewrite `story.more[1]` to carry only what the Achievements list does NOT: the 1000+ problems
+   line and the LeetCode/GeeksforGeeks context can stay (they're not achievement entries), the
+   AIR-14 and top-30 sentences go, and the "open to internships" sentence goes (the closing CTA
+   owns it).
+2. The factuality gate doesn't cover `site.ts`, but the numbers being removed here are the
+   *duplicates* — the canonical, linked statements in `achievements` stay untouched.
+3. Verify with a grep: `AIR 14|Rank 14` and `top-30|Top 30` should each appear exactly once in
+   `site.ts` after the edit.
+
+**Cost.** Half an hour. Pure copy edit, `[trivial]`-adjacent but gets a minimal effort record
+since it deletes sentences. **Risk.** None.
+
+---
+
+## 13. Education as a journey, not two rows
+
+**What.** Education on `/story` is currently two plain rows (NSUT, KV No. 2). The pre-rebuild
+site rendered it as a `journey-timeline`: a vertical line with a dot per institution, each entry
+carrying its own name/detail block — school → university reading as a path, not a table.
+
+**Why.** A two-entry list is the least a section can do. The journey framing matches the page's
+name — Story — and gives the section room to grow (Amazon ML Summer School, future MS) without
+redesign. Owner has asked for this directly.
+
+**How.**
+1. Extend `story.education` entries with a `when` field (`"2009 – 2023"`, `"2023 – 2027
+   (expected)"`) — data-only change, content already known.
+2. Render as a vertical timeline in the existing design language: a `border-l border-white/10`
+   line, a `size-2 rounded-full bg-tangerine` dot per entry (the GatePipeline already established
+   this exact dot idiom on /process), name in `text-paper` medium, detail in `paper/60`, `when` in
+   the mono `.label` style. No new component library — ~20 lines of JSX in `story/page.tsx`.
+3. Order: earliest at top (a journey runs forward) or latest at top (résumé convention)? Take
+   latest-first to match the Experience section above it — consistency inside the page wins.
+4. Reduced motion: it's static markup already; the `Reveal` wrapper handles entrance like every
+   other section.
+
+**Cost.** Half a day. **Risk.** Low.
+
+---
+
+## 14. Restore the publication image — it's still in git
+
+**What.** The Publication card on `/story` is text-only. The pre-rebuild site showed a photo with
+it (`/images/publications/miccai.jpg` — the MICCAI moment). The rebuild dropped the image, but
+**the file is still recoverable from git history**: `git show 7eba8fd:public/images/publications/miccai.jpg`
+(415,657 bytes) — no one needs to hunt for the original.
+
+**Why.** The publication is the site's single strongest fact, and it's the only card on /story
+with no visual anchor. A real photo from the venue does what no layout trick can.
+
+**How.**
+1. `git show 7eba8fd:public/images/publications/miccai.jpg > project_images/miccai-publication.jpg`
+   — recover into the existing drop-zone, add a `PROJECT_MAP` entry
+   (`"miccai-publication.jpg": "miccai-publication"`), and let `build-images.mjs` publish it as a
+   properly sized WebP like every other image (never hand-copy into `public/` — that's the
+   boundary rule).
+2. Render it in the Publication section: small, right of the text on desktop (`md:grid-cols-[1fr_200px]`),
+   above it on mobile, `rounded-2xl border border-white/10` matching the project-card frame.
+3. Real `alt` text describing the actual photo (owner confirms what it shows — one line).
+4. Check the gallery for overlap first: if the same MICCAI photo is already one of the 15 gallery
+   images, reuse that manifest entry instead of adding a duplicate file.
+
+**Cost.** Two hours. **Risk.** None — additive, image pipeline already handles sizing.
+
+---
+
 ## Considered and rejected
 
 - **Light theme.** The one-dark-world look is pinned by ADR 0011; a theme toggle doubles every
@@ -233,10 +338,16 @@ reuse it).
 |---|---|
 | 15 photo captions (one line each: where/when) | Idea 8 |
 | Skim/approve the three old posts | Idea 5 |
+| One line of alt text for the recovered MICCAI photo (what does it show?) | Idea 14, fully |
 | "3rd of **N** teams" for BraTS, MICCAI talk video link, INCAM slides | Long-standing case-study gaps |
 | Cloudflare bot toggle (issue #25) | Already documented in ADR 0015, still un-flipped |
 
 ## Suggested order
 
-1 → 2 → 3 (each small, each visible) → 4 (perf, then raise the floor) → 6 → 7 → 5 → 8 (when
+**First wave — the /story polish set (11 → 12 → 13 → 14 → 1):** five small changes, all on one
+page, shippable as a single effort/PR with one before/after screenshot review. Interests pills,
+the duplication cut, the education journey, the recovered publication photo, and the tool logos
+together turn /story from "good bones" into the strongest page on the site.
+
+**Then:** 2 → 3 (small, each visible) → 4 (perf, then raise the floor) → 6 → 7 → 5 → 8 (when
 captions arrive) → 9 → 10. Every one lands as its own numbered effort through the normal gates.
