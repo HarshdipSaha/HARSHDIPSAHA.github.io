@@ -28,16 +28,12 @@
 | 022 | 022-resume-and-gallery-refresh | Résumé refresh and seven new gallery photos | complete | 2026-08-27 | 2026-08-27 | none | `560bca6`, merged into branch `extremechange` |
 | 023 | 023-factuality-evals | Factuality evals for AI-written case studies | complete | 2026-08-28 | 2026-08-28 | 0013 | branch `feat/factuality-evals` |
 | 024 | 024-agent-facing-site | Agent-facing site: generated `llms.txt`/`llms-full.txt` and a capability-checked WebMCP `searchProjects` tool | complete | 2026-08-28 | 2026-08-28 | 0014 | branch `feat/agent-facing-site` |
-
 | 025 | 025-professional-readme | README polish: keep the evidence, fix a real staleness, add the hook | complete | 2026-08-31 | 2026-08-31 | none | branch `docs/professional-readme` |
 | 026 | 026-ai-crawler-access-policy | AI crawler access policy at the edge | complete | 2026-08-31 | 2026-08-31 | 0015 | branch `docs/ai-crawler-policy` |
 | 027 | 027-skills-bubble-process | Skills bubble cluster on /process | complete | 2026-09-01 | 2026-09-01 | none | branch `feat/skills-bubble-process-v2` |
 | 028 | 028-story-tools-interactive | Story Tools, made interactive (click/tap-to-reshuffle, issue #28 debate synthesis) | complete | 2026-09-01 | 2026-09-01 | none | branch `feat/story-tools-interactive` |
-
 | 029 | 029-readme-gates-and-stack-table | README: quality-gates table, a stack table, drop the informal quotes | complete | 2026-09-01 | 2026-09-01 | none | branch `docs/readme-polish-v2` |
-
 | 030 | 030-process-page-rework | /process page rework: skills up, gate pipeline, what's different | complete | 2026-09-01 | 2026-09-01 | none | branch `feat/process-rework` |
-
 | 031 | 031-improvement-ideation | Site improvement ideation document | complete | 2026-09-01 | 2026-09-01 | none | branch `docs/improvement-ideas` |
 
 ## Status summary
