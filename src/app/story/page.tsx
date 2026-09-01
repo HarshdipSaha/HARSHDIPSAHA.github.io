@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
 import { Label, Pill } from "@/components/ui";
+import { TechField } from "@/components/story/TechField";
 import { person, publication, story } from "@/content/site";
 import { portrait } from "@/lib/projects";
 
@@ -98,6 +99,14 @@ export default function StoryPage() {
               </li>
             ))}
           </ul>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section>
+          <Label>Stack</Label>
+          <p className="mt-1 text-sm text-paper/45">Hover to lean in. Tap, on touch.</p>
+          <TechField items={story.skills} className="mt-6" />
         </section>
       </Reveal>
 
