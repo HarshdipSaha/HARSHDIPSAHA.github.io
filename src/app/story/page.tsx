@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
+import { ToolkitToy } from "@/components/story/ToolkitToy";
 import { Label, Pill } from "@/components/ui";
 import { person, publication, story } from "@/content/site";
 import { portrait } from "@/lib/projects";
@@ -111,6 +112,13 @@ export default function StoryPage() {
               </li>
             ))}
           </ul>
+        </section>
+      </Reveal>
+
+      <Reveal>
+        <section>
+          <Label>Toolkit</Label>
+          <ToolkitToy tools={story.skills} />
         </section>
       </Reveal>
 
