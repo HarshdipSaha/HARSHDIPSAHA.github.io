@@ -34,16 +34,18 @@
 | 027 | 027-skills-bubble-process | Skills bubble cluster on /process | complete | 2026-09-01 | 2026-09-01 | none | branch `feat/skills-bubble-process-v2` |
 | 028 | 028-story-tools-interactive | Story Tools, made interactive (click/tap-to-reshuffle, issue #28 debate synthesis) | complete | 2026-09-01 | 2026-09-01 | none | branch `feat/story-tools-interactive` |
 
+| 029 | 029-readme-gates-and-stack-table | README: quality-gates table, a stack table, drop the informal quotes | complete | 2026-09-01 | 2026-09-01 | none | branch `docs/readme-polish-v2` |
+
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 28 |
+| complete | 29 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **28** |
+| **Total** | **29** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -56,4 +58,4 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 029
+Next effort number: 030

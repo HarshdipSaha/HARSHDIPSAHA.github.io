@@ -7,14 +7,16 @@
 
 Personal portfolio site: **[harshdipsaha.tech](https://harshdipsaha.tech/)** · [harshdipsaha.github.io](https://harshdipsaha.github.io)
 
-Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS v4 · Motion · Lenis · MDX · deployed to GitHub Pages.
+## Stack
 
-**Four gates run on every pull request before anything ships:** a record gate that fails a PR
-missing its AI-DLC paperwork, a browser gate that loads every route and fails on any console
-error, a Lighthouse gate that fails if accessibility/SEO/performance regress, and a factuality
-gate that fetches each project's source repository and fails if a case study states a number that
-repository doesn't support. All four are wired below and explained on
-**[/process](https://harshdipsaha.tech/process)**.
+| Layer | Technology |
+|---|---|
+| Framework | [Next.js 16](https://nextjs.org/) — App Router, `output: "export"` (fully static) |
+| Language | TypeScript · React 19 |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com/) — design tokens in `src/app/globals.css` |
+| Motion | [Motion](https://motion.dev/) · [Lenis](https://lenis.darkroom.engineering/) smooth scroll |
+| Content | MDX (`next-mdx-remote`) · `gray-matter` frontmatter |
+| Hosting | GitHub Pages · custom domain (`harshdipsaha.tech`) via Cloudflare |
 
 ---
 
@@ -22,13 +24,15 @@ repository doesn't support. All four are wired below and explained on
 
 The site is built with **AI-DLC** (AI-Driven Development Lifecycle) on top of the agent-repo
 structure playbook. Every change after the baseline is a numbered *effort*; every structural
-decision is an *ADR*. The build story is published on the site itself at
+decision is an *ADR* (Architecture Decision Record). The full build story — including the
+incidents that led to each of the quality gates further down — is published on the site itself at
 **[/process](https://harshdipsaha.tech/process)**.
 
-Why bother: this repo's first ~20 commits have messages like `lets see`, `hmmm`, `okays`, `soz` —
-including one 12,517-line commit. None of them recorded *why*. Every structural decision had to be
-reverse-engineered from diffs in August 2026. ADRs 0001–0007 and efforts 001–004 are honest
-reconstructions from that archaeology; everything after is recorded as it happens.
+Why bother: this repo's first twenty-odd commits (`d9e0d8a` … `0814927`) carried no recorded
+rationale, one of them a 12,517-line change with no explanation of what it chose or why. Every
+structural decision behind them had to be reverse-engineered from diffs in August 2026. ADRs
+0001–0007 and efforts 001–004 are honest reconstructions from that archaeology; everything after
+is recorded as it happens, which is the entire point of what follows.
 
 ```
 Context      AGENTS.md · CLAUDE.md · CONTEXT.md · AGENT_WORKFLOWS.md   how agents behave here
@@ -37,6 +41,22 @@ Knowledge    docs/ (tutorials · how-to · reference · explanation · adr) deci
 Product      src/ · content/ · scripts/ · public/                      the software
 Quality      evals/ · .github/workflows/                               what must hold to ship
 ```
+
+## Quality gates
+
+Every pull request has to clear all four before it can merge into `main` — this is what "follows
+AI-DLC" means in practice here, not just a claim in a document:
+
+| # | Gate | Workflow | Checks | Fails when |
+|---|---|---|---|---|
+| 1 | **Record** | `aidlc-check` | Every substantive change carries its AI-DLC paperwork — an effort record, a registry row, an audit entry | The diff touches `src/`, `scripts/`, or configs with no matching `aidlc-docs/` update |
+| 2 | **Build & Smoke** | `Quality gates` | Type-checks, exports the static site, then loads every route in a real browser (desktop + mobile) | Any route throws, fails to render, or logs a console error |
+| 3 | **Lighthouse** | `Quality gates` | Accessibility, SEO, performance and best-practice scores, desktop + mobile, against fixed floors | Any category drops below where it stands today |
+| 4 | **Factuality** | `Evals` | Every number in a project write-up, checked against that project's real source repository | A case study states a number its source can't support |
+
+Badges above track the three that run as their own named checks; **Quality gates** is one
+workflow with three jobs. All four are explained end-to-end, with the real incidents that
+motivated each one, on **[/process](https://harshdipsaha.tech/process)**.
 
 ## Run locally
 
