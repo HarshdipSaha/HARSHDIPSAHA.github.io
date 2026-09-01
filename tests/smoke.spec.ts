@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import { readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
+import { story } from "../src/content/site";
 
 /**
  * "Nothing breaks" gate. Every prerendered route in `out/` must load with a
@@ -85,6 +86,40 @@ test.describe("reduced motion", () => {
     await expect(page.locator("h1").first()).toBeVisible();
     await scrollThrough(page);
     expect(problems).toEqual([]);
+  });
+});
+
+test.describe("story Tools toy", () => {
+  test("every tool name is real DOM text", async ({ page }) => {
+    await page.goto("/story", { waitUntil: "load" });
+    for (const tool of story.skills) {
+      await expect(page.getByRole("button", { name: tool, exact: true })).toBeVisible();
+    }
+  });
+
+  test("clicking a tool measurably reshuffles the order", async ({ page }) => {
+    await page.goto("/story", { waitUntil: "load" });
+    const orderBefore = await page.$$eval("li button", (els) => els.map((el) => el.textContent?.trim()));
+    await page.getByRole("button", { name: story.skills[0], exact: true }).click();
+    // The spring `layout` animation takes ~500ms; give the reshuffle time to settle.
+    await page.waitForTimeout(700);
+    const orderAfter = await page.$$eval("li button", (els) => els.map((el) => el.textContent?.trim()));
+    expect(orderAfter).not.toEqual(orderBefore);
+    expect([...orderAfter].sort()).toEqual([...orderBefore].sort());
+  });
+
+  test.describe("reduced motion", () => {
+    test.use({ contextOptions: { reducedMotion: "reduce" } });
+
+    test("renders the same tool names as a static list with zero console errors", async ({ page }) => {
+      const problems = watch(page);
+      await page.goto("/story", { waitUntil: "load" });
+      for (const tool of story.skills) {
+        await expect(page.getByText(tool, { exact: true })).toBeVisible();
+      }
+      await expect(page.locator("li button")).toHaveCount(0);
+      expect(problems).toEqual([]);
+    });
   });
 });
 
