@@ -103,7 +103,7 @@ export default function ProcessPage() {
                       href={f.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-paper/40 transition-colors hover:text-tangerine"
+                      className="text-paper/55 transition-colors hover:text-tangerine"
                       aria-label={`Source for: ${f.claim}`}
                     >
                       ↗

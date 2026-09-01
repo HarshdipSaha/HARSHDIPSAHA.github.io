@@ -37,7 +37,7 @@ export function GatePipeline({ gates }: { gates: readonly Gate[] }) {
               <MaybeLink href={g.href} className="text-sm font-medium text-paper">
                 {g.label}
               </MaybeLink>
-              <p className="mt-0.5 text-[13px] leading-snug text-paper/55">{g.detail}</p>
+              <p className="mt-0.5 text-sm leading-snug text-paper/55">{g.detail}</p>
             </div>
           </li>
         ))}
@@ -53,7 +53,7 @@ function Node({ gate }: { gate: Gate }) {
       <MaybeLink href={gate.href} className="whitespace-nowrap text-[13px] font-medium text-paper">
         {gate.label}
       </MaybeLink>
-      <p className="max-w-[9rem] text-center text-[11px] leading-tight text-paper/50">{gate.detail}</p>
+      <p className="max-w-[9rem] text-center text-[12px] leading-tight text-paper/55">{gate.detail}</p>
     </div>
   );
 }
