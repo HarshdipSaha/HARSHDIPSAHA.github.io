@@ -178,6 +178,20 @@ this branch.
   `harshdip.png` typo, commit `NSUT_logo.png`/`harshdip.png` as real source images under
   `resume/assets/`, and reuse `scripts/build-resume.mjs`'s compile step for a second `.tex` file. Not
   linked from `site.ts`/nav either way, per the ticket's own instruction.
-- **CI compilation itself (ticket #33's acceptance criterion, and the true test of `xu-cheng/latex-action`)
-  has not run yet at the time of writing this record** — it runs once this PR is pushed and opened;
-  its result is reported in the PR body's verification table, filled in after `gh pr checks --watch`.
+- **CI compilation ran and passed** (ticket #33's real acceptance test): PR #37's `Resume / compile`
+  job — renderer unit tests, the regenerate-and-diff-check, `xu-cheng/latex-action` compile, and
+  `scripts/verify-resume-pdf.mjs` — passed in 1m58s. All eight PR checks are green:
+  `Build`, `GitGuardian Security Checks`, `Lighthouse (desktop\|mobile)`, `Smoke (Playwright)`,
+  `aidlc-check`, `compile` (Resume), `factuality`. One `Smoke (Playwright)` run initially failed on
+  `tests/skills-bubbles.spec.ts:72` (a mobile drag-distance flake, 6.3px/7.1px against an 8px
+  threshold — unrelated code from the concurrently-merged "skills bubble" effort 027, not touched by
+  this PR); a re-run passed cleanly, confirming it was a flake and not a regression from this change.
+- **The branch was rebased mid-effort.** Three other efforts landed on `main` while this one was under
+  construction — 025 (already landed before this started), 026 (AI-crawler access policy, which had
+  also taken effort number 026 and ADR 0015), and 027 (skills bubble cluster). This branch was rebased
+  onto the post-#36 `main`, renumbered 026→028 and ADR 0015→0016, and the resulting AGENTS.md conflict
+  (a redundant fix of a marker PR #35 had already resolved independently) merged cleanly. Notably, the
+  first push of this branch (before the rebase) triggered **no CI checks at all** except GitGuardian —
+  `gh run list` showed zero workflow runs — while the second push, after rebasing onto current `main`,
+  triggered all eight checks normally. The exact mechanism was not confirmed, but a branch several
+  merges behind `main` is the only difference between the two pushes.
