@@ -80,7 +80,8 @@ Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages. Al
 | `scripts/build-llms-txt.mjs` | Writes the agent-facing `public/llms.txt` and `public/llms-full.txt` on `prebuild` (gitignored; ADR 0014) |
 | `src/data/images.json` | **Generated** image manifest (committed) — do not hand-edit |
 | `gallery/`, `project_images/`, `me.jpg` | Image drop-zones — `scripts/build-images.mjs` publishes them |
-| `scripts/` | `build-images.mjs` (sharp, predev/prebuild), `render-brain-frames.py` (manual), `check-aidlc-sync.mjs` (CI gate) |
+| `scripts/` | `build-images.mjs` (sharp, predev/prebuild), `render-brain-frames.py` (manual), `check-aidlc-sync.mjs` (CI gate), `build-resume.mjs` + `lib/resume-tex.mjs` (résumé renderer, `npm run resume:build`) |
+| `resume/resume.tex` | Résumé source — Header/Education/Experience generated from `site.ts`; Projects/Skills/Achievements hand-maintained |
 | `public/` | `img/` is **generated** (gitignored); `brain/` frames and `resume.pdf` are committed |
 
 ## Contributing to this repo (or asking an agent to)

@@ -80,9 +80,10 @@ shipped. 028 and ADR 0016 are used throughout this record.
 - [x] Root `resume.pdf` deleted — the drop-zone it fed is retired.
 - [x] `AGENTS.md`, `CONTEXT.md`, `README.md`, `docs/reference/build-scripts.md` synced. `AGENTS.md`
       also had a long-standing unresolved git merge-conflict marker in its "Definition of done"
-      section (visible with `grep -n '<<<<<<<' AGENTS.md` before this effort); resolved in passing
-      while editing that section for this effort — both sides were genuinely complementary bullets,
-      not a real conflict.
+      section at the branch point (visible with `grep -n '<<<<<<<' AGENTS.md`, 304de89); resolved
+      locally on this branch as part of editing that section, then found already independently fixed
+      on `main` by PR #35 when this branch rebased — both resolutions kept the same complementary
+      bullets, so the rebase merged cleanly with no further edit needed there.
 - [x] `docs/adr/0015-resume-as-generated-artefact.md` + a row in `docs/adr/README.md`.
 - [ ] NSUT/TnP secondary résumé (`resume-nsut.pdf`) — **deferred**, see Notes.
 
