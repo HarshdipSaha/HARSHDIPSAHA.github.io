@@ -30,17 +30,18 @@
 | 024 | 024-agent-facing-site | Agent-facing site: generated `llms.txt`/`llms-full.txt` and a capability-checked WebMCP `searchProjects` tool | complete | 2026-08-28 | 2026-08-28 | 0014 | branch `feat/agent-facing-site` |
 
 | 025 | 025-professional-readme | README polish: keep the evidence, fix a real staleness, add the hook | complete | 2026-08-31 | 2026-08-31 | none | branch `docs/professional-readme` |
+| 026 | 026-ai-crawler-access-policy | AI crawler access policy at the edge | complete | 2026-08-31 | 2026-08-31 | 0015 | branch `docs/ai-crawler-policy` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 25 |
+| complete | 26 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **25** |
+| **Total** | **26** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -49,4 +50,4 @@ All of efforts 001-006 and 008 were retrofitted into effort format after the fac
 
 Effort 007 was recorded as it happened (planning gate logged live) but its registry/audit entries fell out of sync with the merged PR until effort 009's cleanup. Effort 009 was the first recorded start-to-finish with no drift; effort 010 makes that mandatory — the `aidlc-check` CI gate (ADR 0009) now fails any PR whose substantive diff ships without an `aidlc-docs/` update.
 
-Next effort number: 026
+Next effort number: 027

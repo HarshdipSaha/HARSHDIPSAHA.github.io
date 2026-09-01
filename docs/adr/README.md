@@ -16,6 +16,7 @@
 | [0012](0012-pr-quality-gates-smoke-and-lighthouse.md) | PR quality gates: browser smoke test and Lighthouse CI | Accepted | 2026-08-27 |
 | [0013](0013-factuality-evals-for-case-studies.md) | Factuality evals: case-study claims gated against their source repositories | Accepted | 2026-08-28 |
 | [0014](0014-agent-facing-site-llms-txt-and-webmcp.md) | An agent-facing surface: generated `llms.txt`, and WebMCP as progressive enhancement | Accepted | 2026-08-28 |
+| [0015](0015-ai-crawler-access-policy.md) | AI crawler access policy at the edge: allow retrieval, deny training | Accepted | 2026-08-31 |
 
 Every record uses the same four-part shape — a `Status / Date / Supersedes` line, then
 `Context`, `Decision`, `Consequences`, and an optional `Evidence` section citing the commits
