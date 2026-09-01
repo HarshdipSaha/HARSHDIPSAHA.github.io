@@ -44,3 +44,15 @@ next-env.d.ts
 
 # factuality eval report (npm run eval:factuality); uploaded as a CI artifact, never committed
 /.evals/
+
+# LaTeX build byproducts (npm run resume:build / CI compile of resume/resume.tex);
+# public/resume.pdf itself IS committed — deploy.yml has no LaTeX toolchain, so the
+# compiled PDF is a checked-in artefact like public/img is not, same as before this
+# pipeline existed (see AGENTS.md "Images are built, never hand-copied").
+resume/*.aux
+resume/*.log
+resume/*.out
+resume/*.fls
+resume/*.fdb_latexmk
+resume/*.synctex.gz
+/.scratch/

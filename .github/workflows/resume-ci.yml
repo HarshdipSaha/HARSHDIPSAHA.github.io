@@ -1,0 +1,90 @@
+name: Resume
+
+# Compiles resume/resume.tex to a PDF and checks its extracted text contains
+# the current person/company/role/GPA facts from src/content/site.ts —
+# proving the pipeline produced real, correct content, not just a file that
+# exists (ticket #33). Runs the renderer first so the compiled PDF always
+# reflects the committed resume/resume.tex, then uses an established,
+# high-adoption LaTeX action (the same reasoning that picked @lhci/cli and
+# @playwright/test over hand-rolled equivalents for the other quality
+# gates) rather than a hand-installed TeX Live step.
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "resume/**"
+      - "scripts/lib/resume-tex.mjs"
+      - "scripts/build-resume.mjs"
+      - "scripts/verify-resume-pdf.mjs"
+      - "scripts/resume-tex.test.mjs"
+      - "src/content/site.ts"
+      - ".github/workflows/resume-ci.yml"
+      - "package.json"
+      - "package-lock.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: resume-ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  compile:
+    name: compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Renderer unit tests (pure core, no LaTeX toolchain)
+        run: node --test scripts/resume-tex.test.mjs
+
+      - name: Regenerate resume/resume.tex from site.ts
+        run: node scripts/build-resume.mjs
+        # No LaTeX toolchain on this runner yet, so this step only rewrites
+        # resume/resume.tex from the current src/content/site.ts and prints
+        # a "no LaTeX toolchain found" notice instead of failing — the
+        # compile itself happens in the next step, via the established
+        # action, which is the real acceptance test.
+
+      - name: Fail if the renderer left resume/resume.tex out of sync
+        run: |
+          git diff --exit-code -- resume/resume.tex || {
+            echo "::error::resume/resume.tex is out of sync with src/content/site.ts — run 'npm run resume:build' and commit the result."
+            exit 1
+          }
+
+      - name: Compile resume/resume.tex
+        uses: xu-cheng/latex-action@v3
+        env:
+          # Reproducible builds: fixes /CreationDate, /ModDate, /ID so a
+          # compile of unchanged .tex input is byte-identical to the last
+          # one (see scripts/build-resume.mjs for why this matters).
+          SOURCE_DATE_EPOCH: "0"
+        with:
+          root_file: resume.tex
+          working_directory: resume
+
+      - name: Verify compiled PDF text against site.ts
+        run: node scripts/verify-resume-pdf.mjs resume/resume.pdf
+
+      - name: Upload compiled PDF
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume-pdf
+          path: resume/resume.pdf
+          if-no-files-found: warn
+          retention-days: 14

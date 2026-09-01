@@ -48,11 +48,19 @@ ICBM 152 T1      ->  scripts/render-brain-frames.py  ->  public/brain/{1080,640}
 site.ts +        ->  scripts/build-llms-txt.mjs      ->  public/llms.txt           ->  visiting AI agents
 content/projects/    (pure renderer in                   public/llms-full.txt          (both gitignored)
 *.mdx                 scripts/lib/llms-txt.mjs)
+
+site.ts          ->  scripts/build-resume.mjs        ->  resume/resume.tex         ->  public/resume.pdf
+(person,             (pure renderer in                    (Header/Education/            (`/resume.pdf` link;
+experience,           scripts/lib/resume-tex.mjs)          Experience sections            committed, not
+story.education)      + pdflatex/latexmk locally,          only; rest hand-               gitignored — no TeX
+                       xu-cheng/latex-action in CI          maintained)                    toolchain in deploy.yml)
 ```
 
 Text follows a parallel path: `src/content/site.ts` (plain TypeScript objects, one export per section) and `content/projects/*.mdx` (frontmatter `title, publishedAt, summary, images[], link`), read by `src/lib/projects.ts` (`getProjects`, `getProject`, `getProjectsBySlugs`) with `gray-matter`, rendered through `next-mdx-remote/rsc` + `remark-gfm` inside `.prose`.
 
-`build-images.mjs` runs automatically on `predev` and `prebuild` (or `npm run images`). That is why `public/img/**`, `.cache/` and `src/data/images.json` are never edited by hand — the next command regenerates them. `resume.pdf` at the root is copied to `public/resume.pdf` and committed directly.
+`build-images.mjs` runs automatically on `predev` and `prebuild` (or `npm run images`). That is why `public/img/**`, `.cache/` and `src/data/images.json` are never edited by hand — the next command regenerates them.
+
+`resume/resume.tex` (Jake's Resume template) is the résumé's source since effort 028: its Header, Education and Experience sections are generated from `person`/`experience`/`story.education` in `site.ts` by `scripts/build-resume.mjs` (pure renderer: `scripts/lib/resume-tex.mjs`), spliced in place between `% AUTO-GENERATED:<NAME>-START/END` markers; Projects, Technical Skills and Key Achievements are hand-maintained LaTeX in the same file. `npm run resume:build` compiles it to `public/resume.pdf` locally if a LaTeX toolchain is present; CI compiles it via `xu-cheng/latex-action` and verifies the extracted text. `public/resume.pdf` is committed (not gitignored like `public/img/`) because `deploy.yml`'s runner has no TeX toolchain. The old root `resume.pdf` drop-zone is retired. See ADR 0016.
 
 ## Glossary
 

@@ -41,7 +41,6 @@ const exempt = [
   /^gallery\//,
   /^project_images\//,
   /^me\.jpg$/,
-  /^resume\.pdf$/,
 ];
 
 // Paths whose change means "the site or its tooling changed".
@@ -53,6 +52,7 @@ const substantive = [
   /^tsconfig\.json$/,
   /^postcss\.config\./,
   /^content\//,
+  /^resume\//,
   /^\.github\/workflows\//,
 ];
 

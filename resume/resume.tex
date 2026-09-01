@@ -1,0 +1,269 @@
+%-------------------------
+% Resume in Latex
+% Template : Jake's Resume (Jake Gutierrez, https://github.com/jakegut/resume), MIT License
+% Content  : generated in part by scripts/build-resume.mjs from src/content/site.ts
+%
+% This file is the source for public/resume.pdf (npm run resume:build).
+% The three sections below marked AUTO-GENERATED are written by the
+% renderer (scripts/lib/resume-tex.mjs) from site.ts's person/experience/
+% education data — edit site.ts, not the text inside those markers, or the
+% next build will overwrite your edit. Everything else (Projects, Technical
+% Skills, Key Achievements) is hand-maintained LaTeX: site.ts has no typed
+% field for that level of résumé-specific detail. See
+% docs/adr/0015-resume-as-generated-artefact.md for the scope boundary.
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\input{glyphtounicode}
+
+% Hyperlink color settings
+\hypersetup{
+    colorlinks=true,
+    urlcolor=RoyalBlue
+}
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \textbf{\small #2}\\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+% AUTO-GENERATED:HEADER-START
+\begin{center}
+    {\Huge \scshape Harshdip Saha} \vspace{1pt}
+
+
+    \href{mailto:harshdipsaha@gmail.com}{\color{RoyalBlue}\raisebox{-0.2\height}\faEnvelope\ \underline{harshdipsaha@gmail.com}} ~
+    \href{https://www.linkedin.com/in/harshdip-saha}{\color{RoyalBlue}\raisebox{-0.2\height}\faLinkedin\ \underline{LinkedIn}} ~
+    \href{https://github.com/HARSHDIPSAHA}{\color{RoyalBlue}\raisebox{-0.2\height}\faGithub\ \underline{GitHub}}
+    ~
+\href{https://harshdipsaha.tech}{\color{RoyalBlue}\raisebox{-0.2\height}\faGlobe\ \underline{harshdipsaha.tech}}
+    \vspace{-8pt}
+\end{center}
+% AUTO-GENERATED:HEADER-END
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+% AUTO-GENERATED:EDUCATION-START
+    \resumeSubheading
+      {Netaji Subhas University of Technology, New Delhi}{}
+      {B.Tech CSE (AI) · GPA 8.78 of 10 · class of 2027}{}
+
+    \resumeSubheading
+      {Kendriya Vidyalaya No. 2, Delhi Cantt}{}
+      {Class XII, 95.6\% · Class X, 98.4\%}{}
+% AUTO-GENERATED:EDUCATION-END
+  \resumeSubHeadingListEnd
+
+%------RELEVANT COURSEWORK-------
+\section{Relevant Coursework}
+\begin{multicols}{3}
+    \begin{itemize}[itemsep=-2pt, parsep=3pt]
+        \item \small Computer Vision
+        \item \small Artificial Intelligence
+        \item \small Natural Language Processing
+        \item \small DBMS
+        \item \small Game Theory
+        \item \small Machine Learning
+    \end{itemize}
+\end{multicols}
+\vspace{-6pt}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+\resumeSubHeadingListStart
+% AUTO-GENERATED:EXPERIENCE-START
+\resumeSubheading
+  {AI Engineer Intern — AI-DLC Pilot Team}{Jun – Aug 2026}
+  {Optum (UnitedHealth Group)}{}
+\resumeItemListStart
+  \resumeItem{Built an internal assistant, in TypeScript on the company's agent framework, that helps up to 35,000 employees find the approved, governed way to use AI for their specific role — instead of searching policy documents.}
+  \resumeItem{Built an automated judge for an internal hackathon: a model that scored, consistently and by fixed rules, how well each team followed AI-DLC (the company's development process, where every change carries a written plan and record), so the human judges had a reliable second opinion.}
+  \resumeItem{Interviewed seven kinds of specialist — up to six people each — and turned what they told me into role-specific workflows, prompts, and guardrails the assistant could hand out.}
+\resumeItemListEnd
+
+\resumeSubheading
+  {Research Intern — Scientific Computing (remote)}{Jan 2026 – present}
+  {IIT Madras}{}
+\resumeItemListStart
+  \resumeItem{Developing PyAMorph, a Python library that turns images, CAD models, and equations into geometry a physics simulation can run on. It works by computing, for every point in space, how far it is from the nearest surface (a signed distance function).}
+  \resumeItem{Added shape combination (union, subtraction, intersection), conversion from standard 3D mesh files (STL), and GPU-accelerated bindings, all plugged into AMReX — the US Department of Energy's framework for large simulations on supercomputers.}
+  \resumeItem{The work was selected for an oral presentation at INCAM 2026, India's national applied-mathematics conference, at IIT Kanpur; a journal paper is in preparation.}
+\resumeItemListEnd
+
+\resumeSubheading
+  {Amazon ML Summer School}{Jul – Aug 2026}
+  {Amazon}{}
+\resumeItemListStart
+  \resumeItem{Selected for Amazon's competitive machine-learning summer programme for students.}
+\resumeItemListEnd
+% AUTO-GENERATED:EXPERIENCE-END
+\resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+% Hand-maintained: site.ts has no typed field for project-level résumé
+% detail (exact metrics, named tools). Seeded verbatim from the previous
+% resume.pdf (effort 022) — copy forward, don't rewrite, when this changes.
+\section{Projects}
+
+    \resumeSubHeadingListStart
+
+    \resumeProjectHeading
+    {\textbf{\href{https://github.com/HARSHDIPSAHA/AtomNet}{\color{RoyalBlue}AToM-Net: Neuro-Symbolic LLM Negotiation Agent}} $|$ \emph{LLMs, NLP, Bayesian Inference, Game Theory}}{Feb 2026}
+\resumeItemListStart
+    \resumeItem{Designed a \textbf{neuro-symbolic NLP architecture} for multi-turn negotiation, combining \textbf{LLM-based dialogue understanding} with a \textbf{Bayesian belief tracking module} to model opponent intent.}
+    \resumeItem{Introduced an \textbf{Economic Consistency Validator} to detect contradictions between natural language ("cheap talk") and actions ("costly signals"), improving reasoning robustness.}
+    \resumeItem{Implemented a \textbf{Reflexion-based memory module} enabling inter-dialogue learning without weight updates, improving strategic adaptation across conversations.}
+    \resumeItem{Achieved \textbf{23.30 vs 12.53 average score} against baseline LLMs on the CaSiNo negotiation benchmark, demonstrating superior language-grounded decision making.}
+    \resumeItem{First architectural work to present results on the NegotiationTOM dataset, achieving SOTA performance with an overall score of \textbf{16.29}. \href{https://drive.google.com/file/d/1C5Kx_QUlC7Te6oc2WFuTxzk1HcXjMBLh/view?usp=sharing}{\textcolor{RoyalBlue}{(Paper)}}.}
+\resumeItemListEnd
+    \resumeProjectHeading
+    {\textbf{\href{https://link.springer.com/chapter/10.1007/978-3-032-16370-7_23}{\color{RoyalBlue}RECAP-Net: Classification of Active Progression}} $|$ \emph{PyTorch, MONAI, GANs, Swin UNETR, 3D CNNs}}{Sept 2025}
+    \resumeItemListStart
+        \resumeItem{Proposed an end-to-end pipeline for the \textbf{BraTS-PRO 2025 Challenge}, performing longitudinal glioblastoma response classification under the \textbf{RANO criteria}, integrating \textbf{Swin UNETR} segmentation with an ensemble of 3D ResNet, DenseNet, and EfficientNet classifiers.}
+        \resumeItem{Applied \textbf{z-score normalization}, multimodal fusion of baseline/follow-up MRIs, and a \textbf{3D spectrally normalized GAN} for class balancing, achieving \textbf{3D-SSIM: 0.92 ± 0.03} and \textbf{KL divergence: 0.037 ± 0.004}.}
+        \resumeItem{Accepted for \textbf{oral presentation at MICCAI 2025}, a top-tier (A*) conference in medical image computing.}
+
+        \resumeItem{Achieved \textbf{94.0\% balanced accuracy}, \textbf{94.6\% F1-score}, and \textbf{96.0\% AUROC}, outperforming individual backbones \hfill (\href{https://drive.google.com/file/d/1WjWmBrq8o7PSdeBd21f50Db-D8FbL2un/view}{\color{RoyalBlue}Paper}).}
+    \resumeItemListEnd
+    \resumeProjectHeading
+{\textbf{\href{https://github.com/Cubix33/brand-aware-generation}{\color{RoyalBlue}Brand-Aware  Diffusion
+for Automated Marketing Poster Generation }} $|$ \emph{NLP, CLIP, Diffusion Models}}{Jan 2026}
+\resumeItemListStart
+    \resumeItem{Developed a \textbf{brand-aware generative system} that combines \textbf{diffusion models (Stable Diffusion XL)} with \textbf{LLM-based text generation} for automated marketing poster creation.}
+    \resumeItem{Designed a pipeline integrating \textbf{CLIP-based semantic understanding} and \textbf{context-aware NLP generation} for headlines, subheadlines, and CTAs based on user prompts.}
+    \resumeItem{Implemented \textbf{context detection (festival, product launch, sales)} using LLM inference, enabling adaptive multimodal generation aligned with brand identity.}
+    \resumeItem{Built a FastAPI backend and Adobe Express add-on enabling \textbf{interactive text editing and layer-wise control} over generated outputs.}
+    \resumeItem{This project  \textbf{won the Adobe} enterprise hackathon.(\href{https://drive.google.com/file/d/1HlaEUkgZhxb9nqSfgQHWztrUeFs_FyT-/view?usp=sharing}{\color{RoyalBlue}Paper}).}
+\resumeItemListEnd
+\vspace{-13pt}
+\resumeProjectHeading
+{\textbf{\href{https://github.com/Cubix33/bfsi}{\color{RoyalBlue}AI Loan Assistant – WhatsApp \& Website Chatbot}} $|$ \emph{NLP, XGBoost, Twilio API, Firebase, OCR}}{Dec 2025}
+\resumeItemListStart
+    \resumeItem{Developed an AI-powered loan origination platform enabling users to apply for loans through both Website Chat and WhatsApp using a centralized multi-agent orchestration system.}
+
+    \resumeItem{Built automated KYC verification, OCR-based document parsing, and credit risk assessment pipelines using \textbf{XGBoost} for real-time loan approval or rejection decisions.}
+
+    \resumeItem{Integrated \textbf{Twilio WhatsApp API}, multilingual support using DeepTranslator, and sanction letter PDF generation with ReportLab for automated delivery via WhatsApp or website download (\href{https://www.youtube.com/watch?v=liPhNCAfjFg}{\textcolor{RoyalBlue}{Demo Video}}).}
+\resumeItemListEnd
+    \vspace{-13pt}
+    \resumeProjectHeading
+    {\textbf{\href{https://github.com/Cubix33/tomodachi}{\color{RoyalBlue}Accurate Precise Timely}} $|$ \emph{Machine Learning, XGBoost, LSTM, ARIMA, Greedy scheduling}}{Mar 2025}
+    \resumeItemListStart
+        \resumeItem{Developed an AI-powered system that schedules doctor appointments based on patient condition severity and predicted consultation time, while aligning with doctor availability and shift timings.}
+        \resumeItem{Built an admin panel for real-time hospital resource monitoring and implemented LSTM and ARIMA models to predict next-day needs, refined daily using staff updates (\href{https://www.youtube.com/watch?v=m4iRFVQgKn4&list=LL&index=10&t=10s}{\textcolor{RoyalBlue}{Demo Video}}).}
+        \resumeItem{Selected among the \textbf{top 30} teams to pitch offline at the \textbf{AI4Humanity Summit} (with the Israel Embassy) in a hackathon of 150+ teams\href{https://drive.google.com/file/d/1xgNv2tibjxkWbEkRg_CV44nZ4n5n1-4I/view}{\textcolor{RoyalBlue}{(Certificate)}}.}
+    \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-----------PROGRAMMING SKILLS-----------
+% Hand-maintained, same reason as Projects.
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Python, C/C++, \href{https://matlabacademy.mathworks.com/progress/share/certificate.html?id=de3b05c8-e4d7-4561-bca3-f02e91eddca2}{\color{RoyalBlue}MATLAB}, SQL, JavaScript, HTML/CSS} \\
+     \textbf{Frameworks and Tools}{: Tensorflow, OpenCV, PyTorch, Pygame, Scikit\-learn, pytesseract (OCR), Tkinter, Streamlit, SHAP (xAI), Git, Azure,  GCP, spaCy, nltk, LangChain, Jupyter, statsmodels, Visual Studio Code
+} \\
+     \textbf{Databases and Services}{: Azure Blob Storage, MySQL, PostgreSQL, Hugging Face, \href{https://www.kaggle.com/harshdipsaha}{\color{RoyalBlue}Kaggle}} \\
+   \textbf{Core Competencies}: \href{https://matlabacademy.mathworks.com/progress/share/certificate.html?id=73e871fb-706a-4792-bf09-79ee88a87753}{\textcolor{RoyalBlue}{Computer Vision}}
+, ML, Data Analysis, Natural Language Processing, Cloud Computing, Time Series Analysis, Deep Learning, \href{https://www.credly.com/badges/9edbb209-bd20-4802-bf53-8aeca2aceb05/public_ur}{AI}}
+    }
+ \end{itemize}
+ \vspace{-16pt}
+
+%-----------INVOLVEMENT---------------
+% Hand-maintained, same reason as Projects.
+\section{Key Achievements and Extracurriculars}
+   \resumeItemListStart
+    \resumeItem{Secured \textbf{World Rank 3} in the \textbf{BraTS Lighthouse 2025 -- Tumor Progression Challenge}, with our paper accepted for \textbf{Oral Presentation} at the \textbf{MICCAI 2025 Conference, South Korea}.}
+
+    \resumeItem{Currently working under the \textbf{NextGen AI Lab, NSUT}, contributing to advanced research including glioblastoma response classification using multimodal MRI data, NLP and deep learning architectures.}
+
+     \resumeItem{Top open-source contributor to \textbf{\href{https://brainglobe.info}{\color{RoyalBlue}BrainGlobe}} ecosystem; merged \textbf{15+ pull requests} across repositories and a leading contributor to \textbf{\href{https://github.com/brainglobe/brainglobe-registration}{\color{RoyalBlue}brainglobe-registration}}, improving neuroscience image registration pipelines.}
+
+    \resumeItem{Active ML member at Google Developer Students Club (GDSC) and core member at Hackethix Society.}
+
+    \resumeItem{Secured All India 14th rank in BRAINDEAD Unstop competition by making two projects: one on EDA and ML, and another on an LLMs hybrid summarizer in Feb 2025.\href{https://github.com/HARSHDIPSAHA/braindead_1-2}{(GitHub Link)} \href{https://drive.google.com/file/d/1kDRfsyYErCT-J7_8d0_rdLWOL7X_8H4J/view?usp=sharing}{(Certificate Link)}}
+
+    \resumeItem{Solved \textbf{1000+} problems across various coding platforms such as \href{https://leetcode.com/u/is_Rusty/}{\color{RoyalBlue}LeetCode}, \href{https://www.geeksforgeeks.org/user/godlynub/}{\color{RoyalBlue}GeeksforGeeks}, and others. Achieved \textbf{Pupil} rank on \href{https://codeforces.com/profile/Harshdip}{\color{RoyalBlue}Codeforces}.}
+
+    \resumeItem{Ranked in the top 0.43\%  out of 1.1M students in JEE-2023.}
+   \resumeItemListEnd
+
+\end{document}

@@ -1,0 +1,132 @@
+name: Resume auto-refresh
+
+# Ticket #34: when a career fact changes in src/content/site.ts and lands on
+# main, regenerate resume/resume.tex, compile it, and — only if the compiled
+# PDF actually differs from what's committed — open a PR with the new
+# resume.tex/resume.pdf and an auto-drafted AI-DLC effort-record skeleton.
+#
+# Gated on BOTH conditions holding, not on every push to main:
+#   1. the push's diff touches src/content/site.ts (path filter, below —
+#      the whole file, not a narrower scope: person/experience/education
+#      are plain exported objects with no per-export path Actions can
+#      filter on, and the risk of a false negative from narrowing further
+#      outweighs the API budget saved)
+#   2. AND the regenerated, compiled resume.pdf is byte-different from the
+#      one currently committed — checked explicitly in the "Check whether
+#      the compiled PDF changed" step; a no-op or whitespace-only data edit
+#      that round-trips to the same PDF opens no PR.
+#
+# This workflow NEVER merges its own PR. Its permissions block below grants
+# contents: write and pull-requests: write — both needed to push a branch
+# and open a PR — and nothing broader (no admin, no merge scope), and no
+# step in this file calls a merge API. Human review and merge only, same as
+# every other change to this site.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/content/site.ts"
+  workflow_dispatch: {} # for a manual trial run, per ticket #34's acceptance criterion
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: resume-auto-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: refresh
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Regenerate resume/resume.tex from site.ts
+        run: node scripts/build-resume.mjs
+
+      - name: Compile resume/resume.tex
+        uses: xu-cheng/latex-action@v3
+        env:
+          # Reproducible builds: fixes /CreationDate, /ModDate, /ID so the
+          # "did the PDF actually change" check below reflects content, not
+          # a fresh timestamp on every run (see scripts/build-resume.mjs).
+          SOURCE_DATE_EPOCH: "0"
+        with:
+          root_file: resume.tex
+          working_directory: resume
+
+      - name: Verify compiled PDF text against site.ts
+        run: node scripts/verify-resume-pdf.mjs resume/resume.pdf
+
+      - name: Check whether the compiled PDF changed
+        id: diff
+        run: |
+          if cmp -s resume/resume.pdf public/resume.pdf; then
+            echo "resume-auto-refresh: resume.pdf is byte-identical to the committed one — no PR."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "resume-auto-refresh: resume.pdf differs from the committed one."
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Summarise the site.ts diff
+        if: steps.diff.outputs.changed == 'true'
+        id: summary
+        run: |
+          {
+            echo "summary<<RESUME_DIFF_EOF"
+            git diff "${{ github.event.before || 'HEAD~1' }}" "${{ github.sha }}" -- src/content/site.ts | head -c 4000
+            echo "RESUME_DIFF_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Update the committed PDF
+        if: steps.diff.outputs.changed == 'true'
+        run: cp resume/resume.pdf public/resume.pdf
+
+      - name: Draft the AI-DLC effort-record skeleton
+        if: steps.diff.outputs.changed == 'true'
+        run: node scripts/resume-auto-effort.mjs "${{ steps.summary.outputs.summary }}"
+
+      - name: Open the review-only PR
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          # The default GITHUB_TOKEN is scoped by this workflow's own
+          # `permissions:` block above (contents: write, pull-requests:
+          # write) — sufficient to push a branch and open a PR, nothing
+          # more. No merge step exists anywhere in this file.
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "resume: regenerate from a src/content/site.ts change"
+          title: "resume: regenerate from a site.ts career-fact change"
+          body: |
+            Automated by `.github/workflows/resume-auto-refresh.yml`: a push to `main` changed
+            `src/content/site.ts` and the recompiled `resume.pdf` differs from the committed one.
+
+            This PR carries its own AI-DLC effort record (see `aidlc-docs/efforts/` in this diff) so
+            `aidlc-check` passes on it like any other PR.
+
+            **This workflow does not merge its own PRs.** Review the rendered résumé before merging —
+            the automated checks confirm the *content* is present and correctly escaped, not that the
+            *layout* still looks right.
+          branch: resume/auto-refresh
+          delete-branch: true
+          add-paths: |
+            resume/resume.tex
+            public/resume.pdf
+            aidlc-docs/**
