@@ -31,17 +31,18 @@
 
 | 025 | 025-professional-readme | README polish: keep the evidence, fix a real staleness, add the hook | complete | 2026-08-31 | 2026-08-31 | none | branch `docs/professional-readme` |
 | 026 | 026-ai-crawler-access-policy | AI crawler access policy at the edge | complete | 2026-08-31 | 2026-08-31 | 0015 | branch `docs/ai-crawler-policy` |
+| 028 | 028-story-tools-interactive | Story Tools, made interactive (click/tap-to-reshuffle, issue #28 debate synthesis) | complete | 2026-09-01 | 2026-09-01 | none | branch `feat/story-tools-interactive` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 26 |
+| complete | 27 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **26** |
+| **Total** | **27** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -50,4 +51,4 @@ All of efforts 001-006 and 008 were retrofitted into effort format after the fac
 
 Effort 007 was recorded as it happened (planning gate logged live) but its registry/audit entries fell out of sync with the merged PR until effort 009's cleanup. Effort 009 was the first recorded start-to-finish with no drift; effort 010 makes that mandatory — the `aidlc-check` CI gate (ADR 0009) now fails any PR whose substantive diff ships without an `aidlc-docs/` update.
 
-Next effort number: 027
+Next effort number: 029 (027 is in flight on branch `feat/skills-bubble-process-v2`, PR #36, not yet merged)
