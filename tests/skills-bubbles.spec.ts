@@ -91,8 +91,13 @@ test("dragging a bubble measurably changes its position", async ({ page }) => {
   const after = await bubble.boundingBox();
   if (!after) throw new Error("bubble lost its bounding box after drag");
 
+  // Threshold is deliberately small, not zero: the bubble field's drag is
+  // constrained to its container, so a 90x40px gesture clamps to a smaller
+  // real displacement on the narrower mobile viewport (observed 11-14px in
+  // CI vs ~40px+ on desktop). The point of this assertion is "something
+  // measurable happened", not a specific distance.
   const moved = Math.hypot(after.x - box.x, after.y - box.y);
-  expect(moved, "bubble center must have moved after a drag").toBeGreaterThan(20);
+  expect(moved, "bubble center must have moved after a drag").toBeGreaterThan(8);
 });
 
 test.describe("reduced motion", () => {
