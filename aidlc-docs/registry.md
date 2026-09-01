@@ -29,6 +29,8 @@
 | 023 | 023-factuality-evals | Factuality evals for AI-written case studies | complete | 2026-08-28 | 2026-08-28 | 0013 | branch `feat/factuality-evals` |
 | 024 | 024-agent-facing-site | Agent-facing site: generated `llms.txt`/`llms-full.txt` and a capability-checked WebMCP `searchProjects` tool | complete | 2026-08-28 | 2026-08-28 | 0014 | branch `feat/agent-facing-site` |
 
+| 026 | 026-ai-crawler-access-policy | AI crawler access policy at the edge | complete | 2026-08-31 | 2026-08-31 | 0015 | branch `docs/ai-crawler-policy` |
+
 ## Status summary
 
 | Status | Count |
