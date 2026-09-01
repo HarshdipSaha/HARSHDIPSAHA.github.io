@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
+import { ToolkitToy } from "@/components/story/ToolkitToy";
 import { Label, Pill } from "@/components/ui";
 import { person, publication, story } from "@/content/site";
 import { portrait } from "@/lib/projects";
@@ -104,13 +105,7 @@ export default function StoryPage() {
       <Reveal>
         <section>
           <Label>Tools</Label>
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {story.skills.map((s) => (
-              <li key={s} className="glass rounded-full px-3.5 py-1.5 text-sm text-paper/85">
-                {s}
-              </li>
-            ))}
-          </ul>
+          <ToolkitToy tools={story.skills} />
         </section>
       </Reveal>
 
