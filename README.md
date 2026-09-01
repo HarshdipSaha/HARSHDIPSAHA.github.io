@@ -3,7 +3,7 @@
 [![Deploy to GitHub Pages](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/deploy.yml)
 [![AI-DLC sync check](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/aidlc-check.yml/badge.svg)](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/aidlc-check.yml)
 [![Evals](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/evals.yml/badge.svg)](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/evals.yml)
-[![MIT license](https://img.shields.io/badge/license-MIT-8ad7b6.svg)](./LICENSE)
+[![Code: MIT · Content: All Rights Reserved](https://img.shields.io/badge/license-MIT_·_content_ARR-8ad7b6.svg)](./LICENSE)
 
 Personal portfolio site: **[harshdipsaha.tech](https://harshdipsaha.tech/)** · [harshdipsaha.github.io](https://harshdipsaha.github.io)
 
