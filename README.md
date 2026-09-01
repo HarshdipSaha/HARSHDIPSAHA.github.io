@@ -1,8 +1,20 @@
 # Harshdip Saha — Portfolio
 
+[![Deploy to GitHub Pages](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/deploy.yml)
+[![AI-DLC sync check](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/aidlc-check.yml/badge.svg)](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/aidlc-check.yml)
+[![Evals](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/evals.yml/badge.svg)](https://github.com/HarshdipSaha/HARSHDIPSAHA.github.io/actions/workflows/evals.yml)
+[![MIT license](https://img.shields.io/badge/license-MIT-8ad7b6.svg)](./LICENSE)
+
 Personal portfolio site: **[harshdipsaha.tech](https://harshdipsaha.tech/)** · [harshdipsaha.github.io](https://harshdipsaha.github.io)
 
 Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS v4 · Motion · Lenis · MDX · deployed to GitHub Pages.
+
+**Four gates run on every pull request before anything ships:** a record gate that fails a PR
+missing its AI-DLC paperwork, a browser gate that loads every route and fails on any console
+error, a Lighthouse gate that fails if accessibility/SEO/performance regress, and a factuality
+gate that fetches each project's source repository and fails if a case study states a number that
+repository doesn't support. All four are wired below and explained on
+**[/process](https://harshdipsaha.tech/process)**.
 
 ---
 
@@ -36,12 +48,16 @@ npm run dev          # predev builds images into public/img/ and llms.txt into p
 ## Build & deploy
 
 ```bash
-npm run typecheck    # tsc --noEmit — the gate
-npm run build        # prebuild builds images + llms.txt, then exports to out/
-npm run test:unit    # node --test scripts — the llms.txt renderer
+npm run typecheck        # tsc --noEmit — the record gate's prerequisite
+npm run build             # prebuild builds images + llms.txt, then exports to out/
+npm run test:unit         # node --test evals scripts — pure-function tests, no network
+npm run test:smoke        # Playwright: every route loads, renders, scrolls, zero errors
+npm run eval:factuality   # every number in a case study, checked against its source repo
+npm run lighthouse:desktop  # and :mobile — Lighthouse CI against category floors
 ```
 
-Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages.
+Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages. All four gates in
+`.github/workflows/` run the same commands on every pull request.
 
 ## Project layout
 
@@ -57,7 +73,7 @@ Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages.
 | `evals/` | Behaviour checks that the repo's conventions still hold |
 | `src/app/` | Routes: `/`, `/story`, `/projects`, `/projects/[slug]`, `/gallery`, `/process`, 404, sitemap, robots; `globals.css` holds the design tokens |
 | `src/content/site.ts` | Single source of truth for all site copy that isn't a project; the `nav` array drives Nav, Footer and sitemap |
-| `content/projects/` | One `.mdx` per project (18); lowercased filename = URL slug |
+| `content/projects/` | One `.mdx` per project (20); lowercased filename = URL slug |
 | `content/writing/` | Three old blog posts, kept as content — not rendered |
 | `src/components/` | `Nav`, `Footer`, `ui` (Pill/Label/Container/Arrow), `SmoothScroll`, `ProjectGrid`, `Gallery`, `motion/*`, `home/*` |
 | `src/lib/projects.ts` | Reads project MDX + the image manifest |
