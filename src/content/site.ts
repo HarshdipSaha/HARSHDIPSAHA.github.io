@@ -259,4 +259,20 @@ export const process = {
   ],
   decisionsNote: "Two earlier decisions (0001, 0010) were later reversed. They stay in the register, marked superseded, so the history stays honest and readable.",
   repo: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io",
+  skillsLabel: "The toolkit, by name",
+  skillsNote:
+    "Every Claude Skill actually reached for while building this site — names only, never what's inside them. Drift them, drag one, or click to give it a nudge.",
+  skills: [
+    "ai-dlc",
+    "brainstorming",
+    "agent-swarm",
+    "dispatching-parallel-agents",
+    "frontend-design",
+    "documentation-bot",
+    "code-review",
+    "verification-before-completion",
+    "impeccable",
+    "ui-ux-pro-max",
+    "to-spec",
+  ] as string[],
 };

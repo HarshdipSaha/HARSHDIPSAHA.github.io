@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
+import { SkillsBubbles } from "@/components/process/SkillsBubbles";
 import { Label, Pill } from "@/components/ui";
 import { process } from "@/content/site";
 
@@ -72,6 +73,16 @@ export default function ProcessPage() {
 
       <Reveal>
         <p className="prose">{process.why}</p>
+      </Reveal>
+
+      <Reveal>
+        <section>
+          <Label>{process.skillsLabel}</Label>
+          <p className="prose mt-4">{process.skillsNote}</p>
+          <div className="mt-6">
+            <SkillsBubbles skills={process.skills} />
+          </div>
+        </section>
       </Reveal>
 
       <Reveal>
