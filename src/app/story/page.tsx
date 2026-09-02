@@ -73,14 +73,21 @@ export default function StoryPage() {
       <Reveal>
         <section>
           <Label>Education</Label>
-          <ul className="hairline mt-4 divide-y divide-white/10 border-y">
-            {story.education.map((e) => (
-              <li key={e.name} className="py-4">
-                <p className="text-paper">{e.name}</p>
-                <p className="mt-1 text-sm text-paper/55">{e.detail}</p>
+          <ol className="mt-6 flex flex-col">
+            {story.education.map((e, i) => (
+              <li key={e.name} className="relative flex gap-5 pb-8 last:pb-0">
+                {i < story.education.length - 1 && (
+                  <span className="absolute left-[5px] top-4 bottom-0 w-px bg-white/10" aria-hidden="true" />
+                )}
+                <span className="relative mt-1.5 size-[11px] shrink-0 rounded-full bg-tangerine" aria-hidden="true" />
+                <div>
+                  <p className="label text-paper/55">{e.when}</p>
+                  <p className="mt-1 font-medium text-paper">{e.name}</p>
+                  <p className="mt-0.5 text-sm text-paper/60">{e.detail}</p>
+                </div>
               </li>
             ))}
-          </ul>
+          </ol>
         </section>
       </Reveal>
 
@@ -112,7 +119,22 @@ export default function StoryPage() {
       <Reveal>
         <section>
           <Label>Interests</Label>
-          <p className="mt-4 leading-relaxed text-paper/75">{story.interests.join(" · ")}</p>
+          <ul className="mt-4 flex flex-wrap gap-2.5">
+            {story.interests.map((interest, i) => (
+              <li
+                key={interest}
+                className="glass hairline rounded-full px-4 py-2 text-sm text-paper/85"
+              >
+                <span
+                  className={`mr-1.5 inline-block size-1.5 rounded-full ${
+                    ["bg-tangerine", "bg-sunny", "bg-seafoam", "bg-cerulean"][i % 4]
+                  }`}
+                  aria-hidden="true"
+                />
+                {interest}
+              </li>
+            ))}
+          </ul>
         </section>
       </Reveal>
 

@@ -147,11 +147,11 @@ export const story = {
     "I like research that ends in something running, and engineering that ends in something published.",
   more: [
     "Since then the work has widened. At IIT Madras I develop PyAMorph, a library that turns images and CAD models into geometry a physics simulation can run on. At Optum (UnitedHealth Group) I spent a summer on the team piloting AI-DLC — a way of building software where every change carries a written plan and record — across a 35,000-person organisation. And in open source I'm one of the top contributors to BrainGlobe, the toolkit neuroscience labs use to align whole-brain microscopy images to a standard atlas.",
-    "Away from the keyboard: 1000+ solved programming problems across LeetCode and GeeksforGeeks, All India Rank 14 in the BRAINDEAD data-science competition, and a top-30 finish among 150+ teams at the AI4Humanity Summit. I'm open to software-engineering and research internships.",
+    "Away from the keyboard: 1000+ solved programming problems across LeetCode and GeeksforGeeks — mostly dynamic programming and graph problems, which is probably why the segmentation code looked the way it did.",
   ],
   education: [
-    { name: "Netaji Subhas University of Technology, New Delhi", detail: "B.Tech CSE (AI) · GPA 8.78 of 10 · class of 2027" },
-    { name: "Kendriya Vidyalaya No. 2, Delhi Cantt", detail: "Class XII, 95.6% · Class X, 98.4%" },
+    { name: "Netaji Subhas University of Technology, New Delhi", detail: "B.Tech CSE (AI) · GPA 8.78 of 10 · class of 2027", when: "2023 – 2027 (expected)" },
+    { name: "Kendriya Vidyalaya No. 2, Delhi Cantt", detail: "Class XII, 95.6% · Class X, 98.4%", when: "2009 – 2023" },
   ],
   achievements: [
     {
@@ -209,7 +209,7 @@ export const process = {
     "Every change to this site starts as a written plan, gets approved, built, checked by four automated gates, and closed with a record. Every decision about how it's put together is written down. You can retrace all of it.",
   why: "I keep this page because the habit matters more than the website. It's the same discipline I use on a research pipeline: leave enough of a written trail that a reviewer can retrace every step without asking me. The site is the worked example you can open.",
   stats: [
-    { value: "29", label: "changes recorded, numbered 001–029, since January 2026" },
+    { value: "32", label: "changes recorded, numbered 001–032, since January 2026" },
     { value: "15", label: "decisions written down, numbered 0001–0015" },
     { value: "2", label: "of those decisions later replaced — kept in the record, marked superseded" },
     { value: "4", label: "automated gates on every pull request" },
