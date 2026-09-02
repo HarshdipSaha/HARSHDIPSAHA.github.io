@@ -1,7 +1,7 @@
 ---
 title: Object Tracking — Tennis Game
 publishedAt: '2025-04-01'
-summary: 'Tennis player & ball detection, speed and avg_speed display.'
+summary: Player and ball tracking with real-time speed and mini-court stats overlay.
 images:
   - /img/projects/object-tennis-tracker.webp
 link: 'https://github.com/HARSHDIPSAHA/Object_tracking_tennis_game'
@@ -9,12 +9,22 @@ link: 'https://github.com/HARSHDIPSAHA/Object_tracking_tennis_game'
 
 ## Overview
 
-Detects the players and the ball in tennis footage and displays their speed and average speed.
+Detects the two players and the ball in a broadcast-style tennis video, finds the court's key points, projects everything onto a mini-court drawn in the corner, and overlays shot speed and player running speed for both players. Built with PyTorch (via Ultralytics YOLO and torchvision) and OpenCV.
+
+## What it does
+
+- **Players** — an Ultralytics YOLOv8x model runs with tracking on every frame; only the two track IDs closest to the court's key points in the first frame are kept, dropping referees and spectators.
+- **Ball** — a YOLOv5 model fine-tuned on a Roboflow tennis-ball dataset (578 images) tracks the ball, with missing detections interpolated and shot frames found from changes in the ball's vertical direction.
+- **Court key points** — a ResNet-50 with its final layer replaced by a 28-output regression head (14 x/y key points) locates the court lines.
+- **Mini court** — player and ball pixel positions are converted to a scaled mini-court using the tennis court's real dimensions, for example a doubles line width of 10.97 m.
+- **Stats** — shot speed and opponent running speed in km/h are computed between consecutive shot frames, assuming 24 fps, and accumulated per player onto an on-screen stats box.
 
 ## How it's built
 
-PyTorch and OpenCV, per the repository.
+The ball detector and the court key-point model were both trained on a Kaggle P100 GPU: the YOLOv5 ball detector for 100 epochs, and the ResNet-50 key-point regressor for 20 epochs. Cached detections let the full pipeline run without a GPU against the original demo clip.
+
+## Status and limitations
+
+Per the README: model weights and the input video are not committed to the repository, so the cached detections only match the original clip; frame rate is hard-coded to 24 fps; and the per-player average-speed calculation has a known swap bug carried over from the reference implementation it was built from. No tests.
 
 - [Demo video](https://github.com/user-attachments/assets/11200e04-31a8-4754-a9c4-75498a930f86)
-
-The README is a single line; the pipeline details live in the code.
