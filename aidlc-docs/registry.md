@@ -39,17 +39,18 @@
 | 030 | 030-process-page-rework | /process page rework: skills up, gate pipeline, what's different | complete | 2026-09-01 | 2026-09-01 | none | branch `feat/process-rework` |
 | 031 | 031-improvement-ideation | Site improvement ideation document | complete | 2026-09-01 | 2026-09-01 | none | branch `docs/improvement-ideas` |
 | 032 | 032-story-polish-wave-1 | Story polish wave 1: interests pills, timeline education, kill duplicate text, real sitemap lastmod, OG image verification | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/story-polish-wave-1` |
+| 033 | 033-project-readme-refresh | Project README refresh (6 case studies) + footer decluttering (issue #41) | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/project-readme-refresh` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 32 |
+| complete | 33 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **32** |
+| **Total** | **33** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -62,4 +63,4 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 033
+Next effort number: 034

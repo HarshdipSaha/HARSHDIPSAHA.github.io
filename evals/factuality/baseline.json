@@ -64,6 +64,14 @@
       "kind": "measurement",
       "phrase": "…osa for MFCC extraction, PyAudio; configurable sample rate (22050 Hz, matching training), chunk duration (0.5 s) and MQTT topic.…",
       "reason": "In the README, but as a configuration literal rather than a measurement: the Configuration section shows `\"sample_rate\": 22050,  # Audio Hz (Must match model training)`. The value and its unit are on opposite sides of a comment marker, so the grounding rule — which deliberately requires a unit to sit next to its number — cannot bind them. Accepted rather than relaxing that rule, because a false \"grounded\" verdict is the failure mode this suite exists to prevent."
+    },
+    {
+      "file": "content/projects/Object-tracking-tennis-game.mdx",
+      "claim": "10.97m",
+      "value": "10.97 m",
+      "kind": "measurement",
+      "phrase": "…ourt's real dimensions, for example a doubles line width of 10.97 m. Stats — shot speed and opponent running speed in km/h are…",
+      "reason": "In the README, but split across a code span: \"(for example `DOUBLE_LINE_WIDTH = 10.97` m)\" — the closing backtick sits between the number and its unit, so the grounding rule cannot bind them across the code-formatting boundary. Same pattern as the tinySafetyNet entries above; accepted rather than relaxing the adjacency rule."
     }
   ]
 }

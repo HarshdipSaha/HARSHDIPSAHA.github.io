@@ -197,9 +197,7 @@ export const publication = {
 
 export const footer = {
   colophon: [
-    "Set in Instrument Serif and Commissioner.",
     "The brain is the ICBM 152 Nonlinear Symmetric 2009a T1 template, © 1993–2009 Louis Collins, McConnell Brain Imaging Centre, Montreal Neurological Institute, McGill University. Used with permission under its distribution licence.",
-    "Built with Next.js, Motion and Lenis; statically exported to GitHub Pages. Every change to this site is planned and recorded before it ships, and every structural decision is written down — see /process for how.",
   ],
 };
 
