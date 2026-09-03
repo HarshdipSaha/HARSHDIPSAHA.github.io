@@ -2,6 +2,12 @@ import { expect, test, type Page } from "@playwright/test";
 import { readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { story } from "../src/content/site";
+import { factualityBadge, factualityCountsFor } from "../src/lib/factuality";
+import { getProjects } from "../src/lib/projects";
+import { toolIconPath } from "../src/lib/tool-icons";
+
+const TOOLS_WITH_ICON = story.skills.filter((t) => toolIconPath(t) !== undefined);
+const TOOLS_WITHOUT_ICON = story.skills.filter((t) => toolIconPath(t) === undefined);
 
 /**
  * "Nothing breaks" gate. Every prerendered route in `out/` must load with a
@@ -97,6 +103,23 @@ test.describe("story Tools toy", () => {
     }
   });
 
+  test("pills carry the official brand glyph where one exists, the coloured dot otherwise", async ({ page }) => {
+    await page.goto("/story", { waitUntil: "load" });
+    // 13 of the 17 tools have a simple-icons glyph; the map is the source of truth, not a magic number.
+    expect(TOOLS_WITH_ICON.length).toBeGreaterThanOrEqual(10);
+    await expect(page.locator("li button svg")).toHaveCount(TOOLS_WITH_ICON.length);
+    for (const tool of TOOLS_WITH_ICON) {
+      const pill = page.getByRole("button", { name: tool, exact: true });
+      await expect(pill.locator("svg[aria-hidden='true'] path")).toHaveCount(1);
+      await expect(pill.locator("svg")).toHaveClass(/fill-current/);
+    }
+    for (const tool of TOOLS_WITHOUT_ICON) {
+      const pill = page.getByRole("button", { name: tool, exact: true });
+      await expect(pill.locator("svg")).toHaveCount(0);
+      await expect(pill.locator("span.rounded-full[aria-hidden='true']")).toHaveCount(1);
+    }
+  });
+
   test("clicking a tool measurably reshuffles the order", async ({ page }) => {
     await page.goto("/story", { waitUntil: "load" });
     const orderBefore = await page.$$eval("li button", (els) => els.map((el) => el.textContent?.trim()));
@@ -118,8 +141,36 @@ test.describe("story Tools toy", () => {
         await expect(page.getByText(tool, { exact: true })).toBeVisible();
       }
       await expect(page.locator("li button")).toHaveCount(0);
+      // The static list carries the same glyphs as the interactive one.
+      const list = page.getByText(story.skills[0], { exact: true }).locator("xpath=ancestor::ul[1]");
+      await expect(list.locator("li svg")).toHaveCount(TOOLS_WITH_ICON.length);
       expect(problems).toEqual([]);
     });
+  });
+});
+
+test.describe("factuality badge", () => {
+  // Real per-project counts from the committed manifest, not invented expectations
+  // (effort 036) — a stale manifest would make this test as wrong as the page.
+  const projects = getProjects();
+
+  test("a grounded+baselined project states its real counts and links to the eval", async ({ page }) => {
+    const p = projects.find((proj) => proj.slug === "atomnet");
+    if (!p) test.skip(true, "atomnet case study not found");
+    const badge = factualityBadge(Boolean(p!.link), factualityCountsFor(p!.slug));
+    if (!badge) test.skip(true, "atomnet has no factuality badge to check");
+    await page.goto(`/projects/${p!.slug}`, { waitUntil: "load" });
+    const link = page.getByRole("link", { name: badge!.text, exact: true });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("href", badge!.href);
+  });
+
+  test("a private-source project states that plainly, with no invented count", async ({ page }) => {
+    const p = projects.find((proj) => proj.slug === "brainwavesfinland");
+    if (!p) test.skip(true, "brainwavesfinland case study not found");
+    expect(p!.link).toBeUndefined();
+    await page.goto(`/projects/${p!.slug}`, { waitUntil: "load" });
+    await expect(page.getByText("Source repository is private — claims stated as written")).toBeVisible();
   });
 });
 

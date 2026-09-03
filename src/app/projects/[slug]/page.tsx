@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -6,7 +8,8 @@ import remarkGfm from "remark-gfm";
 import { Reveal } from "@/components/motion/Reveal";
 import { MorphTarget } from "@/components/Morph";
 import { Arrow, Container, Label, Pill } from "@/components/ui";
-import { getProject, getProjects } from "@/lib/projects";
+import { factualityBadge, factualityCountsFor } from "@/lib/factuality";
+import { getProject, getProjects, type Project } from "@/lib/projects";
 
 type Params = { slug: string };
 
@@ -14,15 +17,32 @@ export function generateStaticParams(): Params[] {
   return getProjects().map((p) => ({ slug: p.slug }));
 }
 
+/**
+ * The share card for a project. `scripts/build-og-images.mjs` renders one
+ * 1200x630 PNG per case study into public/img/og/ on predev/prebuild; this
+ * runs at build time in the same checkout, so the file either exists or the
+ * generator was skipped, in which case we fall back to the banner image (and,
+ * failing that, to the site-wide og.jpg inherited from the root layout).
+ */
+function shareImage(p: Project): NonNullable<Metadata["openGraph"]>["images"] {
+  const card = `/img/og/${p.slug}.png`;
+  if (existsSync(join(process.cwd(), "public", card))) {
+    return [{ url: card, width: 1200, height: 630, alt: p.title }];
+  }
+  return p.image ? [{ url: p.image.src, width: p.image.w, height: p.image.h }] : undefined;
+}
+
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
   const p = getProject(slug);
   if (!p) return {};
+  const images = shareImage(p);
   return {
     title: p.title,
     description: p.summary,
     alternates: { canonical: `/projects/${p.slug}` },
-    openGraph: p.image ? { images: [{ url: p.image.src, width: p.image.w, height: p.image.h }] } : undefined,
+    openGraph: { type: "article", title: p.title, description: p.summary, images },
+    twitter: { card: "summary_large_image", title: p.title, description: p.summary, images },
   };
 }
 
@@ -34,6 +54,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
   const p = all[idx];
   const next = all[(idx + 1) % all.length];
   const date = new Date(p.date).toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  const badge = factualityBadge(Boolean(p.link), factualityCountsFor(p.slug));
 
   return (
     <article className="pb-24 pt-36 md:pt-40">
@@ -52,6 +73,16 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
             )}
             <span className="text-sm text-paper/55">{date}</span>
           </div>
+          {badge && (
+            <a
+              href={badge.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-block text-[0.8125rem] font-medium text-paper/55 hover:text-paper/80"
+            >
+              {badge.text}
+            </a>
+          )}
         </Reveal>
       </Container>
 

@@ -39,7 +39,7 @@ export function Hero() {
           text={hero.subline}
           trigger="mount"
           duration={1.1}
-          delay={1.1}
+          delay={0.5}
           className="text-[1.05rem] leading-relaxed text-paper/80 md:text-[1.2rem]"
         />
       </div>

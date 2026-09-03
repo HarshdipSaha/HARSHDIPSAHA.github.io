@@ -1,16 +1,22 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { BrainSequence } from "@/components/home/BrainSequence";
-import { CardStack } from "@/components/home/CardStack";
 import { Closing } from "@/components/home/Closing";
-import { Experience } from "@/components/home/Experience";
 import { Hero } from "@/components/home/Hero";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollWords } from "@/components/motion/ScrollWords";
-import { MatrixRibbon } from "@/components/MatrixRibbon";
-import { ProjectGrid } from "@/components/ProjectGrid";
 import { Arrow, Container, Label } from "@/components/ui";
 import { passage, selectedProjects, sequence, threads } from "@/content/site";
 import { gallery, getProjectsBySlugs, projectImages } from "@/lib/projects";
+
+// Below-fold home sections: dynamic-imported (ssr: true, the default) so their
+// markup still prerenders into the export exactly as before, but their JS
+// ships in separate chunks instead of the critical (above-the-fold) bundle.
+// Effort 037 — pure code-splitting, no behavioural or visual change.
+const CardStack = dynamic(() => import("@/components/home/CardStack").then((m) => m.CardStack));
+const MatrixRibbon = dynamic(() => import("@/components/MatrixRibbon").then((m) => m.MatrixRibbon));
+const Experience = dynamic(() => import("@/components/home/Experience").then((m) => m.Experience));
+const ProjectGrid = dynamic(() => import("@/components/ProjectGrid").then((m) => m.ProjectGrid));
 
 function resolveImage(ref: string): string {
   const [kind, key] = ref.split(":");

@@ -125,7 +125,6 @@ Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages. Al
 | Path | Purpose |
 |------|---------|
 | `content/projects/` | 20 MDX case studies (one per project, lowercased filename = URL slug) — each checked by the factuality eval gate against its source repo |
-| `content/writing/` | 3 old blog posts (LiveKit, Adobe hackathon, Sehat Sathee) — kept as content, not rendered on any route |
 
 ### Build pipeline
 

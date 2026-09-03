@@ -40,18 +40,26 @@
 | 031 | 031-improvement-ideation | Site improvement ideation document | complete | 2026-09-01 | 2026-09-01 | none | branch `docs/improvement-ideas` |
 | 032 | 032-story-polish-wave-1 | Story polish wave 1: interests pills, timeline education, kill duplicate text, real sitemap lastmod, OG image verification | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/story-polish-wave-1` |
 | 033 | 033-project-readme-refresh | Project README refresh (6 case studies) + footer decluttering (issue #41) | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/project-readme-refresh` |
+| 034 | 034-tool-icons | Official monochrome tech logos in the /story Tools pills (ideation doc effort 031 idea 1) | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/tool-icons` |
+| 035 | 035-process-stats | Compute the /process stats from the repo at build time | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/process-stats` |
+| 036 | 036-factuality-badge | Factuality badge on every project page, fed by the eval manifest | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/factuality-badge` |
+| 037 | 037-mobile-perf | Mobile home performance: dynamic below-fold sections, lazy Lenis, faster subline LCP | complete | 2026-09-03 | 2026-09-03 | none | branch `perf/mobile-home` |
+| 038 | 038-writing-route | `/writing` route for the three orphaned posts (idea 5, effort 031) | reverted — see 041 | 2026-09-03 | 2026-09-03 | 0016 (superseded by 0017) | branch `feat/writing-route` |
+| 039 | 039-og-images | Per-project Open Graph images generated at build | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/og-images` |
 | 040 | 040-publication-image | Restore the MICCAI publication photo on /story from git history (ideation effort 031, idea 14) | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/publication-image` |
+| 041 | 041-revert-writing-route | Revert effort 038 — the three posts were not the owner's own writing | complete | 2026-09-03 | 2026-09-03 | 0017 | branch `revert/writing-route` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 34 |
+| complete | 40 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **34** |
+| reverted | 1 |
+| **Total** | **41** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -64,8 +72,7 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Efforts 034-039 are allocated to sibling agents working in parallel worktrees at the time effort
-040 was recorded; their rows are intentionally absent from this copy of the file and will be
-filled in when those branches merge — the integrator reconciles the gap rather than this effort.
+Next effort number: 042
 
-Next effort number: 041
+(Effort 040 was allocated to a concurrent sibling-worktree effort not yet merged at the time
+this row was written; effort 041 is this reversion. The integrator reconciles 040 as it merges.)
