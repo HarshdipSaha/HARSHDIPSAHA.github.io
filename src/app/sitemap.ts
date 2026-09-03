@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { nav, person } from "@/content/site";
 import { getProjects } from "@/lib/projects";
-import { getPosts } from "@/lib/writing";
 
 export const dynamic = "force-static";
 
@@ -19,9 +18,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${base}/projects/${p.slug}`,
     lastModified: new Date(p.date),
   }));
-  const writingPages = getPosts().map((p) => ({
-    url: `${base}/writing/${p.slug}`,
-    lastModified: new Date(p.date),
-  }));
-  return [...pages, ...projectPages, ...writingPages];
+  return [...pages, ...projectPages];
 }

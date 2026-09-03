@@ -20,7 +20,6 @@ export const person = {
 export const nav = [
   { label: "Story", href: "/story" },
   { label: "Projects", href: "/projects" },
-  { label: "Writing", href: "/writing" },
   { label: "Gallery", href: "/gallery" },
   { label: "Process", href: "/process" },
 ];
@@ -194,14 +193,6 @@ export const publication = {
     { label: "Paper", href: "https://link.springer.com/10.1007/978-3-032-16370-7_23" },
     { label: "Code", href: "https://github.com/HARSHDIPSAHA/brats_response_project" },
   ],
-};
-
-export const writing = {
-  title: "Writing",
-  description: "Notes from hackathons and past projects, kept close to how they were first written.",
-  headline: "Notes from before this site had a shape.",
-  intro:
-    "Three write-ups from earlier hackathons — kept close to how I first wrote them, not rewritten into case studies. The projects themselves live in Projects; this is the notebook.",
 };
 
 export const footer = {

@@ -58,17 +58,6 @@ const projects = [
   },
 ];
 
-const posts = [
-  {
-    slug: "on-the-loom",
-    title: "Notes on the Jacquard Loom",
-    summary: "First impressions of punched-card control.",
-    year: "1841",
-    tag: "Notebook",
-    body: "## First look\n\nThe cards read like a program, not a picture.",
-  },
-];
-
 test("the index follows the llms.txt shape", () => {
   const { index } = renderLlmsTxt(site, projects);
   const lines = index.split("\n");
@@ -77,7 +66,7 @@ test("the index follows the llms.txt shape", () => {
   assert.equal(lines.length >= 3 && lines[2].startsWith("> "), true, "a blockquote summary follows the H1");
   assert.equal((index.match(/^# /gm) ?? []).length, 1, "exactly one H1");
 
-  for (const heading of ["## Site", "## Projects", "## Writing", "## Research", "## Elsewhere", "## Optional"]) {
+  for (const heading of ["## Site", "## Projects", "## Research", "## Elsewhere", "## Optional"]) {
     assert.ok(index.includes(`\n${heading}\n`), `has the ${heading} section`);
   }
 });
@@ -102,7 +91,7 @@ test("every project appears in both variants", () => {
 });
 
 test("every URL is absolute on the canonical origin, and no host is hardcoded", () => {
-  const { index, full } = renderLlmsTxt(site, projects, posts);
+  const { index, full } = renderLlmsTxt(site, projects);
   for (const doc of [index, full]) {
     for (const url of doc.match(/\]\(([^)]+)\)/g) ?? []) {
       const href = url.slice(2, -1);
@@ -130,34 +119,6 @@ test("case-study headings are demoted so they nest under the project heading", (
   assert.ok(full.includes("### Analytical Engine"), "the project is an H3");
   assert.ok(full.includes("#### Overview"), "its body's H2 became an H4");
   assert.ok(!/^## Overview$/m.test(full), "no body heading competes with a section heading");
-});
-
-test("writing posts appear in a Writing section in both variants", () => {
-  const { index, full } = renderLlmsTxt(site, projects, posts);
-  for (const p of posts) {
-    for (const [name, doc] of [["index", index], ["full", full]]) {
-      assert.ok(doc.includes(p.title), `${name}: has ${p.title}`);
-      assert.ok(doc.includes(`https://example.test/writing/${p.slug}`), `${name}: links ${p.slug}`);
-    }
-  }
-});
-
-test("only the full variant carries writing post body text", () => {
-  const { index, full } = renderLlmsTxt(site, projects, posts);
-  assert.ok(full.includes("The cards read like a program, not a picture."), "full inlines the post body");
-  assert.ok(!index.includes("The cards read like a program"), "the index does not");
-});
-
-test("writing post headings are demoted so they nest under the post heading", () => {
-  const { full } = renderLlmsTxt(site, projects, posts);
-  assert.ok(full.includes("### Notes on the Jacquard Loom"), "the post is an H3");
-  assert.ok(full.includes("#### First look"), "its body's H2 became an H4");
-});
-
-test("omitting posts renders an empty Writing section rather than throwing", () => {
-  const { index, full } = renderLlmsTxt(site, projects);
-  assert.ok(index.includes("\n## Writing\n"));
-  assert.ok(full.includes("\n## Writing\n"));
 });
 
 test("adding a project changes only that project's lines", () => {
