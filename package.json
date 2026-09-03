@@ -3,14 +3,15 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/build-images.mjs && node scripts/build-llms-txt.mjs",
+    "predev": "node scripts/build-images.mjs && node scripts/build-llms-txt.mjs && node scripts/build-process-stats.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/build-images.mjs && node scripts/build-llms-txt.mjs",
+    "prebuild": "node scripts/build-images.mjs && node scripts/build-llms-txt.mjs && node scripts/build-process-stats.mjs",
     "build": "next build",
     "start": "npx serve out",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "images": "node scripts/build-images.mjs",
     "llms": "node scripts/build-llms-txt.mjs",
+    "stats": "node scripts/build-process-stats.mjs",
     "check:aidlc": "node scripts/check-aidlc-sync.mjs",
     "check:factuality-manifest": "node scripts/check-factuality-manifest.mjs",
     "test:unit": "node --test evals scripts",
@@ -42,6 +43,7 @@
     "playwright": "^1.62.1",
     "serve": "^14.2.6",
     "sharp": "^0.35.3",
+    "simple-icons": "^16.29.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.8.3"
   }
