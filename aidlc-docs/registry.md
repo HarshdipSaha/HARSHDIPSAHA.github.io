@@ -43,17 +43,18 @@
 | 034 | 034-tool-icons | Official monochrome tech logos in the /story Tools pills (ideation doc effort 031 idea 1) | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/tool-icons` |
 | 035 | 035-process-stats | Compute the /process stats from the repo at build time | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/process-stats` |
 | 036 | 036-factuality-badge | Factuality badge on every project page, fed by the eval manifest | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/factuality-badge` |
+| 037 | 037-mobile-perf | Mobile home performance: dynamic below-fold sections, lazy Lenis, faster subline LCP | complete | 2026-09-03 | 2026-09-03 | none | branch `perf/mobile-home` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 36 |
+| complete | 37 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **36** |
+| **Total** | **37** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -66,7 +67,7 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 037
+Next effort number: 038
 
-(Efforts 034, 035 and 036 now recorded above; 037-040 were allocated to other concurrent
-sibling-worktree efforts — the integrator reconciles those as each one merges.)
+(Efforts 034, 035, 036 and 037 now recorded above; 038-040 were allocated to other
+concurrent sibling-worktree efforts — the integrator reconciles those as each one merges.)
