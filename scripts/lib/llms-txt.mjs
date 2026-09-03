@@ -16,7 +16,6 @@
 /** @typedef {{ name: string, siteUrl: string, description: string, role: string, location: string, email: string, github: string, linkedin: string, resume: string }} Person */
 /** @typedef {{ label: string, href: string }} NavItem */
 /** @typedef {{ slug: string, title: string, summary: string, year: string, link?: string, body: string }} AgentProject */
-/** @typedef {{ slug: string, title: string, summary: string, year: string, tag?: string, body: string }} AgentPost */
 
 /** Strip a trailing slash so `${base}${href}` never doubles up. */
 function origin(siteUrl) {
@@ -48,14 +47,12 @@ function bullet(title, url, description) {
 /**
  * @param {{ person: Person, nav: NavItem[], story: any, publication: any }} site
  * @param {AgentProject[]} projects
- * @param {AgentPost[]} [posts]
  * @returns {{ index: string, full: string }}
  */
-export function renderLlmsTxt(site, projects, posts) {
+export function renderLlmsTxt(site, projects) {
   const { person, nav, story, publication } = site;
   const base = origin(person.siteUrl);
   const list = projects ?? [];
-  const writingList = posts ?? [];
 
   const header = [
     `# ${person.name}`,
@@ -134,43 +131,12 @@ export function renderLlmsTxt(site, projects, posts) {
     }),
   ];
 
-  const indexWriting = [
-    "## Writing",
-    "",
-    ...writingList.map((p) =>
-      bullet(p.title, `${base}/writing/${p.slug}`, `${p.summary} (${p.year})`),
-    ),
-  ];
-
-  const fullWriting = [
-    "## Writing",
-    "",
-    `${writingList.length} posts, newest first. First-person write-ups, kept close to how they were first written — not case studies. Each section below is the full post as published at ${base}/writing/<slug>.`,
-    "",
-    ...writingList.flatMap((p) => {
-      const meta = [`Published: ${p.year}`, `Page: ${base}/writing/${p.slug}`];
-      if (p.tag) meta.push(`Tag: ${p.tag}`);
-      return [
-        `### ${p.title}`,
-        "",
-        oneLine(p.summary),
-        "",
-        ...meta.map((m) => `- ${m}`),
-        "",
-        demoteHeadings(p.body, 2),
-        "",
-      ];
-    }),
-  ];
-
   const index = [
     ...header,
     "",
     ...site_,
     "",
     ...indexProjects,
-    "",
-    ...indexWriting,
     "",
     ...research,
     "",
@@ -184,14 +150,13 @@ export function renderLlmsTxt(site, projects, posts) {
     ...header,
     "",
     oneLine(
-      "This is the full-text variant: every project case study and writing post is inlined below. " +
+      "This is the full-text variant: every project case study is inlined below. " +
         `The short index is at ${base}/llms.txt.`,
     ),
     "",
     ...site_,
     "",
     ...fullProjects,
-    ...fullWriting,
     ...research,
     "",
     ...elsewhere,
@@ -208,8 +173,6 @@ function sectionBlurb(href, story) {
       return oneLine(story.intro?.[0] ?? "");
     case "/projects":
       return "Every project, newest first, each with a written case study.";
-    case "/writing":
-      return "First-person write-ups from hackathons and past projects, kept close to how they were first written.";
     case "/gallery":
       return "Photographs.";
     case "/process":

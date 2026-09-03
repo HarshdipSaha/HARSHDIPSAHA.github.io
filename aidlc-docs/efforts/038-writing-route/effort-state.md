@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | Ref | 038-writing-route |
-| Status | complete |
+| Status | reverted — see effort 041-revert-writing-route |
 | Depth | standard |
 | Opened | 2026-09-03 |
 | Closed | 2026-09-03 |
@@ -162,3 +162,12 @@ date and disclose rather than silently correct.
 - `src/lib/writing.ts`'s docstring (written by the prior, interrupted session) already stated the
   ADR-0016 reasoning before the ADR existed — this session wrote the ADR to match what that file
   already said, rather than changing the file to match a differently-reasoned ADR.
+
+## Reverted (2026-09-03)
+
+Shortly after this effort merged, the owner clarified that the three `content/writing/*.mdx`
+posts are not his own writing and should never have been made public on the site. Effort
+041-revert-writing-route removes the `/writing` route, nav entry, and all supporting code added
+here, and deletes the three `.mdx` files from the repo going forward (not from prior git history —
+see that effort's record for the scope decision). This effort's record is kept, not deleted, per
+the state-machine convention in `docs/how-to/run-an-aidlc-effort.md`.

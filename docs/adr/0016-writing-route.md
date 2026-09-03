@@ -1,6 +1,6 @@
 # 0016 — Publish `content/writing/*.mdx` at `/writing`, outside the factuality gate
 
-**Status:** Accepted · **Date:** 2026-09-03 · **Supersedes:** —
+**Status:** Superseded by [ADR 0017](0017-remove-writing-route.md) · **Date:** 2026-09-03 · **Supersedes:** —
 
 ## Context
 
