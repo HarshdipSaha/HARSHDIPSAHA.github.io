@@ -43,6 +43,8 @@ const PROJECT_MAP = {
   "zombies learning.png": "zombies-learning",
   "brainwaves finland.png": "brainwaves-finland",
   "saakshi.png": "saakshi",
+  // Not a project: the /story Publication photo, recovered from git history (effort 040).
+  "miccai-publication.jpg": "miccai-publication",
 };
 
 const cache = await readFile(CACHE, "utf8").then(JSON.parse).catch(() => ({}));

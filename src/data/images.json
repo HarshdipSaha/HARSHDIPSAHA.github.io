@@ -152,6 +152,11 @@
       "w": 1400,
       "h": 774
     },
+    "miccai-publication": {
+      "src": "/img/projects/miccai-publication.webp",
+      "w": 750,
+      "h": 1000
+    },
     "missing-person": {
       "src": "/img/projects/missing-person.webp",
       "w": 920,

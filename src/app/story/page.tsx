@@ -3,13 +3,16 @@ import { Reveal } from "@/components/motion/Reveal";
 import { ToolkitToy } from "@/components/story/ToolkitToy";
 import { Label, Pill } from "@/components/ui";
 import { person, publication, story } from "@/content/site";
-import { portrait } from "@/lib/projects";
+import { portrait, projectImages } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Story",
   description: person.description,
   alternates: { canonical: "/story" },
 };
+
+// Published by scripts/build-images.mjs from project_images/miccai-publication.jpg.
+const publicationImage = projectImages[publication.image];
 
 export default function StoryPage() {
   return (
@@ -55,17 +58,29 @@ export default function StoryPage() {
       </Reveal>
 
       <Reveal>
-        <section>
-          <Label>Publication</Label>
-          <h2 className="mt-4 text-2xl font-medium leading-snug tracking-tight text-paper">{publication.title}</h2>
-          <p className="mt-2 text-paper/60">{publication.venue}</p>
-          <p className="mt-1 text-tangerine">{publication.result}</p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            {publication.links.map((l) => (
-              <Pill key={l.href} href={l.href} size="sm">
-                {l.label} ↗
-              </Pill>
-            ))}
+        <section className="grid gap-8 md:grid-cols-[1fr_200px] md:items-start">
+          {publicationImage && (
+            <img
+              src={publicationImage.src}
+              alt={publication.imageAlt}
+              width={publicationImage.w}
+              height={publicationImage.h}
+              loading="lazy"
+              className="aspect-[4/3] w-full rounded-2xl border border-white/10 object-cover md:order-2 md:aspect-auto"
+            />
+          )}
+          <div>
+            <Label>Publication</Label>
+            <h2 className="mt-4 text-2xl font-medium leading-snug tracking-tight text-paper">{publication.title}</h2>
+            <p className="mt-2 text-paper/60">{publication.venue}</p>
+            <p className="mt-1 text-tangerine">{publication.result}</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {publication.links.map((l) => (
+                <Pill key={l.href} href={l.href} size="sm">
+                  {l.label} ↗
+                </Pill>
+              ))}
+            </div>
           </div>
         </section>
       </Reveal>

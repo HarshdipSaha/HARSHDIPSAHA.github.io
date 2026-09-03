@@ -189,6 +189,10 @@ export const publication = {
   title: "RECAP-Net: does the tumour grow? Classifying glioblastoma response from paired MRI scans",
   venue: "MICCAI 2025, South Korea — oral presentation. Published in Springer Lecture Notes in Computer Science.",
   result: "3rd worldwide, BraTS Lighthouse 2025 Tumor Progression Challenge — every team's model scored on the same hidden brain-tumour scans.",
+  // Key into images.projects; the file is project_images/miccai-publication.jpg.
+  image: "miccai-publication",
+  imageAlt:
+    "The MICCAI 2025 photo wall at the Daejeon conference venue: two flower-covered mascots, one pink and one yellow, standing on artificial grass in front of a living green wall beneath the conference banner.",
   links: [
     { label: "Paper", href: "https://link.springer.com/10.1007/978-3-032-16370-7_23" },
     { label: "Code", href: "https://github.com/HARSHDIPSAHA/brats_response_project" },
