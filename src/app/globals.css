@@ -321,3 +321,27 @@ body {
     opacity: 1;
   }
 }
+
+/* Softer entrance for the hero's left headline half (effort 042, issue #55):
+   same mechanism as .word-in, lighter blur and no rise, so the line a
+   recruiter reads first doesn't sit visibly "washed out" mid-animation. */
+@keyframes word-in-soft {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+.word-in-soft {
+  opacity: 0;
+  animation: word-in-soft 350ms cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .word-in-soft {
+    animation: none;
+    opacity: 1;
+  }
+}

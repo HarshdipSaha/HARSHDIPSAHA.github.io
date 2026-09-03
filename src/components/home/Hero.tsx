@@ -19,6 +19,7 @@ export function Hero() {
             as="span"
             text={hero.left}
             trigger="mount"
+            variant="soft"
             duration={0.6}
             delay={0.15}
             className="block max-w-[clamp(12rem,40vw,34rem)]"
