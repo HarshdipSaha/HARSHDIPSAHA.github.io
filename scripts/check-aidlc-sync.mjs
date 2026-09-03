@@ -38,6 +38,7 @@ const exempt = [
   /^public\//,
   /^out\//,
   /^src\/data\/images\.json$/,
+  /^src\/data\/process-stats\.json$/,
   /^gallery\//,
   /^project_images\//,
   /^me\.jpg$/,

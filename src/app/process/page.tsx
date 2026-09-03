@@ -4,6 +4,7 @@ import { GatePipeline } from "@/components/process/GatePipeline";
 import { SkillsBubbles } from "@/components/process/SkillsBubbles";
 import { Label, Pill } from "@/components/ui";
 import { process } from "@/content/site";
+import { processLinks, processStats } from "@/lib/process-stats";
 
 export const metadata: Metadata = {
   title: "Process",
@@ -23,7 +24,7 @@ export default function ProcessPage() {
 
       <Reveal>
         <dl className="grid grid-cols-2 gap-8 md:grid-cols-4">
-          {process.stats.map((s) => (
+          {processStats.map((s) => (
             <div key={s.label}>
               <dd className="display text-5xl text-paper">{s.value}</dd>
               <dt className="mt-2 text-sm leading-snug text-paper/55">{s.label}</dt>
@@ -125,8 +126,11 @@ export default function ProcessPage() {
           <Pill href={process.repo} variant="accent">
             Open the repository ↗
           </Pill>
-          <Pill href={`${process.repo}/tree/main/docs/adr`}>All 15 decisions ↗</Pill>
-          <Pill href={`${process.repo}/tree/main/aidlc-docs/efforts`}>All 29 change records ↗</Pill>
+          {processLinks.map((l) => (
+            <Pill key={l.href} href={l.href}>
+              {l.label}
+            </Pill>
+          ))}
         </div>
       </Reveal>
     </article>

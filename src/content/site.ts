@@ -215,11 +215,17 @@ export const process = {
   headline:
     "Every change to this site starts as a written plan, gets approved, built, checked by four automated gates, and closed with a record. Every decision about how it's put together is written down. You can retrace all of it.",
   why: "I keep this page because the habit matters more than the website. It's the same discipline I use on a research pipeline: leave enough of a written trail that a reviewer can retrace every step without asking me. The site is the worked example you can open.",
+  // Templates only. Every {placeholder} is a count read from the repo at build time
+  // (src/data/process-stats.json via src/lib/process-stats.ts) — never type a number here.
   stats: [
-    { value: "32", label: "changes recorded, numbered 001–032, since January 2026" },
-    { value: "15", label: "decisions written down, numbered 0001–0015" },
-    { value: "2", label: "of those decisions later replaced — kept in the record, marked superseded" },
-    { value: "4", label: "automated gates on every pull request" },
+    { value: "{efforts}", label: "changes recorded, numbered {firstEffort}–{lastEffort}, since January 2026" },
+    { value: "{adrs}", label: "decisions written down, numbered {firstAdr}–{lastAdr}" },
+    { value: "{superseded}", label: "of those decisions later replaced — kept in the record, marked superseded" },
+    { value: "{gates}", label: "automated gates on every pull request" },
+  ],
+  links: [
+    { label: "All {adrs} decisions ↗", path: "/tree/main/docs/adr" },
+    { label: "All {efforts} change records ↗", path: "/tree/main/aidlc-docs/efforts" },
   ],
   gatesLabel: "What a PR has to pass",
   gates: [
