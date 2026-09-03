@@ -48,6 +48,7 @@
 | 039 | 039-og-images | Per-project Open Graph images generated at build | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/og-images` |
 | 040 | 040-publication-image | Restore the MICCAI publication photo on /story from git history (ideation effort 031, idea 14) | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/publication-image` |
 | 041 | 041-revert-writing-route | Revert effort 038 — the three posts were not the owner's own writing | complete | 2026-09-03 | 2026-09-03 | 0017 | branch `revert/writing-route` |
+| 042 | 042-issue-55-footer-hero-feedback | Footer weight and hero-line entrance, per issue #55's council review | complete | 2026-09-03 | 2026-09-03 | 0018 | branch `feedback/issue-55-footer-hero` |
 
 ## Status summary
 
@@ -72,7 +73,7 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 042
+Next effort number: 043
 
 (Effort 040 was allocated to a concurrent sibling-worktree effort not yet merged at the time
 this row was written; effort 041 is this reversion. The integrator reconciles 040 as it merges.)

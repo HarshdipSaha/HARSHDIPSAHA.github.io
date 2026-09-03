@@ -20,6 +20,8 @@ type Props = {
   delay?: number;
   /** "mount" animates on first paint (above the fold); "view" waits for scroll. */
   trigger?: "mount" | "view";
+  /** "soft" (mount only): lighter blur, no rise, shorter — for a line that must read fast. */
+  variant?: "default" | "soft";
 };
 
 /**
@@ -28,12 +30,13 @@ type Props = {
  * attribute is prohibited on <p>/<span> without a role — axe `aria-prohibited-attr`
  * — and it left the accessibility tree malformed.)
  */
-export function TextAnimate({ text, as: Tag = "p", className, duration = 0.9, delay = 0, trigger = "view" }: Props) {
+export function TextAnimate({ text, as: Tag = "p", className, duration = 0.9, delay = 0, trigger = "view", variant = "default" }: Props) {
   const reduced = useReducedMotionSafe();
   const words = text.split(" ");
   if (reduced) return <Tag className={className}>{text}</Tag>;
 
   if (trigger === "mount") {
+    const wordInClass = variant === "soft" ? "word-in-soft" : "word-in";
     // Above-the-fold copy is animated by CSS (`.word-in` in globals.css), not
     // Motion: a CSS animation starts at first paint, whereas Motion's starts
     // after the bundle loads and hydrates. That wait was 95 % of the home
@@ -47,7 +50,7 @@ export function TextAnimate({ text, as: Tag = "p", className, duration = 0.9, de
         <span aria-hidden="true" className="inline">
           {words.map((w, i) => (
             <Fragment key={i}>
-              <span className="word-in inline-block" style={{ animationDelay: `${(delay + i * step).toFixed(3)}s` }}>
+              <span className={`${wordInClass} inline-block`} style={{ animationDelay: `${(delay + i * step).toFixed(3)}s` }}>
                 {w}
               </span>{" "}
             </Fragment>

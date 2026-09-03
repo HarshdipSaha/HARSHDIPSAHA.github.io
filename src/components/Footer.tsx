@@ -11,8 +11,8 @@ const elsewhere = [
 
 export function Footer() {
   return (
-    <footer className="hairline border-t">
-      <Container className="grid gap-12 py-16 md:grid-cols-[1.4fr_1fr_1fr] md:py-24">
+    <footer className="hairline border-t bg-ink-2">
+      <Container className="grid gap-12 py-20 md:grid-cols-[1.4fr_1fr_1fr] md:py-28">
         <div>
           <p className="display text-4xl text-paper">
             {person.firstName}
