@@ -46,19 +46,20 @@
 | 037 | 037-mobile-perf | Mobile home performance: dynamic below-fold sections, lazy Lenis, faster subline LCP | complete | 2026-09-03 | 2026-09-03 | none | branch `perf/mobile-home` |
 | 038 | 038-writing-route | `/writing` route for the three orphaned posts (idea 5, effort 031) | reverted — see 041 | 2026-09-03 | 2026-09-03 | 0016 (superseded by 0017) | branch `feat/writing-route` |
 | 039 | 039-og-images | Per-project Open Graph images generated at build | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/og-images` |
+| 040 | 040-publication-image | Restore the MICCAI publication photo on /story from git history (ideation effort 031, idea 14) | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/publication-image` |
 | 041 | 041-revert-writing-route | Revert effort 038 — the three posts were not the owner's own writing | complete | 2026-09-03 | 2026-09-03 | 0017 | branch `revert/writing-route` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 39 |
+| complete | 40 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
 | reverted | 1 |
-| **Total** | **40** |
+| **Total** | **41** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
