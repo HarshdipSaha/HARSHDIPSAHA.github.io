@@ -1,7 +1,7 @@
 ---
-title: YouTube Comments Chatbot (LangChain)
+title: YouTube Comment RAG
 publishedAt: '2024-07-24'
-summary: Chatbot to extract & explain data from YouTube video comments.
+summary: Consensus-weighted RAG that answers what a comment section actually thinks, not five cherry-picked comments.
 images:
   - /img/projects/youtube-langchain.webp
 link: 'https://github.com/HARSHDIPSAHA/youtubeproj_langchain'
@@ -9,6 +9,33 @@ link: 'https://github.com/HARSHDIPSAHA/youtubeproj_langchain'
 
 ## Overview
 
-A chatbot that takes a YouTube video link, extracts the video's comments, and answers questions about them — something a general chat assistant cannot do because it has no access to the comment thread.
+A command-line and Streamlit tool that answers questions about a YouTube video's comment section, built around a specific complaint about standard RAG: a comment section is not a document corpus, it is a distribution of opinion with structured metadata attached, and "embed everything, retrieve the top *k*" mishandles that in three ways. Aggregate questions ("which comment has the most likes?") have exactly one right answer that similarity search has no reason to surface. Redundancy destroys proportion — if 200 people make the same point, top-*k* returns five near-identical copies and the other 195 become invisible. And structured fields like likes and timestamps get flattened into prose that the model then has to parse back out.
 
-Built with LangChain, per the project name and summary. The README is a single line; the retrieval setup is in the code.
+## How it's built
+
+**Route before retrieving.** Questions with exact answers never touch the retriever: "which comment has the most likes" becomes a SQL query over every comment, so the number returned is the actual number rather than an estimate from whatever got retrieved.
+
+**Retrieve opinion clusters, not comments.** Comments are grouped by greedy leader clustering, walking in descending like order so the most-endorsed comment in each cluster becomes its representative quote. Each cluster carries a support count (how many people said it) and an endorsement count (how many likes those comments drew), and clusters are ranked by relevance multiplied by social proof — multiplicative rather than additive, so a popular but irrelevant cluster cannot win a query it has nothing to do with.
+
+**Tell the model the proportions.** The context handed to the language model states the corpus size and the exact share of comments and likes behind each opinion cluster, so a claim like "62% of comments say X" is something the model was given, not something it estimated.
+
+**Verify the answer.** Every generated answer is checked afterwards: citations must name comments that were actually retrieved, and any percentage or count in the answer must match what the pipeline itself computed. Every answer also reports its coverage — the share of the comment section actually behind it.
+
+## Results
+
+The project's own benchmark compares this consensus-weighted design against a naive top-*k* baseline on two tasks, both run on the bundled sample corpus:
+
+- **Exact-answer questions**, ground truth from an exhaustive scan: 6/6 (100%) for the consensus-weighted design against 1/6 (17%) for naive top-*k*.
+- **Topical retrieval**, R-precision on a hand-labelled corpus with the same retrieval budget for both systems: 12/12 (100%) against 11/12 (92%).
+
+245 tests, all offline, ~6s, 93% coverage; CI runs the suite on Python 3.10–3.12 across Linux and Windows.
+
+## Using it
+
+```bash
+pip install -e .
+ytrag build "https://www.youtube.com/watch?v=..." --limit 1000
+ytrag ask "what do people think of this video?"
+```
+
+No API key is required — the offline extractive composer builds a real proportional summary from the pipeline's own output, so it cannot invent a figure that was never computed. Setting an Anthropic, OpenAI, or Hugging Face key improves the phrasing of the answer, not the retrieval accuracy behind it.

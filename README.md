@@ -81,27 +81,94 @@ Output: `out/`. Pushing to `main` deploys via GitHub Actions to GitHub Pages. Al
 
 ## Project layout
 
+### Agent & context layer
+
 | Path | Purpose |
 |------|---------|
-| `AGENTS.md` | Front door for any agent: commands, conventions, boundaries |
-| `CONTEXT.md` | Durable project context + domain glossary |
-| `AGENT_WORKFLOWS.md` | Named multi-skill recipes this repo actually runs |
-| `aidlc-docs/inception/` | The baseline — requirements, architecture, components, stack |
-| `aidlc-docs/efforts/` | One folder per unit of work, with state + requirements delta |
-| `docs/adr/` | Architecture decision records — the "why" log |
-| `docs/` | Tutorials, how-to guides, reference, explanation (Diátaxis) |
-| `evals/` | Behaviour checks that the repo's conventions still hold |
-| `src/app/` | Routes: `/`, `/story`, `/projects`, `/projects/[slug]`, `/gallery`, `/process`, 404, sitemap, robots; `globals.css` holds the design tokens |
-| `src/content/site.ts` | Single source of truth for all site copy that isn't a project; the `nav` array drives Nav, Footer and sitemap |
-| `content/projects/` | One `.mdx` per project (20); lowercased filename = URL slug |
-| `content/writing/` | Three old blog posts, kept as content — not rendered |
-| `src/components/` | `Nav`, `Footer`, `ui` (Pill/Label/Container/Arrow), `SmoothScroll`, `ProjectGrid`, `Gallery`, `motion/*`, `home/*` |
-| `src/lib/projects.ts` | Reads project MDX + the image manifest |
-| `scripts/build-llms-txt.mjs` | Writes the agent-facing `public/llms.txt` and `public/llms-full.txt` on `prebuild` (gitignored; ADR 0014) |
-| `src/data/images.json` | **Generated** image manifest (committed) — do not hand-edit |
-| `gallery/`, `project_images/`, `me.jpg` | Image drop-zones — `scripts/build-images.mjs` publishes them |
-| `scripts/` | `build-images.mjs` (sharp, predev/prebuild), `render-brain-frames.py` (manual), `check-aidlc-sync.mjs` (CI gate) |
-| `public/` | `img/` is **generated** (gitignored); `brain/` frames and `resume.pdf` are committed |
+| `AGENTS.md` | Shared contract for every AI tool that touches this repo — setup commands, stack versions, architecture constraints, image pipeline rules, conventions, and the full change lifecycle (effort → registry → audit → ADR) |
+| `CLAUDE.md` | Claude-specific overrides: skill routing table, AI-DLC rule, named recipes pointer, rules of engagement |
+| `CONTEXT.md` | Durable project context — owner identity, affiliations, audience, design bias (cinematic, thine.com model), information architecture table mapping every route to its source and render state |
+| `AGENT_WORKFLOWS.md` | Named multi-skill recipes: "Add a project" (7-step chain from brainstorming through MDX, image pipeline, and verification), "Add a route" (effort + page + nav array) |
+
+### AI-DLC records
+
+| Path | Purpose |
+|------|---------|
+| `aidlc-docs/inception/` | The baseline — `requirements.md`, `architecture.md`, `components.md`, `stack.md` — the starting point every effort is measured against |
+| `aidlc-docs/efforts/` | 31 numbered effort folders (`001-onceui-template-adoption` → `031-improvement-ideation`), each with `effort-state.md` (status, depth, stages, verification) and optionally `requirements-delta.md` |
+| `aidlc-docs/registry.md` | **Generated** — derived table of all efforts rebuilt from per-folder state files; includes status summary and next effort number |
+| `aidlc-docs/audit.md` | Approval gate records — every effort's planning and completion gates with timestamps |
+| `docs/adr/` | 15 Architecture Decision Records (`0001-onceui-nextjs-portfolio-template` → `0015-ai-crawler-access-policy`) — the "why" log for every structural choice |
+
+### Documentation (Diátaxis)
+
+| Path | Purpose |
+|------|---------|
+| `docs/tutorials/` | Step-by-step walkthroughs: local setup, adding your first project |
+| `docs/how-to/` | Task recipes: add a gallery image, add a project, add a route, run an AI-DLC effort, update site content |
+| `docs/reference/` | Lookup tables: build scripts, commands, content schema |
+| `docs/explanation/` | Background reading: AI-DLC in this repo, content-as-code, why static export |
+| `docs/plans/` | Forward-looking ideas and improvement proposals |
+
+### Product — source code
+
+| Path | Purpose |
+|------|---------|
+| `src/app/` | Next.js App Router — 6 routes (`/`, `/story`, `/projects`, `/projects/[slug]`, `/gallery`, `/process`) + `not-found.tsx`, `robots.ts`, `sitemap.ts`; `globals.css` holds Tailwind v4 `@theme` design tokens (ink, paper, tangerine) |
+| `src/content/site.ts` | Single source of truth for all non-project copy — exports `person`, `nav`, `hero`, `sequence`, `passage`, `threads`, `experience`, `selectedProjects`, `closing`, `story`, `publication`, `process`, `footer`; the `nav` array drives Nav, Footer, and sitemap generation |
+| `src/components/` | 19 components across 5 groups: top-level (`Nav`, `Footer`, `Gallery`, `ProjectGrid`, `SmoothScroll`, `Morph`, `MatrixRibbon`, `Gutters`, `ui.tsx` primitives), `home/` (Hero, BrainSequence, CardStack, Experience, Closing), `motion/` (Reveal, ScrollWords, TextAnimate), `process/` (GatePipeline, SkillsBubbles), `story/` (ToolkitToy), `agent/` (WebMcpTools) |
+| `src/lib/` | `projects.ts` (MDX loader + image manifest reader), `agentProjects.ts` (agent-facing project data), `useReducedMotionSafe.ts` (reduced-motion hook shared by every animated component) |
+| `src/data/images.json` | **Generated** image manifest (committed so `tsc` works in a fresh clone) — do not hand-edit |
+
+### Product — content
+
+| Path | Purpose |
+|------|---------|
+| `content/projects/` | 20 MDX case studies (one per project, lowercased filename = URL slug) — each checked by the factuality eval gate against its source repo |
+| `content/writing/` | 3 old blog posts (LiveKit, Adobe hackathon, Sehat Sathee) — kept as content, not rendered on any route |
+
+### Build pipeline
+
+| Path | Purpose |
+|------|---------|
+| `scripts/build-images.mjs` | Sharp-based image pipeline (runs on `predev`/`prebuild`) — reads drop-zones (`gallery/`, `project_images/`, `me.jpg`), writes optimized WebP to `public/img/`, generates `src/data/images.json`; cached in `.cache/` |
+| `scripts/build-llms-txt.mjs` | Generates agent-facing `public/llms.txt` + `public/llms-full.txt` from `site.ts` and project MDX on every build (gitignored; ADR 0014) |
+| `scripts/lib/llms-txt.mjs` | Pure rendering function (`renderLlmsTxt(site, projects) → {index, full}`) following the llmstxt.org spec — unit-tested |
+| `scripts/check-aidlc-sync.mjs` | The record gate — fails when a diff touches substantive paths without a matching `aidlc-docs/` update; powers the `aidlc-check` CI workflow |
+| `scripts/postbuild-segments.mjs` | Static-export fix — flattens nested RSC segment prefetch paths to dot-separated filenames for GitHub Pages |
+| `scripts/render-brain-frames.py` | Manual-run Python script (nibabel, numpy, Pillow) — renders 160 axial slices from the ICBM 152 template into `public/brain/` for the homepage scroll-scrubbed brain animation |
+
+### Quality & evals
+
+| Path | Purpose |
+|------|---------|
+| `evals/factuality/` | 10-file factuality gate: `claims.mjs` (numeric claim extractor), `sources.mjs` (GitHub API fetcher with retry/backoff), `verdict.mjs` (grounded/baselined/ungrounded classifier), `judge.mjs` (optional LLM advisory tier), `run.mjs` (CLI entry), `baseline.json` (8 accepted exceptions with reasons), plus unit tests and fixtures |
+| `tests/smoke.spec.ts` | Playwright smoke suite — discovers every route in `out/`, asserts 200 + h1 + link home + full scroll + zero console errors; includes ToolkitToy click-reshuffle and reduced-motion tests |
+| `tests/skills-bubbles.spec.ts` | Playwright tests for SkillsBubbles — per-skill text presence, click transform, drag displacement, reduced-motion fallback |
+| `playwright.config.ts` | Desktop Chrome + Pixel 7 viewports, served from `out/` via `serve` on port 3100 |
+| `lighthouserc.desktop.json` | Lighthouse CI thresholds: a11y/BP/SEO 1.0, perf 0.9 — 6 routes × 3 runs, median |
+| `lighthouserc.mobile.json` | Same as desktop but perf floor 0.7 (mobile emulation) |
+
+### Static assets & drop-zones
+
+| Path | Purpose |
+|------|---------|
+| `gallery/` | 15 source JPEGs — `build-images.mjs` converts them to numbered WebP + thumbnails in `public/img/gallery/` |
+| `project_images/` | 21 source images (PNG/JPG/WebP) — one per project, mapped to `public/img/projects/<slug>.webp` via `PROJECT_MAP` |
+| `me.jpg` | Portrait drop-zone — published as `public/img/me.webp` + `public/img/og.jpg` |
+| `public/brain/` | **Committed** — 160 rendered brain frames in two size tiers (1080, 640) + manifest; output of `render-brain-frames.py` |
+| `public/resume.pdf` | Downloadable résumé (committed directly) |
+| `public/img/` | **Generated** (gitignored) — all optimized images, rebuilt every `predev`/`prebuild` |
+| `public/llms.txt`, `llms-full.txt` | **Generated** (gitignored) — agent-facing site summary and full case-study dump |
+
+### CI/CD
+
+| Path | Purpose |
+|------|---------|
+| `.github/workflows/deploy.yml` | On push to `main`: install → build → deploy `out/` to GitHub Pages |
+| `.github/workflows/aidlc-check.yml` | On PR: the record gate — rejects PRs that touch code without effort records |
+| `.github/workflows/quality-gates.yml` | On PR: Build (typecheck + export) → Smoke (Playwright, desktop + Pixel 7) + Lighthouse (desktop + mobile, parallel) |
+| `.github/workflows/evals.yml` | On PR (path-filtered to `content/projects/**` and `evals/**`): unit tests + factuality eval; JSON report uploaded as artifact |
 
 ## Contributing to this repo (or asking an agent to)
 

@@ -1,7 +1,7 @@
 ---
 title: Alien Invasion (Pygame)
 publishedAt: '2024-07-26'
-summary: Classic arcade game with Pygame.
+summary: Space-Invaders-style arcade shooter — first project with Pygame.
 images:
   - /img/projects/alien-invasion-pygame.webp
 link: 'https://github.com/HARSHDIPSAHA/alien_invasion_pygame'
@@ -9,6 +9,17 @@ link: 'https://github.com/HARSHDIPSAHA/alien_invasion_pygame'
 
 ## Overview
 
-A classic arcade shooter — my first program with Pygame, written while learning the library.
+A Space-Invaders-style shooter — my first program with Pygame, written while learning the library — plus a handful of smaller pygame experiments kept in the same repository.
+
+## What it does
+
+- `alien_invasion.py` — the main game: a ship at the bottom of a 1200x800 window moves left and right with the arrow keys, fires up to 3 bullets at once with space, and a fleet of aliens marches across the screen and drops down when it hits an edge. The player starts with 3 lives, tracked in `Gamestats`.
+- `settings.py` — screen size, ship and bullet speed, bullet size and colour, and how many bullets can be on screen at once.
+- `game_functions.py` — event handling, fleet creation, bullet and alien updates, and collision detection.
+- Side experiments in the same folder: a second shooter variant (`side_shooter.py`), a game where you catch falling balls (`catch_ball.py`), and a sprite-drawing script (`naruto.py`).
+
+## Status and limitations
+
+A learning project, per the README: no tests, no requirements file, and no scoring or levels. The sprite image paths referenced in the scripts do not match where the `.bmp` files actually sit in the repository, so running it needs either creating the expected folders or editing the paths.
 
 - [Demo video](https://github.com/user-attachments/assets/0ef73c7b-b76b-4c90-be9d-eaa8d7d248fe)

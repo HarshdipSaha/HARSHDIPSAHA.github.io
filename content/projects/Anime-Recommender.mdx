@@ -1,7 +1,7 @@
 ---
 title: Anime Recommender
 publishedAt: '2024-07-27'
-summary: Watch your next anime now — recommendation system.
+summary: Collaborative-filtering anime recommendations, ranked by cosine similarity over the MyAnimeList dataset.
 images:
   - /img/projects/anime-recommender.webp
 link: 'https://github.com/HARSHDIPSAHA/Anime_Recommender'
@@ -9,11 +9,21 @@ link: 'https://github.com/HARSHDIPSAHA/Anime_Recommender'
 
 ## Overview
 
-An anime recommendation system built on **collaborative filtering** — it recommends titles to a user based on the preferences of other users with similar taste.
+An anime recommendation system built on **collaborative filtering** — it recommends titles to a user based on the preferences of other users with similar taste, using the MyAnimeList dataset on Kaggle (24,325,191 ratings).
+
+## How it's built
+
+The training notebook filters the ratings down to users with more than 200 ratings and anime with at least 50 ratings from those users, builds an anime-by-user pivot table (5523 anime by 41,734 users), and computes item-item cosine similarity across it. The result is pickled into three files the Streamlit app loads at start-up.
+
+The app looks up the typed anime title in the pivot table's index, takes the 5 most similar titles, and renders a card for each with its name, Japanese name, synopsis, genres, and cover image.
 
 ## Using it
 
-- Type the anime's original English title exactly as released (matching spacing and case, as listed on sites such as hianime.to).
-- The trained models are too large for the repository and are hosted in a [Google Drive folder](https://drive.google.com/drive/folders/1D6PQBEFtlem0NQEFVDqN8c1R0jcUxMoj?usp=drive_link).
+- Type the anime's original English title exactly as released (matching spacing and case, as listed on sites such as hianime.to) — the lookup is an exact match on the title.
+- The trained model files are too large for the repository and are hosted in a [Google Drive folder](https://drive.google.com/drive/folders/1D6PQBEFtlem0NQEFVDqN8c1R0jcUxMoj?usp=drive_link).
+
+## Status and limitations
+
+Per the README: a misspelled or differently-cased title returns "not found" rather than a fuzzy match, and no evaluation metrics are recorded beyond a single sample recommendation shown in the notebook.
 
 - [Demo video](https://github.com/user-attachments/assets/02ae8fb3-aa17-4d26-b454-9d5cf35d23dd)

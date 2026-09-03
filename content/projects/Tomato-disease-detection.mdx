@@ -1,7 +1,7 @@
 ---
 title: Tomato Disease Detection
 publishedAt: '2025-04-01'
-summary: Upload tomato leaf images and get disease detection results.
+summary: CNN classifier for tomato leaf diseases, deployed as a Streamlit app.
 images:
   - /img/projects/tomato-disease.webp
 link: 'https://github.com/HARSHDIPSAHA/Tomato_disease_detection'
@@ -9,11 +9,23 @@ link: 'https://github.com/HARSHDIPSAHA/Tomato_disease_detection'
 
 ## Overview
 
-A web app: upload a photo of a tomato leaf and get a disease prediction back. It is deployed as a Streamlit app.
+Upload a photo of a tomato leaf and the app predicts one of five classes — bacterial spot, early blight, late blight, leaf mold, or healthy — with a confidence score. The model is a small Keras CNN trained on the PlantVillage dataset from Kaggle, deployed as a Streamlit app.
+
+## How it's built
+
+The training notebook builds a `tf.data` dataset at 256x256 from the PlantVillage tomato classes (7579 files across the 5 classes), splits it 80/10/10, and trains a Sequential CNN — resizing and rescaling layers, random-flip and random-rotation augmentation, six convolution/max-pooling blocks, a 64-unit dense layer, and a softmax head — for 69 epochs with 183,877 parameters total.
+
+The Streamlit app loads the saved model, runs the prediction on the uploaded image, and shows the top class and confidence score, with an optional bar chart of all five class probabilities.
+
+## Results
+
+From the training notebook's own recorded outputs: training accuracy reached 0.9859 and validation accuracy 0.9606 by the final epoch; evaluating the saved model against the held-out test split gives a loss of 0.0738 and an accuracy of 0.9723.
+
+## Status and limitations
+
+Per the README: only 5 of the 10 tomato classes in the PlantVillage dataset are covered, and the app expects three-channel images, so RGBA PNGs will fail. No tests.
 
 ## Links
 
 - [Live app](https://tomato-disease-prediction.streamlit.app/) (Streamlit)
 - [Demo video](https://github.com/user-attachments/assets/48a552ca-9b88-4b31-9959-08412058292f)
-
-The repository README is brief; it notes the author is open to suggestions on similar deep-learning projects. Details of the model and dataset are in the code rather than the README.
