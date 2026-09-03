@@ -10,6 +10,7 @@
         "http://localhost:3200/story",
         "http://localhost:3200/projects",
         "http://localhost:3200/projects/atomnet",
+        "http://localhost:3200/writing",
         "http://localhost:3200/process",
         "http://localhost:3200/gallery"
       ],

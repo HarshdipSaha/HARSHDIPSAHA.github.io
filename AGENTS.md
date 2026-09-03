@@ -67,11 +67,13 @@ CI (all Node 20):
 
 ## Conventions
 
-**Content is code.** Every word that is not a project case study lives in `src/content/site.ts`
-(exports: `person`, `nav`, `hero`, `sequence`, `passage`, `threads`, `experience`, `selectedProjects`,
-`closing`, `story`, `publication`, `footer`, `process`). Components render it; they do not invent copy.
-Project case studies are `content/projects/*.mdx`. `content/writing/*.mdx` holds three old blog posts
-that are **not rendered anywhere** — content only.
+**Content is code.** Every word that is not a project case study or writing post lives in
+`src/content/site.ts` (exports: `person`, `nav`, `hero`, `sequence`, `passage`, `threads`,
+`experience`, `selectedProjects`, `closing`, `story`, `publication`, `footer`, `process`, `writing`).
+Components render it; they do not invent copy. Project case studies are `content/projects/*.mdx`,
+rendered at `/projects` and `/projects/[slug]`. `content/writing/*.mdx` holds three first-person posts,
+rendered at `/writing` and `/writing/[slug]` (ADR 0016) — they sit outside the factuality gate below
+since they have no source repository to check them against.
 
 **Evidence rule — enforced, not advisory.** A case study may only state what its source can support.
 The owner's rule, in his words: *"tell me if u can actually fetch their details using github api if
@@ -111,12 +113,13 @@ files fall back to a kebab-case of the filename). `resume.pdf` at the root is co
 
 **The agent-facing files are built too.** `scripts/build-llms-txt.mjs` runs in the same
 `predev`/`prebuild` hook and writes `public/llms.txt` (a curated llmstxt.org index) and
-`public/llms-full.txt` (the same map with every case study inlined). Both are **gitignored** —
-absent from a fresh clone until the first build, exactly like `public/img/`. The rendering is a pure
-function in `scripts/lib/llms-txt.mjs` (`renderLlmsTxt(site, projects) -> {index, full}`), unit-tested
-by `npm run test:unit`; the script around it only does I/O. Content comes from `src/content/site.ts`
-and `content/projects/*.mdx`, so adding a project updates both files with no manual step. Absolute
-URLs come from `person.siteUrl` — never hardcode the host. ADR 0014.
+`public/llms-full.txt` (the same map with every case study and writing post inlined). Both are
+**gitignored** — absent from a fresh clone until the first build, exactly like `public/img/`. The
+rendering is a pure function in `scripts/lib/llms-txt.mjs` (`renderLlmsTxt(site, projects, posts) ->
+{index, full}`), unit-tested by `npm run test:unit`; the script around it only does I/O. Content comes
+from `src/content/site.ts`, `content/projects/*.mdx` and `content/writing/*.mdx`, so adding a project
+or a post updates both files with no manual step. Absolute URLs come from `person.siteUrl` — never
+hardcode the host. ADR 0014, ADR 0016.
 
 **The /process counts are built too.** `scripts/build-process-stats.mjs` runs in the same
 `predev`/`prebuild` hook and writes `src/data/process-stats.json` (committed, like `images.json`)
@@ -162,8 +165,9 @@ match a `PROJECT_MAP` value. They need not be the same string.
 
 **Routes need two edits.** Create `src/app/<route>/page.tsx` **and** add `{ label, href }` to the `nav`
 array in `src/content/site.ts`. `Nav.tsx`, `Footer.tsx` and `sitemap.ts` all read that one array; there is
-no route toggle. Current routes: `/`, `/story`, `/projects`, `/projects/[slug]`, `/gallery`, `/process`,
-404, `/sitemap.xml`, `/robots.txt`. `/llms.txt` and `/llms-full.txt` are generated files, not routes —
+no route toggle. Current routes: `/`, `/story`, `/projects`, `/projects/[slug]`, `/writing`,
+`/writing/[slug]`, `/gallery`, `/process`, 404, `/sitemap.xml`, `/robots.txt`. `/llms.txt` and
+`/llms-full.txt` are generated files, not routes —
 they are deliberately **not** in `nav` and **not** in the sitemap.
 
 **Design tokens** live in the `@theme` block of `src/app/globals.css`: `--color-ink` (#171519, page
