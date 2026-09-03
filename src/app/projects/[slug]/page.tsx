@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import { Reveal } from "@/components/motion/Reveal";
 import { MorphTarget } from "@/components/Morph";
 import { Arrow, Container, Label, Pill } from "@/components/ui";
+import { factualityBadge, factualityCountsFor } from "@/lib/factuality";
 import { getProject, getProjects } from "@/lib/projects";
 
 type Params = { slug: string };
@@ -34,6 +35,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
   const p = all[idx];
   const next = all[(idx + 1) % all.length];
   const date = new Date(p.date).toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  const badge = factualityBadge(Boolean(p.link), factualityCountsFor(p.slug));
 
   return (
     <article className="pb-24 pt-36 md:pt-40">
@@ -52,6 +54,16 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
             )}
             <span className="text-sm text-paper/55">{date}</span>
           </div>
+          {badge && (
+            <a
+              href={badge.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-block text-[0.8125rem] font-medium text-paper/55 hover:text-paper/80"
+            >
+              {badge.text}
+            </a>
+          )}
         </Reveal>
       </Container>
 

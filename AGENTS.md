@@ -8,12 +8,14 @@ Live: https://harshdipsaha.tech/ (`harshdipsaha.github.io` 301-redirects there; 
 ```bash
 npm install
 
-npm run dev            # predev runs the two generators, then next dev on :3000
-npm run build          # prebuild runs the two generators, then next build -> out/
+npm run dev            # predev runs the three generators, then next dev on :3000
+npm run build          # prebuild runs the three generators, then next build -> out/
 npm run typecheck      # tsc --noEmit -p tsconfig.json (run this before claiming done)
 npm run images         # rebuild public/img/ + src/data/images.json without starting dev
 npm run llms           # rebuild public/llms.txt + public/llms-full.txt without starting dev
+npm run stats          # rebuild src/data/process-stats.json (the counts /process shows) without starting dev
 npm run check:aidlc    # node scripts/check-aidlc-sync.mjs — the record gate, run locally
+npm run check:factuality-manifest  # src/data/factuality.json vs a fresh eval:factuality run
 
 npm run test:unit           # node --test evals scripts — every pure-function test: the factuality
                             # eval's core and the llms.txt renderer (no network, milliseconds)
@@ -55,9 +57,13 @@ CI (all Node 20):
   Lowering a Lighthouse threshold needs an effort record that says why.
 - `.github/workflows/evals.yml` — on PR to `main`, **only** when the diff touches `content/projects/**`,
   `evals/**`, the workflow itself or the manifests: **Evals / factuality** (`npm run test:unit`, then
-  `npm run eval:factuality`; JSON report uploaded as the `factuality-report` artifact). ADR 0013.
-  Exit 1 = a claim is not traceable to its source; exit 2 = GitHub was unreachable, which is *not* a
-  factuality failure.
+  `npm run eval:factuality`, then `npm run check:factuality-manifest`; JSON report uploaded as the
+  `factuality-report` artifact). ADR 0013. Exit 1 = a claim is not traceable to its source; exit 2 =
+  GitHub was unreachable, which is *not* a factuality failure. The manifest check (effort 036) fails
+  the PR if the committed `src/data/factuality.json` — the per-project counts
+  `src/app/projects/[slug]/page.tsx` renders its "verified" line from — disagrees with this run,
+  except for a project unverifiable on either side (the known `pySdf` local-vs-CI divergence
+  above; see `scripts/lib/factuality-manifest.mjs`).
 
 ## Conventions
 
@@ -82,6 +88,13 @@ Case studies whose source cannot be read are reported as `unverifiable` **by nam
 this repository. Expect that file's counts to differ between a local run (owner's `gh` token) and
 CI; both are correct and both exit 0.
 
+**The evidence rule is visible on the page it protects (effort 036).** Every case study renders one
+quiet line under its header — `src/lib/factuality.ts`'s `factualityBadge`, reading per-project counts
+from the generated `src/data/factuality.json` — stating how many claims were checked against the
+source repository, how many needed a baseline reason, or that the source is private/unreadable, with
+a link to `evals/factuality/`. The counts are computed, not authored, so this is a small typed helper
+rather than copy in `site.ts`; see effort 036's record for why that doesn't break "content is code".
+
 **Images are built, never hand-copied.** Drop files in the drop-zones; `scripts/build-images.mjs`
 (sharp, runs on `predev`/`prebuild`, cached in `.cache/`) publishes them:
 
@@ -104,6 +117,17 @@ function in `scripts/lib/llms-txt.mjs` (`renderLlmsTxt(site, projects) -> {index
 by `npm run test:unit`; the script around it only does I/O. Content comes from `src/content/site.ts`
 and `content/projects/*.mdx`, so adding a project updates both files with no manual step. Absolute
 URLs come from `person.siteUrl` — never hardcode the host. ADR 0014.
+
+**The /process counts are built too.** `scripts/build-process-stats.mjs` runs in the same
+`predev`/`prebuild` hook and writes `src/data/process-stats.json` (committed, like `images.json`)
+from the repo itself: `aidlc-docs/efforts/NNN-*/` directories, `docs/adr/NNNN-*.md` files, the
+`Superseded` rows of `docs/adr/README.md`, and the workflows with a `pull_request` trigger.
+`process.stats` and `process.links` in `site.ts` are **templates** — `"All {efforts} change records"` —
+filled by `src/lib/process-stats.ts`; an unknown placeholder fails the build. Never type a count
+into `site.ts`. The script exits 1 if any count went *down* against the committed JSON (the record
+is append-only, so a decrease means a deleted effort or ADR); a deliberate removal passes once with
+`ALLOW_STATS_DECREASE=1`. The gate count is `process.gates.length`, not the workflow count —
+`quality-gates.yml` carries two gates.
 
 **WebMCP is a capability-checked no-op.** `src/components/agent/WebMcpTools.tsx` registers one
 `searchProjects` tool on `/projects` via `navigator.modelContext`, which **no shipping browser
@@ -175,6 +199,8 @@ copyright notice, which the footer colophon (`footer.colophon` in `site.ts`) car
 | `public/llms.txt`, `public/llms-full.txt` | Generated by `scripts/build-llms-txt.mjs`; gitignored, regenerated every build |
 | `.cache/` | Image pipeline cache; gitignored |
 | `src/data/images.json` | Generated manifest (committed so `tsc` works in a fresh clone) |
+| `src/data/process-stats.json` | Generated by `scripts/build-process-stats.mjs` from the record itself; committed for the same reason. To change a number, change the record |
+| `src/data/factuality.json` | Generated by `evals/factuality/run.mjs --write-summary`; committed; CI's `scripts/check-factuality-manifest.mjs` fails a PR whose copy has drifted from a fresh run |
 | `out/` | Build output |
 | `.next/`, `node_modules/`, `tsconfig.tsbuildinfo` | Tooling artifacts |
 | `public/brain/**` | Committed render output of `scripts/render-brain-frames.py`; rerun the script, don't hand-edit |
@@ -216,7 +242,7 @@ Deleting a file, moving content between sections, or changing a link target is *
 4. New/changed copy lives in `src/content/site.ts` or a `content/projects/*.mdx` file, not hardcoded in a component.
 5. New route: `src/app/<route>/page.tsx` **and** a `nav` entry in `src/content/site.ts` both present.
 6. New project image: `PROJECT_MAP` entry present; `images[0]` basename matches it.
-7. No hand-edits under `public/img/`, `public/llms*.txt`, `.cache/`, `src/data/images.json`, or `out/`.
+7. No hand-edits under `public/img/`, `public/llms*.txt`, `.cache/`, `src/data/images.json`, `src/data/process-stats.json`, or `out/`.
 8. Animated components honour `useReducedMotion()`; `useScroll`-driven ranges stay within `[0, 1]`.
 9. **Change lifecycle complete** — effort record + registry + audit in the same PR; ADR and
    CONTEXT.md/docs sync done *iff* needed (see above). `npm run check:aidlc` passes locally.

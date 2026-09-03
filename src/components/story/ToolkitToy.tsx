@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { motion } from "motion/react";
 import clsx from "clsx";
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
+import { toolIconPath } from "@/lib/tool-icons";
 
 const ACCENTS = ["bg-sunny", "bg-seafoam", "bg-cerulean"] as const;
 
@@ -14,6 +15,23 @@ function shuffled<T>(arr: readonly T[]): T[] {
     [next[i], next[j]] = [next[j], next[i]];
   }
   return next;
+}
+
+/**
+ * The pill's leading mark: the tool's official brand glyph (simple-icons,
+ * monochrome via `fill-current`), or the coloured dot when no glyph exists.
+ * Decorative in both cases — the tool name is the only accessible content.
+ */
+function ToolMark({ name, index }: { name: string; index: number }) {
+  const path = toolIconPath(name);
+  if (path) {
+    return (
+      <svg viewBox="0 0 24 24" className="size-3.5 shrink-0 fill-current" aria-hidden="true">
+        <path d={path} />
+      </svg>
+    );
+  }
+  return <span aria-hidden="true" className={clsx("size-1.5 shrink-0 rounded-full", ACCENTS[index % ACCENTS.length])} />;
 }
 
 /**
@@ -35,8 +53,9 @@ export function ToolkitToy({ tools }: { tools: readonly string[] }) {
   if (reduced) {
     return (
       <ul className="mt-4 flex flex-wrap gap-2">
-        {tools.map((name) => (
-          <li key={name} className="glass rounded-full px-3.5 py-1.5 text-sm text-paper/85">
+        {tools.map((name, i) => (
+          <li key={name} className="glass flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm text-paper/85">
+            <ToolMark name={name} index={i} />
             {name}
           </li>
         ))}
@@ -61,11 +80,13 @@ export function ToolkitToy({ tools }: { tools: readonly string[] }) {
               )}
             >
               <motion.span
-                aria-hidden="true"
-                className={clsx("size-1.5 rounded-full", ACCENTS[i % ACCENTS.length])}
-                animate={active === name ? { scale: [1, 2, 1] } : { scale: 1 }}
+                className="flex items-center"
+                // A 14px glyph pulsing to 2× would bump the label; the 6px dot needs the bigger jump to read at all.
+                animate={active === name ? { scale: [1, toolIconPath(name) ? 1.4 : 2, 1] } : { scale: 1 }}
                 transition={{ duration: 0.45, ease: "easeOut" }}
-              />
+              >
+                <ToolMark name={name} index={i} />
+              </motion.span>
               {name}
             </button>
           </motion.li>
