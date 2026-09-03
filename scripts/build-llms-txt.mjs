@@ -2,8 +2,9 @@
 /**
  * Write the agent-facing documents into public/.
  *
- *   src/content/site.ts + content/projects/*.mdx  ->  public/llms.txt
- *                                                     public/llms-full.txt
+ *   src/content/site.ts + content/projects/*.mdx
+ *   + content/writing/*.mdx                        ->  public/llms.txt
+ *                                                       public/llms-full.txt
  *
  * Runs on predev/prebuild, next to scripts/build-images.mjs, and follows the
  * same rule: generated into public/, gitignored, never hand-edited. A fresh
@@ -61,11 +62,37 @@ async function loadProjects() {
   return projects.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
+/**
+ * The same read that src/lib/writing.ts performs for the rendered pages:
+ * slug = lowercased MDX filename, newest first.
+ */
+async function loadPosts() {
+  const dir = join(ROOT, "content/writing");
+  const files = (await readdir(dir)).filter((f) => f.endsWith(".mdx"));
+  const posts = [];
+  for (const f of files) {
+    const { data, content } = matter(await readFile(join(dir, f), "utf8"));
+    const date = data.publishedAt ?? "2024-01-01";
+    posts.push({
+      slug: basename(f, ".mdx").toLowerCase(),
+      title: data.title,
+      date,
+      year: String(date).slice(0, 4),
+      summary: data.summary ?? "",
+      tag: data.tag,
+      body: content,
+    });
+  }
+  return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
 const site = await loadSite();
 const projects = await loadProjects();
+const posts = await loadPosts();
 const { index, full } = renderLlmsTxt(
   { person: site.person, nav: site.nav, story: site.story, publication: site.publication },
   projects,
+  posts,
 );
 
 await mkdir(PUBLIC, { recursive: true });
@@ -73,5 +100,5 @@ await writeFile(join(PUBLIC, "llms.txt"), index, "utf8");
 await writeFile(join(PUBLIC, "llms-full.txt"), full, "utf8");
 
 console.log(
-  `llms.txt: ${projects.length} projects, llms.txt ${index.length} chars, llms-full.txt ${full.length} chars`,
+  `llms.txt: ${projects.length} projects, ${posts.length} writing posts, llms.txt ${index.length} chars, llms-full.txt ${full.length} chars`,
 );

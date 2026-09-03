@@ -40,17 +40,18 @@
 | 031 | 031-improvement-ideation | Site improvement ideation document | complete | 2026-09-01 | 2026-09-01 | none | branch `docs/improvement-ideas` |
 | 032 | 032-story-polish-wave-1 | Story polish wave 1: interests pills, timeline education, kill duplicate text, real sitemap lastmod, OG image verification | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/story-polish-wave-1` |
 | 033 | 033-project-readme-refresh | Project README refresh (6 case studies) + footer decluttering (issue #41) | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/project-readme-refresh` |
+| 038 | 038-writing-route | `/writing` route for the three orphaned posts (idea 5, effort 031) | complete | 2026-09-03 | 2026-09-03 | 0016 | branch `feat/writing-route` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 33 |
+| complete | 34 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **33** |
+| **Total** | **34** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
