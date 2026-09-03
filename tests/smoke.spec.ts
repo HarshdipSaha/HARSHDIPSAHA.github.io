@@ -2,6 +2,10 @@ import { expect, test, type Page } from "@playwright/test";
 import { readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { story } from "../src/content/site";
+import { toolIconPath } from "../src/lib/tool-icons";
+
+const TOOLS_WITH_ICON = story.skills.filter((t) => toolIconPath(t) !== undefined);
+const TOOLS_WITHOUT_ICON = story.skills.filter((t) => toolIconPath(t) === undefined);
 
 /**
  * "Nothing breaks" gate. Every prerendered route in `out/` must load with a
@@ -97,6 +101,23 @@ test.describe("story Tools toy", () => {
     }
   });
 
+  test("pills carry the official brand glyph where one exists, the coloured dot otherwise", async ({ page }) => {
+    await page.goto("/story", { waitUntil: "load" });
+    // 13 of the 17 tools have a simple-icons glyph; the map is the source of truth, not a magic number.
+    expect(TOOLS_WITH_ICON.length).toBeGreaterThanOrEqual(10);
+    await expect(page.locator("li button svg")).toHaveCount(TOOLS_WITH_ICON.length);
+    for (const tool of TOOLS_WITH_ICON) {
+      const pill = page.getByRole("button", { name: tool, exact: true });
+      await expect(pill.locator("svg[aria-hidden='true'] path")).toHaveCount(1);
+      await expect(pill.locator("svg")).toHaveClass(/fill-current/);
+    }
+    for (const tool of TOOLS_WITHOUT_ICON) {
+      const pill = page.getByRole("button", { name: tool, exact: true });
+      await expect(pill.locator("svg")).toHaveCount(0);
+      await expect(pill.locator("span.rounded-full[aria-hidden='true']")).toHaveCount(1);
+    }
+  });
+
   test("clicking a tool measurably reshuffles the order", async ({ page }) => {
     await page.goto("/story", { waitUntil: "load" });
     const orderBefore = await page.$$eval("li button", (els) => els.map((el) => el.textContent?.trim()));
@@ -118,6 +139,9 @@ test.describe("story Tools toy", () => {
         await expect(page.getByText(tool, { exact: true })).toBeVisible();
       }
       await expect(page.locator("li button")).toHaveCount(0);
+      // The static list carries the same glyphs as the interactive one.
+      const list = page.getByText(story.skills[0], { exact: true }).locator("xpath=ancestor::ul[1]");
+      await expect(list.locator("li svg")).toHaveCount(TOOLS_WITH_ICON.length);
       expect(problems).toEqual([]);
     });
   });
