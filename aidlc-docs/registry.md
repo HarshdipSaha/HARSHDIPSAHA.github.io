@@ -45,17 +45,18 @@
 | 036 | 036-factuality-badge | Factuality badge on every project page, fed by the eval manifest | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/factuality-badge` |
 | 037 | 037-mobile-perf | Mobile home performance: dynamic below-fold sections, lazy Lenis, faster subline LCP | complete | 2026-09-03 | 2026-09-03 | none | branch `perf/mobile-home` |
 | 038 | 038-writing-route | `/writing` route for the three orphaned posts (idea 5, effort 031) | complete | 2026-09-03 | 2026-09-03 | 0016 | branch `feat/writing-route` |
+| 039 | 039-og-images | Per-project Open Graph images generated at build | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/og-images` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 38 |
+| complete | 39 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **38** |
+| **Total** | **39** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -68,7 +69,7 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 039
+Next effort number: 040
 
-(Efforts 034-038 now recorded above; 039-040 were allocated to other concurrent
-sibling-worktree efforts — the integrator reconciles those as each one merges.)
+(Efforts 034-039 now recorded above; 040 was allocated to a concurrent
+sibling-worktree effort — the integrator reconciles it as it merges.)

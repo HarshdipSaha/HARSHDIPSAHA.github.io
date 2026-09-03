@@ -35,7 +35,7 @@ A route is reachable when `src/app/<route>/page.tsx` exists **and** it has an en
 drop-zone            build step                          generated                     consumed by
 ---------            ----------                          ---------                     -----------
 me.jpg           ->  scripts/build-images.mjs        ->  public/img/me.webp        ->  /story portrait (images.me)
-                                                          public/img/og.jpg             Open Graph card (layout.tsx)
+                                                          public/img/og.jpg             site-wide OG fallback (layout.tsx)
 gallery/*.jpeg   ->  scripts/build-images.mjs        ->  public/img/gallery/NN.webp ->  /gallery, card-stack photos
                                                           public/img/gallery/NN-s.webp   (images.gallery[])
 project_images/  ->  scripts/build-images.mjs        ->  public/img/projects/<slug>.webp -> project MDX `images[]`,
@@ -45,6 +45,10 @@ project_images/  ->  scripts/build-images.mjs        ->  public/img/projects/<sl
 
 ICBM 152 T1      ->  scripts/render-brain-frames.py  ->  public/brain/{1080,640}/NNN.webp  ->  home/BrainSequence.tsx
 (63 MB, manual)      (Python; run by hand)               public/brain/manifest.json          (frames are committed)
+
+content/projects/  ->  scripts/build-og-images.mjs    ->  public/img/og/<slug>.png     ->  /projects/[slug] og:image
+*.mdx frontmatter      (satori + sharp; fonts from         (.cache/og.json, gitignored)     + twitter:image
+                        @fontsource/* in node_modules)
 
 site.ts +        ->  scripts/build-llms-txt.mjs      ->  public/llms.txt           ->  visiting AI agents
 content/projects/    (pure renderer in                   public/llms-full.txt          (both gitignored)
