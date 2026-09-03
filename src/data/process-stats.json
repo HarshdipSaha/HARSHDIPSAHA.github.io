@@ -1,0 +1,14 @@
+{
+  "efforts": 32,
+  "firstEffort": "001",
+  "lastEffort": "033",
+  "adrs": 15,
+  "firstAdr": "0001",
+  "lastAdr": "0015",
+  "superseded": 2,
+  "supersededAdrs": [
+    "0001",
+    "0010"
+  ],
+  "prWorkflows": 3
+}
