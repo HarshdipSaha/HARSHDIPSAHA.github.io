@@ -42,17 +42,18 @@
 | 033 | 033-project-readme-refresh | Project README refresh (6 case studies) + footer decluttering (issue #41) | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/project-readme-refresh` |
 | 034 | 034-tool-icons | Official monochrome tech logos in the /story Tools pills (ideation doc effort 031 idea 1) | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/tool-icons` |
 | 035 | 035-process-stats | Compute the /process stats from the repo at build time | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/process-stats` |
+| 036 | 036-factuality-badge | Factuality badge on every project page, fed by the eval manifest | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/factuality-badge` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 35 |
+| complete | 36 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **35** |
+| **Total** | **36** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -65,7 +66,7 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 036
+Next effort number: 037
 
-(Efforts 034 and 035 now recorded above; 036-040 were allocated to other concurrent
+(Efforts 034, 035 and 036 now recorded above; 037-040 were allocated to other concurrent
 sibling-worktree efforts — the integrator reconciles those as each one merges.)

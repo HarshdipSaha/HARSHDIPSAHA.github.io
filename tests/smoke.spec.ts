@@ -2,6 +2,8 @@ import { expect, test, type Page } from "@playwright/test";
 import { readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { story } from "../src/content/site";
+import { factualityBadge, factualityCountsFor } from "../src/lib/factuality";
+import { getProjects } from "../src/lib/projects";
 import { toolIconPath } from "../src/lib/tool-icons";
 
 const TOOLS_WITH_ICON = story.skills.filter((t) => toolIconPath(t) !== undefined);
@@ -144,6 +146,31 @@ test.describe("story Tools toy", () => {
       await expect(list.locator("li svg")).toHaveCount(TOOLS_WITH_ICON.length);
       expect(problems).toEqual([]);
     });
+  });
+});
+
+test.describe("factuality badge", () => {
+  // Real per-project counts from the committed manifest, not invented expectations
+  // (effort 036) — a stale manifest would make this test as wrong as the page.
+  const projects = getProjects();
+
+  test("a grounded+baselined project states its real counts and links to the eval", async ({ page }) => {
+    const p = projects.find((proj) => proj.slug === "atomnet");
+    if (!p) test.skip(true, "atomnet case study not found");
+    const badge = factualityBadge(Boolean(p!.link), factualityCountsFor(p!.slug));
+    if (!badge) test.skip(true, "atomnet has no factuality badge to check");
+    await page.goto(`/projects/${p!.slug}`, { waitUntil: "load" });
+    const link = page.getByRole("link", { name: badge!.text, exact: true });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("href", badge!.href);
+  });
+
+  test("a private-source project states that plainly, with no invented count", async ({ page }) => {
+    const p = projects.find((proj) => proj.slug === "brainwavesfinland");
+    if (!p) test.skip(true, "brainwavesfinland case study not found");
+    expect(p!.link).toBeUndefined();
+    await page.goto(`/projects/${p!.slug}`, { waitUntil: "load" });
+    await expect(page.getByText("Source repository is private — claims stated as written")).toBeVisible();
   });
 });
 
