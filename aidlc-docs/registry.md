@@ -40,17 +40,18 @@
 | 031 | 031-improvement-ideation | Site improvement ideation document | complete | 2026-09-01 | 2026-09-01 | none | branch `docs/improvement-ideas` |
 | 032 | 032-story-polish-wave-1 | Story polish wave 1: interests pills, timeline education, kill duplicate text, real sitemap lastmod, OG image verification | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/story-polish-wave-1` |
 | 033 | 033-project-readme-refresh | Project README refresh (6 case studies) + footer decluttering (issue #41) | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/project-readme-refresh` |
+| 039 | 039-og-images | Per-project Open Graph images generated at build | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/og-images` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 33 |
+| complete | 34 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **33** |
+| **Total** | **34** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -63,4 +64,10 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 034
+Efforts 034-038 and 040 were assigned concurrently to parallel agent sessions, each in its own
+git worktree, and are not yet reflected in this copy of the registry — effort 039 (this one) was
+assigned and completed in that same batch, out of numeric sequence relative to which PR merges
+first. Reconcile all of 034-040 into a single ordered table the next time any of their branches
+merges into `main`.
+
+Next effort number: 040
