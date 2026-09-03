@@ -13,6 +13,8 @@ import {
   classifyCaseStudy,
   indexBaseline,
   redundantBaselineEntries,
+  siteSummary,
+  slugOf,
   staleBaselineEntries,
   summarise,
 } from "./verdict.mjs";
@@ -180,4 +182,31 @@ test("failures name the file, the claim and the source", () => {
   assert.equal(failures[0].value, "99.7 %");
   assert.match(failures[0].reason, /example\/fixture#README/);
   assert.ok(failures[0].phrase.includes("accuracy"));
+});
+
+test("slugOf derives the site's URL slug the way src/lib/projects.ts does", () => {
+  // Lowercased MDX basename — the two must agree or the page finds no row.
+  assert.equal(slugOf("content/projects/AtomNet.mdx"), "atomnet");
+  assert.equal(slugOf("content/projects/Missing-person-identification.mdx"), "missing-person-identification");
+  assert.equal(slugOf(String.raw`content\projects\APT.mdx`), "apt");
+});
+
+test("siteSummary emits one sorted row per case study with only the three passing counts", () => {
+  const { map } = indexBaseline({
+    entries: [{ file: FILE, claim: "99.7%", reason: "Table 3 of the published paper." }],
+  });
+  const linked = classifyCaseStudy({ file: FILE, body: BODY, source: SOURCE, baseline: map });
+  const priv = classifyCaseStudy({
+    file: "content/projects/Alpha-Private.mdx",
+    body: BODY,
+    source: null,
+    unverifiableReason: "no `link` in frontmatter — the source repository is private",
+    baseline: emptyBaseline(),
+  });
+  const summary = siteSummary([linked, priv]);
+  assert.deepEqual(Object.keys(summary), ["alpha-private", "fixture"]);
+  assert.deepEqual(summary.fixture, { grounded: 1, baselined: 1, unverifiable: 0 });
+  assert.deepEqual(summary["alpha-private"], { grounded: 0, baselined: 0, unverifiable: 2 });
+  // `ungrounded` is never part of the shape: a run that has any never writes the manifest.
+  assert.equal("ungrounded" in summary.fixture, false);
 });

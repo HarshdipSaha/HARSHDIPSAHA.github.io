@@ -12,6 +12,7 @@
     "images": "node scripts/build-images.mjs",
     "llms": "node scripts/build-llms-txt.mjs",
     "check:aidlc": "node scripts/check-aidlc-sync.mjs",
+    "check:factuality-manifest": "node scripts/check-factuality-manifest.mjs",
     "test:unit": "node --test evals scripts",
     "eval:factuality": "node evals/factuality/run.mjs",
     "postbuild": "node scripts/postbuild-segments.mjs",
