@@ -41,16 +41,18 @@
 | 032 | 032-story-polish-wave-1 | Story polish wave 1: interests pills, timeline education, kill duplicate text, real sitemap lastmod, OG image verification | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/story-polish-wave-1` |
 | 033 | 033-project-readme-refresh | Project README refresh (6 case studies) + footer decluttering (issue #41) | complete | 2026-09-02 | 2026-09-02 | none | branch `feat/project-readme-refresh` |
 
+| 037 | 037-mobile-perf | Mobile home performance: dynamic below-fold sections, lazy Lenis, faster subline LCP | complete | 2026-09-03 | 2026-09-03 | none | branch `perf/mobile-home` |
+
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 33 |
+| complete | 34 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
-| **Total** | **33** |
+| **Total** | **34** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -63,4 +65,6 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 034
+Next effort number: 038 (034–036 and 038–040 were allocated concurrently by sibling AI-DLC
+efforts in parallel worktrees; this row reflects only 037 landing here — integrator reconciles
+the full run when all branches merge.)
