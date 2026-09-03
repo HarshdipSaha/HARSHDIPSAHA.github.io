@@ -206,6 +206,37 @@ export function redundantBaselineEntries(baseline, groundedKeys) {
 }
 
 /**
+ * The site's URL slug for a case-study path: the lowercased MDX basename,
+ * exactly as `src/lib/projects.ts` derives it. Kept here, not imported, so
+ * this module still imports nothing.
+ *
+ * @param {string} file  Repo-relative path, e.g. "content/projects/AtomNet.mdx".
+ */
+export function slugOf(file) {
+  return file.split(/[\\/]/).pop().replace(/\.mdx$/i, "").toLowerCase();
+}
+
+/**
+ * The per-project summary the site renders (effort 036): one row per case
+ * study, keyed by slug, carrying only the three counts a passing run can
+ * contain. `ungrounded` is deliberately absent — a run with an ungrounded
+ * claim fails, and a failing run never writes the manifest.
+ *
+ * Keys are sorted so the committed file diffs cleanly.
+ *
+ * @param {ReturnType<typeof classifyCaseStudy>[]} files
+ * @returns {Record<string, {grounded: number, baselined: number, unverifiable: number}>}
+ */
+export function siteSummary(files) {
+  const rows = files.map((f) => [
+    slugOf(f.file),
+    { grounded: f.counts.grounded, baselined: f.counts.baselined, unverifiable: f.counts.unverifiable },
+  ]);
+  rows.sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+  return Object.fromEntries(rows);
+}
+
+/**
  * Roll per-file results into the suite verdict.
  *
  * @param {ReturnType<typeof classifyCaseStudy>[]} files

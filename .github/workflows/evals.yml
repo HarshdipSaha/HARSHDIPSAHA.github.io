@@ -69,6 +69,19 @@ jobs:
           esac
           exit $code
 
+      - name: Factuality site manifest in sync (effort 036)
+        run: |
+          set +e
+          npm run check:factuality-manifest
+          code=$?
+          set -e
+          case "$code" in
+            0) echo "::notice title=Evals::src/data/factuality.json agrees with this run" ;;
+            1) echo "::error title=Factuality manifest drift::src/data/factuality.json disagrees with a fresh run — regenerate with 'node evals/factuality/run.mjs --write-summary src/data/factuality.json' and commit it" ;;
+            *) echo "::error title=Eval harness error::the manifest check itself failed to run (exit $code)" ;;
+          esac
+          exit $code
+
       - name: Upload factuality report
         if: always()
         uses: actions/upload-artifact@v4
