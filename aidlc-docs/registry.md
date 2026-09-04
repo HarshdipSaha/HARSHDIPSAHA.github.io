@@ -48,18 +48,19 @@
 | 039 | 039-og-images | Per-project Open Graph images generated at build | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/og-images` |
 | 040 | 040-publication-image | Restore the MICCAI publication photo on /story from git history (ideation effort 031, idea 14) | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/publication-image` |
 | 041 | 041-revert-writing-route | Revert effort 038 — the three posts were not the owner's own writing | complete | 2026-09-03 | 2026-09-03 | 0017 | branch `revert/writing-route` |
+| 043 | 043-skills-bubble-matt-pocock-pack | Add ask-matt/to-tickets/llm-council/writing-plans to CLAUDE.md and the /process skills bubble | complete | 2026-09-05 | 2026-09-05 | none | branch `docs/engineering-skills-table` (PR #58) |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 40 |
+| complete | 41 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
 | reverted | 1 |
-| **Total** | **41** |
+| **Total** | **42** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -72,7 +73,10 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 042
+Next effort number: 044
 
 (Effort 040 was allocated to a concurrent sibling-worktree effort not yet merged at the time
-this row was written; effort 041 is this reversion. The integrator reconciles 040 as it merges.)
+this row was written; effort 041 is this reversion. The integrator reconciles 040 as it merges.
+Effort 042 was likewise claimed by a concurrent sibling-worktree effort (`feedback/issue-55-footer-hero`,
+PR #57, open at the time this row was written) before this effort started, so 043 was taken instead —
+042's row will appear here once that PR merges and its record is reconciled.)

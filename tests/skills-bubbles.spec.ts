@@ -23,6 +23,10 @@ const EXPECTED_SKILLS = [
   "impeccable",
   "ui-ux-pro-max",
   "to-spec",
+  "to-tickets",
+  "ask-matt",
+  "llm-council",
+  "writing-plans",
 ];
 
 function watch(page: Page): string[] {

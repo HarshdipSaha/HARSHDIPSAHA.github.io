@@ -297,5 +297,9 @@ export const process = {
     "impeccable",
     "ui-ux-pro-max",
     "to-spec",
+    "to-tickets",
+    "ask-matt",
+    "llm-council",
+    "writing-plans",
   ] as string[],
 };
