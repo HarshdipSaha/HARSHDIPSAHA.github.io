@@ -16,6 +16,11 @@ Everything above is the shared contract. Below is Claude-specific only.
 | Before shipping | `code-review`, then `verification-before-completion` |
 | Stress-testing a decision | `grilling`, then `oracle` |
 | Unused/oversized assets in drop-zones | `asset-reviewer` |
+| Not sure which skill or flow fits | `ask-matt` |
+| Multi-session build: a thread of ideas that needs to become buildable work | `to-spec`, then `to-tickets` |
+| High-stakes decision, want independent perspectives before committing | `llm-council` |
+| Have a spec or requirements for a multi-step task, before touching code | `writing-plans` |
+| Auditing or polishing an existing UI's hierarchy, a11y, motion, tokens | `impeccable` |
 
 ## AI-DLC rule
 
