@@ -56,10 +56,11 @@ new additions, same override rationale.
 
 | Check | Result |
 |---|---|
-| `npm run typecheck` | pending |
-| `npm run build` | pending |
-| `npm run check:aidlc` | pending |
-| `npx playwright test tests/skills-bubbles.spec.ts` | pending — 15-bubble density re-verified against the target-size a11y issue effort 030 fixed at 11 bubbles |
+| `npm run typecheck` | clean |
+| `npm run build` | succeeds — 30 static pages; `process-stats` regenerated to 42 efforts (001–043), 17 ADRs |
+| `npm run check:aidlc` | `aidlc-check: OK — substantive changes are accompanied by an aidlc-docs update.` |
+| `npx playwright test tests/skills-bubbles.spec.ts` | 8/8 passed (desktop + mobile): all 15 names present as DOM text, click nudge, drag displacement, reduced-motion static fallback with zero console errors |
+| `npm run lighthouse:desktop` | 18/18 runs (6 routes × 3) passed every assertion; `/process` scored accessibility **1.0** and performance **1.0** on all 3 runs — the target-size fix effort 030 made at 11 bubbles holds at the new 15-bubble density, no regression |
 
 ## Notes
 
