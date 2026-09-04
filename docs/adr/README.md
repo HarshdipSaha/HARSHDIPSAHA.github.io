@@ -19,6 +19,7 @@
 | [0015](0015-ai-crawler-access-policy.md) | AI crawler access policy at the edge: allow retrieval, deny training | Accepted | 2026-08-31 |
 | [0016](0016-writing-route.md) | Publish `content/writing/*.mdx` at `/writing`, outside the factuality gate | Superseded by 0017 | 2026-09-03 |
 | [0017](0017-remove-writing-route.md) | Remove the `/writing` route; the three posts are not the owner's own writing | Accepted | 2026-09-03 |
+| [0019](0019-keep-aidlc-over-github-spec-kit.md) | Keep AI-DLC; do not adopt GitHub Spec Kit | Accepted | 2026-09-05 |
 
 Every record uses the same four-part shape — a `Status / Date / Supersedes` line, then
 `Context`, `Decision`, `Consequences`, and an optional `Evidence` section citing the commits
