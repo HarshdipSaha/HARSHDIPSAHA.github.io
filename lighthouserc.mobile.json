@@ -11,7 +11,8 @@
         "http://localhost:3201/projects",
         "http://localhost:3201/projects/atomnet",
         "http://localhost:3201/process",
-        "http://localhost:3201/gallery"
+        "http://localhost:3201/gallery",
+        "http://localhost:3201/ask-ai"
       ],
       "numberOfRuns": 3,
       "settings": {
