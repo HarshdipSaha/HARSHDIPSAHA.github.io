@@ -129,10 +129,14 @@ is append-only, so a decrease means a deleted effort or ADR); a deliberate remov
 `quality-gates.yml` carries two gates.
 
 **WebMCP is a capability-checked no-op.** `src/components/agent/WebMcpTools.tsx` registers one
-`searchProjects` tool on `/projects` via `navigator.modelContext`, which **no shipping browser
-implements**. It renders `null`, returns immediately when the API is absent, never logs, and
-unregisters on unmount. Its data is the list `/projects` renders, passed from the server component.
-Do not add tools speculatively and do not remove the feature check. ADR 0014.
+`searchProjects` tool on `/projects` via `document.modelContext`, which Chrome ships behind an
+origin trial from Chrome 149 (`navigator.modelContext`, the earlier community-explainer name, is
+deprecated and kept only as a fallback). **Without this origin's own trial token it is undefined in
+every real visitor's browser today.** It renders `null`, returns immediately when neither API is
+present, never logs, and unregisters on unmount. Its data is the list `/projects` renders, passed
+from the server component. `execute` returns a plain string — Chrome's shipped contract has no
+`outputSchema` or structured-content return. Do not add tools speculatively and do not remove the
+feature check. ADR 0014, ADR 0020.
 
 **Adding a project** = one MDX file in `content/projects/` + one image in `project_images/` + one `PROJECT_MAP` entry.
 

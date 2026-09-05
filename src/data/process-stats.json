@@ -2,9 +2,9 @@
   "efforts": 42,
   "firstEffort": "001",
   "lastEffort": "043",
-  "adrs": 17,
+  "adrs": 19,
   "firstAdr": "0001",
-  "lastAdr": "0017",
+  "lastAdr": "0020",
   "superseded": 3,
   "supersededAdrs": [
     "0001",

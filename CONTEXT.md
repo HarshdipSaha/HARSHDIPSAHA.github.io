@@ -68,7 +68,7 @@ Text follows a parallel path: `src/content/site.ts` (plain TypeScript objects, o
 | Drop-zone | A source-of-truth folder a human drops raw assets into — `gallery/`, `project_images/`, root `me.jpg`. |
 | `llms.txt` | An llmstxt.org-format Markdown index of the site, written for machines: an H1, a `>` summary, then `##` sections of `- [Title](absolute-url): description` bullets. Generated at build time; served at the site root. |
 | `llms-full.txt` | The same index with the full text of every project case study inlined, so a large-context agent can take the whole site in one request. |
-| WebMCP | Web Model Context Protocol — an unratified W3C-track proposal (`navigator.modelContext`) letting a page register callable tools for a visiting agent. No shipping browser implements it; this site registers one tool behind a capability check (ADR 0014). |
+| WebMCP | A W3C-track proposal letting a page register callable tools for a visiting agent. Chrome ships it behind an origin trial as `document.modelContext` from Chrome 149; without this site's own trial token it is undefined in every real visitor's browser today. This site registers one tool behind a capability check (ADR 0014, ADR 0020). |
 | Agentic browsing | The Lighthouse 13 category scoring how legible and callable a site is to AI agents: the `llms-txt` audit, three `webmcp-*` audits, an agent-accessibility-tree audit and CLS. |
 | `site.ts` | `src/content/site.ts` — every word on the site that is not a project case study, as typed TypeScript exports (`person`, `nav`, `hero`, `sequence`, `passage`, `threads`, `experience`, `selectedProjects`, `closing`, `story`, `publication`, `footer`, `process`). |
 | Content-as-code | The rule that site copy lives in `site.ts` / MDX, never inline in components. |
