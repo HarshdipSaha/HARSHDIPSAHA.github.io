@@ -8,7 +8,7 @@ Live: https://harshdipsaha.tech/ (`harshdipsaha.github.io` 301-redirects there; 
 ```bash
 npm install
 
-npm run dev            # predev runs the three generators, then next dev on :3000
+npm run dev            # predev runs the five generators, then next dev on :3000
 npm run build          # prebuild runs the five generators, then next build -> out/
 npm run typecheck      # tsc --noEmit -p tsconfig.json (run this before claiming done)
 npm run images         # rebuild public/img/ + src/data/images.json without starting dev
