@@ -51,19 +51,20 @@
 | 043 | 043-skills-bubble-matt-pocock-pack | Add ask-matt/to-tickets/llm-council/writing-plans to CLAUDE.md and the /process skills bubble | complete | 2026-09-05 | 2026-09-05 | none | branch `docs/engineering-skills-table` (PR #58) |
 | 044 | 044-webmcp-document-modelcontext | WebMCP: track `document.modelContext`, the real Chrome surface, not the explainer's `navigator.modelContext` | complete | 2026-09-05 | 2026-09-05 | 0020 | branch `fix/webmcp-document-modelcontext` (PR #61) |
 | 045 | 045-mcp-server-spec | MCP server ideation: a public, read-only Model Context Protocol server for portfolio context | complete | 2026-09-05 | 2026-09-05 | none | branch `docs/mcp-server-spec` (PR #63) |
-| 046 | 046-whats-different-webmcp-swap | "What's different here": swap the factuality-gate fact for a WebMCP one | complete | 2026-09-05 | 2026-09-05 | none | branch `content/whats-different-webmcp` |
+| 046 | 046-whats-different-webmcp-swap | "What's different here": swap the factuality-gate fact for a WebMCP one | complete | 2026-09-05 | 2026-09-05 | none | branch `content/whats-different-webmcp` (PR #64) |
+| 047 | 047-agent-data-export | `agent-data.json`: a structured export for the future MCP server | complete | 2026-09-05 | 2026-09-05 | none | branch `feat/agent-data-export` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 44 |
+| complete | 45 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
 | reverted | 1 |
-| **Total** | **45** |
+| **Total** | **46** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -76,7 +77,7 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 047
+Next effort number: 048
 
 (Effort 040 was allocated to a concurrent sibling-worktree effort not yet merged at the time
 this row was written; effort 041 is this reversion. The integrator reconciles 040 as it merges.
