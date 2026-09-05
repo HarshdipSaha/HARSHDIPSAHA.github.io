@@ -3,15 +3,18 @@ import { expect, test, type Page } from "@playwright/test";
 /**
  * WebMCP registration gate.
  *
- * No shipping browser implements `navigator.modelContext`, so there is nothing
+ * Chrome ships `document.modelContext` behind an origin trial (Chrome 149+);
+ * without this site's own trial token it is undefined in every real visitor's
+ * browser today, including the one running this suite, so there is nothing
  * real to drive. Two claims are testable and both are checked here:
  *
  *  1. With the API absent — every browser today, including the one running the
  *     smoke suite — /projects behaves exactly as before: no console error, no
  *     page error, no failed request, no extra DOM.
- *  2. With a stub of the API injected, the page registers exactly one tool with
- *     a valid schema, its handler returns results in the declared shape, and
- *     the registration is cleaned up on client-side navigation away.
+ *  2. With a stub of the API injected on `document`, the page registers exactly
+ *     one tool with a valid input schema, its handler returns a string in the
+ *     declared shape, and the registration is cleaned up on client-side
+ *     navigation away.
  *
  * Testing the browser's own dispatch is not possible and is not attempted.
  */
@@ -20,8 +23,8 @@ type StubTool = {
   name: string;
   description: string;
   inputSchema: Record<string, unknown>;
-  outputSchema?: Record<string, unknown>;
-  execute: (input: unknown) => Promise<unknown>;
+  annotations?: Record<string, unknown>;
+  execute: (input: unknown) => Promise<string>;
 };
 
 type StubState = {
@@ -36,12 +39,12 @@ declare global {
   }
 }
 
-/** Install a capture-only `navigator.modelContext` before any page script runs. */
+/** Install a capture-only `document.modelContext` before any page script runs. */
 async function stubModelContext(page: Page) {
   await page.addInitScript(() => {
     const state = { active: new Map(), registrations: [], unregistrations: [] } as StubState;
     window.__webmcp = state;
-    Object.defineProperty(navigator, "modelContext", {
+    Object.defineProperty(document, "modelContext", {
       configurable: true,
       value: {
         registerTool(tool: StubTool) {
@@ -74,7 +77,7 @@ test("with no WebMCP support the projects page is inert", async ({ page }) => {
   await page.goto("/projects", { waitUntil: "load" });
   await expect(page.locator("h1").first()).toBeVisible();
 
-  expect(await page.evaluate(() => "modelContext" in navigator)).toBe(false);
+  expect(await page.evaluate(() => "modelContext" in document || "modelContext" in navigator)).toBe(false);
   // The component renders null: the grid is the whole page, as before.
   expect(await page.locator('a[href^="/projects/"]').count()).toBeGreaterThan(0);
   expect(problems).toEqual([]);
@@ -88,65 +91,60 @@ test("registers exactly one tool with a valid schema", async ({ page }) => {
 
   const tool = await page.evaluate(() => {
     const t = window.__webmcp.active.get("searchProjects")!;
-    return { name: t.name, description: t.description, inputSchema: t.inputSchema, outputSchema: t.outputSchema };
+    return { name: t.name, description: t.description, inputSchema: t.inputSchema, annotations: t.annotations };
   });
 
   expect(tool.name).toBe("searchProjects");
   expect(tool.description.length).toBeGreaterThan(20);
+  expect(tool.annotations).toEqual({ readOnlyHint: true, consequentialHint: false });
 
-  for (const schema of [tool.inputSchema, tool.outputSchema]) {
-    expect(schema, "both schemas are declared").toBeTruthy();
-    expect(schema!.type).toBe("object");
-    expect(typeof schema!.properties).toBe("object");
-    expect(Array.isArray(schema!.required)).toBe(true);
-    // Every declared required key must exist in properties, or an agent cannot satisfy it.
-    for (const key of schema!.required as string[]) {
-      expect(Object.keys(schema!.properties as object)).toContain(key);
-    }
+  const schema = tool.inputSchema;
+  expect(schema.type).toBe("object");
+  expect(typeof schema.properties).toBe("object");
+  expect(Array.isArray(schema.required)).toBe(true);
+  // Every declared required key must exist in properties, or an agent cannot satisfy it.
+  for (const key of schema.required as string[]) {
+    expect(Object.keys(schema.properties as object)).toContain(key);
   }
-  expect(Object.keys(tool.inputSchema.properties as object).sort()).toEqual(["limit", "query"]);
+  expect(Object.keys(schema.properties as object).sort()).toEqual(["limit", "query"]);
 });
 
-test("the handler answers a query in the declared output shape", async ({ page }) => {
+test("the handler answers a query with a plain string, per Chrome's shipped execute contract", async ({ page }) => {
   await stubModelContext(page);
   await page.goto("/projects", { waitUntil: "load" });
   await expect.poll(async () => (await readState(page)).active).toEqual(["searchProjects"]);
 
-  const result = (await page.evaluate(async () => {
-    const t = window.__webmcp.active.get("searchProjects")!;
-    return (await t.execute({ query: "brain", limit: 3 })) as {
-      content: { type: string; text: string }[];
-      structuredContent: { query: string; count: number; results: Record<string, string>[] };
-    };
-  }))!;
-
-  expect(Array.isArray(result.content)).toBe(true);
-  expect(result.content[0].type).toBe("text");
-  expect(result.structuredContent.query).toBe("brain");
-  expect(result.structuredContent.count).toBe(result.structuredContent.results.length);
-  expect(result.structuredContent.count).toBeGreaterThan(0);
-  expect(result.structuredContent.count).toBeLessThanOrEqual(3);
-
-  for (const p of result.structuredContent.results) {
-    for (const key of ["slug", "title", "summary", "year", "url"]) expect(p).toHaveProperty(key);
-    expect(p.url).toMatch(/^https:\/\/[^/]+\/projects\/[a-z0-9-]+$/);
-    expect(`${p.title} ${p.summary} ${p.slug} ${p.year}`.toLowerCase()).toContain("brain");
-  }
-
-  // The tool answers over the same list the page renders, not a different one.
   const onPage = await page.evaluate(() =>
     [...document.querySelectorAll('a[href^="/projects/"]')].map((a) => (a as HTMLAnchorElement).getAttribute("href")),
   );
-  for (const p of result.structuredContent.results) {
-    expect(onPage).toContain(`/projects/${p.slug}`);
+
+  const text = await page.evaluate(async () => {
+    const t = window.__webmcp.active.get("searchProjects")!;
+    return t.execute({ query: "brain", limit: 3 });
+  });
+
+  expect(typeof text).toBe("string");
+  const lines = text.split("\n");
+  expect(lines.length).toBeGreaterThan(0);
+  expect(lines.length).toBeLessThanOrEqual(3);
+  for (const line of lines) {
+    expect(line.toLowerCase()).toContain("brain");
+    // Every matched project's case-study URL is one the page actually renders.
+    const url = new URL(line.match(/https?:\/\/\S+$/)![0]);
+    expect(onPage).toContain(url.pathname);
   }
 
-  const all = (await page.evaluate(async () => {
+  const noMatch = await page.evaluate(async () => {
     const t = window.__webmcp.active.get("searchProjects")!;
-    const r = (await t.execute({ query: "", limit: 50 })) as { structuredContent: { count: number } };
-    return r.structuredContent.count;
-  }))!;
-  expect(all).toBe(new Set(onPage).size);
+    return t.execute({ query: "zzz-no-such-project-zzz", limit: 5 });
+  });
+  expect(noMatch).toBe('No projects match "zzz-no-such-project-zzz".');
+
+  const allText = await page.evaluate(async () => {
+    const t = window.__webmcp.active.get("searchProjects")!;
+    return t.execute({ query: "", limit: 50 });
+  });
+  expect(allText.split("\n").length).toBe(new Set(onPage).size);
 });
 
 test("navigating away and back leaves exactly one registration", async ({ page }) => {
