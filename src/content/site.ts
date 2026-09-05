@@ -231,7 +231,7 @@ export const process = {
   ] as { label: string; detail: string; href: string }[],
   factsLabel: "What's different here",
   facts: [
-    { claim: "Every number on this site is checked against its source.", evidence: "A factuality gate fetches each project's real README and fails if a case study states a number that repository doesn't support.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/blob/main/evals/factuality/run.mjs" },
+    { claim: "The /projects page is callable, not just readable.", evidence: "It registers a WebMCP tool (searchProjects) via document.modelContext — inert until a browser ships it, but wired, schema-declared and tested today.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/blob/main/docs/adr/0020-webmcp-document-modelcontext.md" },
     { claim: "AI agents get their own edition.", evidence: "llms.txt and llms-full.txt are generated at build time from the same content the site renders, so they can't drift.", href: "https://harshdipsaha.tech/llms.txt" },
     { claim: "Accessibility is 100 on every route, gated.", evidence: "Lighthouse CI runs on every PR. A contrast regression or a missing label fails the build before it ships.", href: "https://github.com/HARSHDIPSAHA/HARSHDIPSAHA.github.io/blob/main/lighthouserc.desktop.json" },
     { claim: "The brain you scrolled through is 160 real MRI slices.", evidence: "Axial slices of the ICBM 152 Nonlinear Symmetric 2009a T1 template, rendered from the original NIfTI file.", href: "https://harshdipsaha.tech/" },
