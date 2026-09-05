@@ -49,19 +49,20 @@
 | 040 | 040-publication-image | Restore the MICCAI publication photo on /story from git history (ideation effort 031, idea 14) | complete | 2026-09-03 | 2026-09-03 | none | branch `feat/publication-image` |
 | 041 | 041-revert-writing-route | Revert effort 038 — the three posts were not the owner's own writing | complete | 2026-09-03 | 2026-09-03 | 0017 | branch `revert/writing-route` |
 | 043 | 043-skills-bubble-matt-pocock-pack | Add ask-matt/to-tickets/llm-council/writing-plans to CLAUDE.md and the /process skills bubble | complete | 2026-09-05 | 2026-09-05 | none | branch `docs/engineering-skills-table` (PR #58) |
-| 044 | 044-webmcp-document-modelcontext | WebMCP: track `document.modelContext`, the real Chrome surface, not the explainer's `navigator.modelContext` | complete | 2026-09-05 | 2026-09-05 | 0020 | branch `fix/webmcp-document-modelcontext` |
+| 044 | 044-webmcp-document-modelcontext | WebMCP: track `document.modelContext`, the real Chrome surface, not the explainer's `navigator.modelContext` | complete | 2026-09-05 | 2026-09-05 | 0020 | branch `fix/webmcp-document-modelcontext` (PR #61) |
+| 045 | 045-mcp-server-spec | MCP server ideation: a public, read-only Model Context Protocol server for portfolio context | complete | 2026-09-05 | 2026-09-05 | none | branch `docs/mcp-server-spec` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 42 |
+| complete | 43 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
 | reverted | 1 |
-| **Total** | **43** |
+| **Total** | **44** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -74,7 +75,7 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 045
+Next effort number: 046
 
 (Effort 040 was allocated to a concurrent sibling-worktree effort not yet merged at the time
 this row was written; effort 041 is this reversion. The integrator reconciles 040 as it merges.
