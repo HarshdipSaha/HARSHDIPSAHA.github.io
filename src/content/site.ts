@@ -22,6 +22,7 @@ export const nav = [
   { label: "Projects", href: "/projects" },
   { label: "Gallery", href: "/gallery" },
   { label: "Process", href: "/process" },
+  { label: "Ask AI", href: "/ask-ai" },
 ];
 
 export const hero = {
@@ -302,4 +303,35 @@ export const process = {
     "llm-council",
     "writing-plans",
   ] as string[],
+};
+
+export const askAi = {
+  label: "Ask AI",
+  headline: "Ask an AI about me.",
+  subline:
+    "I've set it up so an AI assistant like Claude can look up my work directly. No digging required.",
+  demoLabel: "For example",
+  demo: {
+    question: "brain",
+    answer: [
+      "BrainwavesFinland — finding a tumour with microwaves (2026) — Microwave tomography: locating a 30 mm tumour inside a brain phantom from antenna measurements alone.",
+      "Zombies-learning-progression-PGGAN (2026) — Creating zombies similar to humans — PGGAN for temporal brain MRI imaging.",
+    ],
+  },
+  capabilities: [
+    {
+      label: "Find a project.",
+      body: "Ask about medical imaging, hackathons, anything. Every project, one search away.",
+    },
+    {
+      label: "Get to know me.",
+      body: "Bio, skills, links, résumé. All in one answer.",
+    },
+  ],
+  setupLabel: "Setup",
+  setupIntro: "Takes 30 seconds.",
+  setupNote: "Paste this into your AI tool's settings, save, and it's connected.",
+  mcpUrl: "https://harshdipsaha-mcp.harshdipsaha-mcp.workers.dev/mcp",
+  repoUrl: "https://github.com/HarshdipSaha/harshdipsaha-mcp",
+  footnote: "Curious how it works? The code's public.",
 };

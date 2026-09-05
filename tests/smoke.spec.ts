@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import { readdirSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { story } from "../src/content/site";
+import { askAi, story } from "../src/content/site";
 import { factualityBadge, factualityCountsFor } from "../src/lib/factuality";
 import { getProjects } from "../src/lib/projects";
 import { toolIconPath } from "../src/lib/tool-icons";
@@ -171,6 +171,27 @@ test.describe("factuality badge", () => {
     expect(p!.link).toBeUndefined();
     await page.goto(`/projects/${p!.slug}`, { waitUntil: "load" });
     await expect(page.getByText("Source repository is private — claims stated as written")).toBeVisible();
+  });
+});
+
+test.describe("ask AI page", () => {
+  test("the example Q&A renders with real project data", async ({ page }) => {
+    await page.goto("/ask-ai", { waitUntil: "load" });
+    const text = (await page.locator("main").textContent())!.replace(/\s+/g, " ");
+    expect(text).toContain(askAi.demo.question);
+    for (const line of askAi.demo.answer) {
+      expect(text).toContain(line.replace(/\s+/g, " "));
+    }
+  });
+
+  test("the copy button copies the exact MCP config to the clipboard", async ({ page, context }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto("/ask-ai", { waitUntil: "load" });
+    await page.getByRole("button", { name: "Copy" }).click();
+    await expect(page.getByRole("button", { name: "Copied" })).toBeVisible();
+    const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
+    expect(clipboardText).toContain(askAi.mcpUrl);
+    expect(() => JSON.parse(clipboardText)).not.toThrow();
   });
 });
 
