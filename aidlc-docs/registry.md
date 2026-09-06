@@ -55,18 +55,19 @@
 | 047 | 047-agent-data-export | `agent-data.json`: a structured export for the future MCP server | complete | 2026-09-05 | 2026-09-05 | none | branch `feat/agent-data-export` (PR #65) |
 | 048 | 048-generator-review-fixes | Fix findings from effort 047's code review (generator-count doc drift, loader duplication) | complete | 2026-09-05 | 2026-09-05 | none | branch `fix/generator-count-and-loader-dedup` (PR #66) |
 | 049 | 049-ask-ai-page | `/ask-ai`: introduce the live MCP server on the site itself | complete | 2026-09-05 | 2026-09-05 | none | branch `feat/ask-ai-page` |
+| 050 | 050-ai-dlc-external-evidence | AI-DLC external evidence: does the practice pay for itself | complete | 2026-09-06 | 2026-09-06 | none | branch `docs/ai-dlc-evidence-study` |
 
 ## Status summary
 
 | Status | Count |
 |--------|-------|
-| complete | 47 |
+| complete | 48 |
 | in-progress | 0 |
 | blocked | 0 |
 | failed | 0 |
 | abandoned | 0 |
 | reverted | 1 |
-| **Total** | **48** |
+| **Total** | **49** |
 
 All of efforts 001-006 and 008 were retrofitted into effort format after the fact; none was recorded contemporaneously. They differ in how much source material survived:
 
@@ -79,7 +80,7 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 050
+Next effort number: 051
 
 (Effort 040 was allocated to a concurrent sibling-worktree effort not yet merged at the time
 this row was written; effort 041 is this reversion. The integrator reconciles 040 as it merges.

@@ -72,3 +72,5 @@ This story is not internal. It is published on the site's `/process` page: how t
 - [../adr/0008-adopt-ai-dlc-and-docs-first-structure.md](../adr/0008-adopt-ai-dlc-and-docs-first-structure.md)
 - `aidlc-docs/README.md`
 - [../how-to/run-an-aidlc-effort.md](../how-to/run-an-aidlc-effort.md)
+- [ai-dlc-external-evidence.md](./ai-dlc-external-evidence.md) — whether the practice is
+  supported by external evidence on token cost and agent performance, not just internal argument.
