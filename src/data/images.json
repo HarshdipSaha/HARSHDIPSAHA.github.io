@@ -147,10 +147,20 @@
       "w": 793,
       "h": 464
     },
+    "dat-parkinsons": {
+      "src": "/img/projects/dat-parkinsons.webp",
+      "w": 1400,
+      "h": 933
+    },
     "gui-cansat": {
       "src": "/img/projects/gui-cansat.webp",
       "w": 1400,
       "h": 774
+    },
+    "investigation-certificates": {
+      "src": "/img/projects/investigation-certificates.webp",
+      "w": 920,
+      "h": 442
     },
     "miccai-publication": {
       "src": "/img/projects/miccai-publication.webp",
@@ -181,6 +191,11 @@
       "src": "/img/projects/saakshi.webp",
       "w": 1400,
       "h": 1000
+    },
+    "say-less": {
+      "src": "/img/projects/say-less.webp",
+      "w": 920,
+      "h": 430
     },
     "tinysafetynet": {
       "src": "/img/projects/tinysafetynet.webp",

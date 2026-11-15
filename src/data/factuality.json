@@ -51,6 +51,11 @@
       "baselined": 0,
       "unverifiable": 0
     },
+    "dat-parkinsons-challenge": {
+      "grounded": 9,
+      "baselined": 0,
+      "unverifiable": 0
+    },
     "gui-cansat": {
       "grounded": 3,
       "baselined": 0,
@@ -80,6 +85,16 @@
       "grounded": 0,
       "baselined": 0,
       "unverifiable": 18
+    },
+    "say-less": {
+      "grounded": 14,
+      "baselined": 0,
+      "unverifiable": 0
+    },
+    "tigergraph-investigation-certificates": {
+      "grounded": 22,
+      "baselined": 1,
+      "unverifiable": 0
     },
     "tinysafetynet": {
       "grounded": 5,
