@@ -43,6 +43,9 @@ const PROJECT_MAP = {
   "zombies learning.png": "zombies-learning",
   "brainwaves finland.png": "brainwaves-finland",
   "saakshi.png": "saakshi",
+  "say less.png": "say-less",
+  "investigation certificates.png": "investigation-certificates",
+  "dat parkinsons.png": "dat-parkinsons",
   // Not a project: the /story Publication photo, recovered from git history (effort 040).
   "miccai-publication.jpg": "miccai-publication",
 };

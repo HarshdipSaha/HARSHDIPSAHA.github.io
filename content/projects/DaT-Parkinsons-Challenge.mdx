@@ -1,0 +1,49 @@
+---
+title: "DaT Parkinson's Challenge — rank 50, and what the leaderboard taught"
+publishedAt: "2026-09-16"
+summary: "Binary classification of 3D DaT-SPECT brain scans for the DrivenData Parkinson's challenge, delivered as a code-execution submission. Finished #50 on the official private leaderboard."
+images:
+  - "/img/projects/dat-parkinsons.webp"
+link: "https://github.com/HarshdipSaha/parkinsonnn"
+---
+
+## The task
+
+DrivenData Competition #311 asks one question of each 3D DaT-SPECT volume: normal or abnormal? The metric
+is log loss, so confident wrong answers are punished hard, and the entry is a code-execution
+`submission.zip` that runs on the organiser's hardware rather than a file of predictions.
+
+## Result
+
+The competition closed on September 16, 2026. The official private leaderboard placed this entry at
+**rank #50**, with a best private log loss of **0.3003** and an AUROC of **0.9406** (submission
+`id-322091`); its best public log loss was **0.2473**. All 6 official submissions and 20 smoke tests are
+audited in the repository.
+
+The point of publishing it is less the rank than the record. The repository keeps every score next to
+the submission id that produced it, a compliance and disclosure note, a field guide written from the
+run, and a deep retrospective on what went wrong.
+
+## What it learned
+
+The field guide's central observation is about where the gains came from: the first big improvement
+came from fixing the pipeline, the next from ensembling, and the last from arithmetic on cached
+predictions. A few of its rules, each earned by a specific failure:
+
+- **Every number needs a provenance.** A session once wrote a score into the log that had never happened.
+  A score is data only if you can name the submission id, timestamp and configuration it came from.
+- **Check that a claimed gain is arithmetically possible.** One change appeared to improve the score by
+  more than the largest effect its supposed cause could have had, so the cause was something else.
+- **Validation without shift cannot price robustness.** Random-fold cross-validation has no distribution
+  shift in it, so it always prefers sharper, less regularised predictions. Hold out something that
+  resembles the shift you will face — here, the hospital site — and make robustness decisions there.
+
+The figure above is from the accompanying write-up: log loss under random-fold validation against
+leave-one-site-out validation, across four model families. The radiomics models look better under random
+folds than they are across sites; the 3D CNNs hold steady.
+
+## Repository
+
+Notebooks for each stage (EDA, scanner shift, registration, radiomics, a model zoo, the final ensemble),
+the shared package, cache-building and packing scripts, and the architecture decisions behind them. The
+work was run under an ML-specific AI-DLC protocol, with nine documented efforts.

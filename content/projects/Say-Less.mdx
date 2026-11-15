@@ -1,0 +1,67 @@
+---
+title: "Say Less — the voice agent that asks about the one word it missed"
+publishedAt: "2026-09-20"
+summary: "A voice agent that, when it mishears, asks about the single word it missed instead of making you repeat the whole sentence. Built for the AssemblyAI Voice Agent Hackathon."
+images:
+  - "/img/projects/say-less.webp"
+link: "https://github.com/HarshdipSaha/say-less"
+---
+
+## The problem
+
+You call your dentist, the line is bad, and you say *"Thursday."* The agent replies, *"Sorry, I didn't
+catch that. Could you repeat that?"* — so you say the whole thing again, and it mishears the same hard
+word again. A human receptionist would never do that. They heard most of it; they missed one word, so
+they ask the obvious question: *"Tuesday or Thursday?"*
+
+## How it works
+
+Most agents re-ask when recogniser **confidence** is low: *how sure am I about these sounds?* Say Less
+asks a different question: *does this word actually belong here?*
+
+For any field with a known list of valid answers — a day of the week, a service from the menu, a
+surname on the booking — it does three things the moment a turn ends:
+
+1. **Catch.** The value it heard is not on the list, even if the recogniser was confident. That is the
+   failure that quietly books the wrong thing.
+2. **Recover.** It finds the closest real menu item by how it *sounds*, not how it is spelled.
+3. **Ask small.** It asks the most specific question it can and no bigger — name one item, offer two,
+   ask the group, and only then ask again.
+
+The offered answer is never made up. AssemblyAI's real-time model supplies per-word confidence, the raw
+signal a typical agent throws away, and Say Less pairs it with the caller's own list of valid answers.
+
+## The benchmark
+
+The same agent ran twice on the **same audio** — repair logic on, then off — so the only thing that
+changes is the planner.
+
+On 15 synthesized, phone-degraded clips, commit accuracy was **93%** for a typical agent against
+**100%** for Say Less. The gap is one booking the typical agent got silently wrong: it heard something a
+letter off the menu, never noticed, and booked it anyway. Say Less caught it and fixed it with a single
+word.
+
+It also ran on **26 real human recordings** — two speakers on different phones outdoors, plus clips from
+the public SLURP corpus:
+
+| 26 real recordings | Baseline | Say Less |
+|---|---|---|
+| Commit accuracy | 96% | **100%** |
+| Words re-said per booking | 0.77 | **0.04** |
+| Escalated to a human | 4% | **0%** |
+
+One item drives that gap, and it is the exact case the design exists for: the recogniser wrote a spoken
+hour as `9 AM`, which is not on the menu. The baseline could not see that, so it asked again and again
+and gave up after 5 turns and 20 re-said words. Say Less matched the digits to `nine am`, asked one
+question, and booked it on a one-word yes.
+
+**The limit, stated as the repository states it:** mixed with café noise, both arms land at 96%. The one
+clip either loses had the day word destroyed outright, which no membership check can recover. Repair
+pays when a wrong value survives; it cannot help when the word is gone.
+
+## Run it
+
+Every number above replays with no API key from committed recordings, backed by 97 tests. A live demo is
+hosted on Render's free tier and may take 30–60 seconds to wake. The stack is AssemblyAI
+Universal-Streaming and its LLM Gateway, FastAPI, and a plain browser push-to-talk front end. MIT
+licence.

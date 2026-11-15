@@ -1,0 +1,84 @@
+---
+title: "Investigation Certificates — proving a GraphRAG answer saw everything"
+publishedAt: "2026-10-07"
+summary: "Agentic GraphRAG where every answer ships a certificate that sets the graph's own count against the evidence the agent inspected. Top 10 so far in the TigerGraph Agentic GraphRAG Hackathon, which is still in progress."
+images:
+  - "/img/projects/investigation-certificates.webp"
+link: "https://github.com/HarshdipSaha/tigergraph-agentic-graphrag"
+---
+
+## Status
+
+**Hackathon in progress — top 10 so far.** This is a running entry in the TigerGraph Agentic GraphRAG
+Hackathon, not a final result. The numbers below are from the repository's submitted run; a later
+section covers the follow-up changes made after a TigerGraph developer reviewed it.
+
+## The problem
+
+Ask a retrieval pipeline a counting question — *how many athletics events at the 2004 Summer Olympics
+had more than 41 competitors?* — and plain RAG retrieves its top four chunks and confidently answers
+**1**. GraphRAG expands one hop, sees twelve chunks, and answers **2**. The real answer is **20**; there
+were **43** matching events in the graph.
+
+Both were wrong for the same reason, and it is not the model: similarity search retrieves what *looks*
+relevant, and a counting question needs everything that *is* relevant. No value of `k` fixes that.
+Worse, neither pipeline can know it is working from a fraction of the evidence — it sounds equally
+confident either way.
+
+## The idea
+
+The graph already knows how many events match a filter; that is a `COUNT`. That number is a
+**structural bound** — the size of the complete answer set, straight from TigerGraph. Every answer the
+pipeline emits ships an **Investigation Certificate**, a JSON record that puts the structural bound next
+to the evidence the agent actually inspected. If they match, the answer is provably complete. If they
+do not, the certificate says so instead of hiding it — and you can check it without trusting the model.
+
+A router sorts each question into a completeness class and picks the cheapest tool that can satisfy it.
+The language model is called only to break a tie or recover a missing field, never to count.
+
+| Completeness class | Question types | How it is answered |
+|---|---|---|
+| **existential** | lookup, multi-hop | exact match, or a venue-and-date traversal |
+| **chained** | temporal | a `PREV` hop chain |
+| **exhaustive** | aggregation, superlative | a GSQL structural scan: `COUNT` plus every match |
+
+## What it measured
+
+Three pipelines — RAG, GraphRAG and the agentic one — answered the same 100 public benchmark questions
+against the same live TigerGraph graph and the same live Groq model.
+
+| | RAG | GraphRAG | **Agentic** |
+|---|---|---|---|
+| Accuracy | 25% | 43% | **99%** |
+| Tokens per answer | 1,389 | 2,203 | **18** |
+| Latency per answer | 9.3 s | 15.5 s | **0.41 s** |
+
+The two question types that expose the problem are `aggregation` and `superlative`: RAG and GraphRAG
+score **0%** on both, zero of 31, because top-k cannot produce an exhaustive set. The agentic
+pipeline answers them deterministically and scores 100%. It is also cheaper, not dearer — the expensive
+part was never the graph, it was stuffing chunks into a context window.
+
+**The one miss is reported, not hidden.** `pub-060` is a date-and-venue tie among 37 candidate events
+at ExCeL. The decision model picked the wrong one, and the certificate says
+`pass_with_llm_recovery` rather than a clean `pass`: it measures *was the evidence complete*, not *was
+the answer right*. Those are deliberately different axes, and this is where they diverge.
+
+## After review
+
+After submission, a TigerGraph developer suggested two changes: let the model plan more, and tighten the
+relaxed venue match. Both are implemented and reported separately; the headline numbers above still come
+from the submitted run.
+
+- **LLM planner mode** turns the five graph queries into tools the model chooses between. It chose and
+  grounded a tool for 87 of 100 questions at the same 99% accuracy — and cost roughly 70× the tokens, so
+  template mode stays the default.
+- **Venue integrity** filters candidates by date and, when the question names one, by sport. That fixed a
+  hidden-set question that had been answered with a rowing event instead of women's doubles tennis.
+
+## Stack
+
+TigerGraph Savanna (graph and vector attributes, GSQL structural scans), TypeSafe AI's Jev System One
+decision model for intent routing and zero-output-token disambiguation, Groq for the few model calls
+that survive routing, and a Streamlit dashboard comparing the three pipelines side by side. The repository
+carries 120 offline tests that run against an in-memory backend with no TigerGraph instance needed. MIT
+licence.

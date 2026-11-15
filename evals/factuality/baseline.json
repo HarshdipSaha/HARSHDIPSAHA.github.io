@@ -72,6 +72,14 @@
       "kind": "measurement",
       "phrase": "…ourt's real dimensions, for example a doubles line width of 10.97 m. Stats — shot speed and opponent running speed in km/h are…",
       "reason": "In the README, but split across a code span: \"(for example `DOUBLE_LINE_WIDTH = 10.97` m)\" — the closing backtick sits between the number and its unit, so the grounding rule cannot bind them across the code-formatting boundary. Same pattern as the tinySafetyNet entries above; accepted rather than relaxing the adjacency rule."
+    },
+    {
+      "file": "content/projects/TigerGraph-Investigation-Certificates.mdx",
+      "claim": "10",
+      "value": "10",
+      "kind": "rank",
+      "phrase": "Status Hackathon in progress — top 10 so far. This is a running entry in the TigerGraph Agentic G…",
+      "reason": "True but not in the README. The standing (top 10 so far, hackathon still in progress) was supplied by the owner in chat on 2026-11-15; the repository README records the benchmark and a post-submission reviewer note but no leaderboard position, and the hackathon has not closed. This is an interim claim: update or remove it when results are announced, and replace this reason with a public link if one becomes available."
     }
   ]
 }
