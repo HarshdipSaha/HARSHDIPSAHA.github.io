@@ -42,7 +42,7 @@ const PROJECT_MAP = {
   "yotube langchain.jpg": "youtube-langchain",
   "zombies learning.png": "zombies-learning",
   "brainwaves finland.png": "brainwaves-finland",
-  "saakshi.png": "saakshi",
+  "saakshya.jpg": "saakshya",
   "say less.png": "say-less",
   "investigation certificates.png": "investigation-certificates",
   "dat parkinsons.png": "dat-parkinsons",
