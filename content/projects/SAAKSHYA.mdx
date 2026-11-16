@@ -1,0 +1,56 @@
+---
+title: "SAAKSHYA — verifiable impact tracking"
+publishedAt: "2026-10-04"
+summary: "An evidence ledger for NGOs, CSR teams and civic bodies: aligned before/after photos, independent witness submissions, and report sentences checked against cited evidence. Winner, Code Cubicle 6.0."
+images:
+  - "/img/projects/saakshya.webp"
+link: "https://github.com/HarshdipSaha/cloudinary4eco"
+---
+
+## The problem
+
+Organisations running physical projects — a lake clean-up, a plantation — collect photos across sites and
+reporting periods. Turning those photos into a claim someone else can trust is the hard part: the
+before and after are shot from different places, the numbers in the report are written by the people
+being assessed, and there is no independent voice.
+
+## What SAAKSHYA does
+
+SAAKSHYA (Sanskrit and Hindi for *evidence* and *testimony*) puts that evidence into a ledger so
+reviewers can compare site images, inspect integrity signals, accept independent witness submissions,
+and check report statements against cited evidence.
+
+- **Upload and inspect.** Images go straight from the browser to Cloudinary using server-signed
+  parameters. SAAKSHYA reads the metadata and analysis fields that are available, and records anything
+  missing as missing rather than guessing.
+- **Register and measure.** A Python and OpenCV worker aligns each follow-up image to a site's baseline
+  and returns registration quality, change metrics, an aligned image and a difference image. Jev, a
+  typed decision model from TypeSafe AI, makes decisions from those measurements; it does not look at
+  pixels.
+- **Review witness evidence.** A public site link accepts submissions from passers-by without an
+  account, and that evidence enters the same pipeline to be reviewed beside the project's own.
+- **Check reports.** The report composer drafts from ledger facts and asks Jev to check each sentence
+  against the facts it cites. The internal view shows which sentences were kept, struck or still
+  pending, with reasons; the public view shows the kept ones.
+
+## The rule it is built around
+
+*Measure, then decide, then write.* Numbers come from deterministic code, judgements from Jev, and prose
+is checked against the evidence ledger. Claims carry a receipt, uncertainty is shown, and when a service
+is unavailable the decision is recorded as **pending** instead of fabricated.
+
+## Honest limits
+
+The repository states these itself, so the case study does too. Cloudinary does signed upload, storage,
+selected metadata, transformations and structured search; it does not do the registration or change
+measurement. Its captioning, auto-tagging and advanced OCR add-ons were recorded as unavailable when
+last probed, and C2PA signing and Cloudinary-side difference analysis are not current capabilities. The
+judge walkthrough's images are seeded repository fixtures, not field evidence — and so is the banner
+above, a baseline and follow-up pair from the repository's test images.
+
+## Stack
+
+Next.js 15 with React 19 and TypeScript for the web app, a Python FastAPI and OpenCV worker for image
+registration, a PostgreSQL-compatible ledger (PGlite locally, Neon or Supabase in production), and
+Groq-backed drafting for report prose. A live deployment and a judge walkthrough are linked from the
+repository.

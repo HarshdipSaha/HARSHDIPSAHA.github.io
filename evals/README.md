@@ -38,8 +38,8 @@ exhaustion — deliberately distinct, so a red check is never ambiguous between 
   (a résumé line, an effort record, a figure from a paper). The gate fails on any ungrounded claim
   *absent* from the baseline, which is what makes this a regression gate rather than a purity gate.
 - **ungrounded** — not in the source and not baselined. This fails the run.
-- **unverifiable** — no source to check against. Two case studies (BrainwavesFinland, SAAKSHI) have no
-  `link` because their repositories are private. A `link` that returns 404 — repository gone, renamed,
+- **unverifiable** — no source to check against. One case study (BrainwavesFinland) has no
+  `link` because its repository is private. A `link` that returns 404 — repository gone, renamed,
   or not readable with the available token — lands here too, with the reason printed. In CI,
   `pySdf`'s source (`ComPhysGroup/PyAMorph`) is one: the workflow's `GITHUB_TOKEN` can only read this
   repository, so that file's claims are `unverifiable` in CI and `grounded`/`baselined` locally.
