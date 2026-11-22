@@ -91,6 +91,11 @@
       "baselined": 0,
       "unverifiable": 0
     },
+    "taaza-hawa": {
+      "grounded": 21,
+      "baselined": 1,
+      "unverifiable": 0
+    },
     "tigergraph-investigation-certificates": {
       "grounded": 22,
       "baselined": 1,
@@ -103,6 +108,11 @@
     },
     "tomato-disease-detection": {
       "grounded": 10,
+      "baselined": 0,
+      "unverifiable": 0
+    },
+    "verdict": {
+      "grounded": 14,
       "baselined": 0,
       "unverifiable": 0
     },

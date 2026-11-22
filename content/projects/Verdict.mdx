@@ -1,0 +1,65 @@
+---
+title: "VERDICT — an AI auditor that cannot make a claim it cannot prove"
+publishedAt: "2026-07-29"
+summary: "Agents that must spend a budget on forensic probes to earn evidence before they can call a document forged, with every claim re-checked from its cited pixels alone. Winner, AI Arena 3.0."
+award: "Winner"
+images:
+  - "/img/projects/verdict.webp"
+link: "https://github.com/Cubix33/verdict"
+---
+
+## Status
+
+**Winner, AI Arena 3.0.** Built with Anshika Singh.
+
+## The problem
+
+People submit images as proof: a receipt for a refund, a bill for a claim. Every AI document-fraud
+detector answers *"is this fake?"* with a confidence score you cannot check. If it is wrong, nothing
+in its answer shows you why.
+
+## How it works
+
+VERDICT answers differently. A team of agents must **spend a budget on deterministic forensic probes**
+to earn evidence: error-level analysis, JPEG quantization tables, noise residuals, copy-move,
+typography. Every claim must **cite** the exact crop it came from, by content hash. The probes are
+decades-old forensics; what is new is the architecture around them.
+
+- **Perceptual starvation.** The agent with the authority to decide never sees the image. It reasons
+  only over a text manifest of evidence cards that another agent had to pay to acquire, so it cannot
+  answer without looking.
+- **Evidence bonds.** A separate Verifier re-derives each claim from *only* its cited crop, with
+  everything else blacked out, then swaps the crop for a random same-size region. If the finding
+  survives the swap, it was never using its evidence, and the claim is struck, even if it happened to
+  be right.
+- **Self-calibration.** Every threshold is measured from documents the deployment certifies as
+  authentic. Nothing ships as a constant.
+
+No single agent can produce a claim, its justification and its validation.
+
+## The bug that shaped it
+
+The first version called every image tampered. Run against 13 real, unmodified receipts and camera
+photos, it returned 13/13 `tamper_detected`: a 100% false-positive rate. The rebuild traced six root
+causes, among them thresholds that were never measured against anything, forensic probes that existed
+but were never called, evidence leaking between images in a batch, and bond tests that could not fail.
+
+## Measured
+
+On a 134-image corpus (29 authentic, 105 forged across 5 forgery modes), with calibration and
+evaluation sources kept disjoint:
+
+| Metric | Value |
+|---|---|
+| False-accusation rate | **3.4%** (1/29 authentic), from 100% |
+| Precision | **0.947** |
+| Recall, overall | **17.1%** (18/105) |
+| Recall, retyped amount | **52.4%** |
+
+**The limits, as the repository states them.** Most forgeries still get through. Pixel-conservative
+ones are mostly out of reach: a single spliced digit is caught 4.8% of the time, an in-place
+re-compression 9.5%. The language layer in the original
+plan is not built; the deciding agent reasons over calibrated statistics directly, with no LLM call.
+
+The banner is the repository's own test pair: an authentic scanned receipt and the same receipt with
+one line retyped, the edited region outlined. They are corpus samples, not a field case.

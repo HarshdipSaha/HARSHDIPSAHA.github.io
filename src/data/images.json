@@ -197,6 +197,11 @@
       "w": 920,
       "h": 430
     },
+    "taaza-hawa": {
+      "src": "/img/projects/taaza-hawa.webp",
+      "w": 1400,
+      "h": 875
+    },
     "tinysafetynet": {
       "src": "/img/projects/tinysafetynet.webp",
       "w": 544,
@@ -206,6 +211,11 @@
       "src": "/img/projects/tomato-disease.webp",
       "w": 862,
       "h": 595
+    },
+    "verdict": {
+      "src": "/img/projects/verdict.webp",
+      "w": 1400,
+      "h": 875
     },
     "youtube-langchain": {
       "src": "/img/projects/youtube-langchain.webp",

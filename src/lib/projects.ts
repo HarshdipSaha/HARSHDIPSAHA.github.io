@@ -11,6 +11,8 @@ export type Project = {
   date: string;
   year: string;
   summary: string;
+  /** Optional result label from frontmatter `award` (e.g. "Winner"); the project card shows it as a corner ribbon. */
+  award?: string;
   link?: string;
   image?: ImageMeta;
   body: string;
@@ -41,6 +43,7 @@ export function getProjects(): Project[] {
         date,
         year: date.slice(0, 4),
         summary: (data.summary as string) ?? "",
+        award: (data.award as string | undefined) || undefined,
         link: data.link as string | undefined,
         image: imageFor(data.images as string[] | undefined),
         body: content,
