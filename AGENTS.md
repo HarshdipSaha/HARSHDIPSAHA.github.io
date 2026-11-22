@@ -126,7 +126,8 @@ not yet built) to fetch and back its `getProfile`/`searchProjects` tools; `llms.
 prose/crawler-facing sibling. Pure renderer: `scripts/lib/agent-data.mjs`
 (`renderAgentData(site, projects) -> {profile, projects}`), unit-tested by `npm run test:unit`; the
 project shape matches `src/lib/agentProjects.ts`'s `AgentProject` (slug, title, summary, year, url,
-code?) so there is one project shape shared across `llms.txt`, WebMCP, and this export, not three.
+award?, code?) so there is one project shape shared across `llms.txt`, WebMCP, and this export, not three.
+The `harshdipsaha-mcp` server mirrors this shape by hand — change both together (effort 054).
 
 **The /process counts are built too.** `scripts/build-process-stats.mjs` runs in the same
 `predev`/`prebuild` hook and writes `src/data/process-stats.json` (committed, like `images.json`)

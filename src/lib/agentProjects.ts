@@ -14,6 +14,8 @@ export type AgentProject = {
   summary: string;
   year: string;
   url: string;
+  /** Frontmatter `award`, e.g. "Winner" — the project card shows it as a ribbon. */
+  award?: string;
   code?: string;
 };
 
@@ -24,6 +26,7 @@ export function toAgentProject(project: Project, siteUrl: string): AgentProject 
     summary: project.summary,
     year: project.year,
     url: `${siteUrl.replace(/\/+$/, "")}/projects/${project.slug}`,
+    ...(project.award ? { award: project.award } : {}),
     ...(project.link ? { code: project.link } : {}),
   };
 }

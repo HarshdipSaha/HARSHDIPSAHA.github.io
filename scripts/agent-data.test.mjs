@@ -85,6 +85,14 @@ test("every project maps to slug/title/summary/year/url, code only when a link e
   assert.ok(!("code" in loom), "no link means no code field, not code: undefined");
 });
 
+test("award is exported only when the frontmatter sets one", () => {
+  const withAward = [{ ...projects[0], award: "Winner" }, projects[1]];
+  const { projects: out } = renderAgentData(site, withAward);
+  assert.equal(out.find((p) => p.slug === "engine").award, "Winner");
+  const loom = out.find((p) => p.slug === "loom");
+  assert.ok(!("award" in loom), "no award means no award field, not award: undefined");
+});
+
 test("no project body text leaks into the output", () => {
   const json = JSON.stringify(renderAgentData(site, projects));
   assert.ok(!json.includes("ignored here"));

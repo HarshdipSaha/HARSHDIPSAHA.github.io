@@ -118,6 +118,42 @@ test("dragging a bubble measurably changes its position", async ({ page }) => {
   expect(along, "bubble must follow the drag gesture").toBeGreaterThan(30);
 });
 
+test("at rest, no two bubbles overlap and none is clipped by the box", async ({ page }) => {
+  await page.goto("/process", { waitUntil: "load" });
+  const first = page.getByRole("button", { name: EXPECTED_SKILLS[0], exact: true });
+  await first.evaluate((el) => el.scrollIntoView({ block: "center" }));
+
+  // Rest boxes come from offset* (layout position, ignoring the drift
+  // transform), so idle drift cannot make this flaky. Before effort 054 a
+  // 412px phone had 19 overlapping pairs and one label cut off at the edge.
+  await expect
+    .poll(
+      () =>
+        first.evaluate((btn) => {
+          const box = btn.parentElement!;
+          const rects = [...box.querySelectorAll<HTMLButtonElement>(":scope > button")].map((b) => ({
+            name: b.textContent,
+            l: b.offsetLeft,
+            t: b.offsetTop,
+            r: b.offsetLeft + b.offsetWidth,
+            b: b.offsetTop + b.offsetHeight,
+          }));
+          const problems: string[] = [];
+          for (const a of rects) {
+            if (a.l < 0 || a.t < 0 || a.r > box.clientWidth || a.b > box.clientHeight) problems.push(`clipped: ${a.name}`);
+          }
+          for (let i = 0; i < rects.length; i++)
+            for (let j = i + 1; j < rects.length; j++) {
+              const a = rects[i], b = rects[j];
+              if (Math.min(a.r, b.r) > Math.max(a.l, b.l) && Math.min(a.b, b.b) > Math.max(a.t, b.t)) problems.push(`${a.name} × ${b.name}`);
+            }
+          return problems;
+        }),
+      { timeout: 5_000 },
+    )
+    .toEqual([]);
+});
+
 test("dropping a dragged bubble does not fire the click nudge", async ({ page }) => {
   await page.goto("/process", { waitUntil: "load" });
 
