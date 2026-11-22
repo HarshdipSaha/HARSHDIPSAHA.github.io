@@ -52,6 +52,7 @@ export async function loadProjects(root) {
       date,
       year: String(date).slice(0, 4),
       summary: data.summary ?? "",
+      award: data.award || undefined,
       link: data.link,
       body: content,
     });

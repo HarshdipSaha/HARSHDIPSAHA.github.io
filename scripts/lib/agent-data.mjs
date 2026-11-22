@@ -8,13 +8,13 @@
  * This is the single source the future MCP server (issue #62, effort 045)
  * reads: `profile` backs its `getProfile` tool, `projects` backs
  * `searchProjects`. Shape mirrors src/lib/agentProjects.ts's `AgentProject`
- * (slug, title, summary, year, url, code?) so there is one project shape
+ * (slug, title, summary, year, url, award?, code?) so there is one project shape
  * shared across llms.txt, WebMCP, and this export — not three.
  */
 
 /** @typedef {{ name: string, role: string, location: string, email: string, github: string, linkedin: string, resume: string, siteUrl: string, description: string }} Person */
 /** @typedef {{ skills: string[] }} Story */
-/** @typedef {{ slug: string, title: string, summary: string, year: string, link?: string, body?: string }} SourceProject */
+/** @typedef {{ slug: string, title: string, summary: string, year: string, award?: string, link?: string, body?: string }} SourceProject */
 
 /** Strip a trailing slash so `${base}${path}` never doubles up. */
 function origin(siteUrl) {
@@ -56,6 +56,8 @@ export function renderAgentData(site, projects) {
     summary: oneLine(p.summary),
     year: p.year,
     url: `${base}/projects/${p.slug}`,
+    // Frontmatter `award` (effort 054): lets an agent answer "what has he won?" without parsing summaries.
+    ...(p.award ? { award: String(p.award) } : {}),
     ...(p.link ? { code: p.link } : {}),
   }));
 

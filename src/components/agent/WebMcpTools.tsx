@@ -62,7 +62,7 @@ export function searchProjects(projects: AgentProject[], query: string, limit: n
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
   const matches = terms.length
     ? projects.filter((p) => {
-        const hay = `${p.title} ${p.summary} ${p.slug} ${p.year}`.toLowerCase();
+        const hay = `${p.title} ${p.summary} ${p.slug} ${p.year} ${p.award ?? ""}`.toLowerCase();
         return terms.every((t) => hay.includes(t));
       })
     : projects;
@@ -90,7 +90,7 @@ export function WebMcpTools({ projects }: { projects: AgentProject[] }) {
         const results = searchProjects(projects, query, limit);
         return results.length === 0
           ? `No projects match ${JSON.stringify(query)}.`
-          : results.map((p) => `${p.title} (${p.year}) — ${p.summary} ${p.url}`).join("\n");
+          : results.map((p) => `${p.title} (${p.year})${p.award ? ` [${p.award}]` : ""} — ${p.summary} ${p.url}`).join("\n");
       },
     };
 
