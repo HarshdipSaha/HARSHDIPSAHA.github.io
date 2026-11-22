@@ -156,6 +156,7 @@ feature check. ADR 0014, ADR 0020.
 title: "Retinal Vessel Segmentation"
 publishedAt: "2026-08-01"
 summary: "U-Net variant benchmarked on DRIVE and STARE."
+award: "Winner"   # optional — shown as a diagonal ribbon on the project card (effort 053)
 images:
   - "/img/projects/retinal-vessel-segmentation.webp"
 link: "https://github.com/HARSHDIPSAHA/..."

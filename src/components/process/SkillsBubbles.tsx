@@ -43,6 +43,10 @@ function Bubble({
 }) {
   const controls = useAnimationControls();
   const pos = layoutPosition(index, total);
+  // A drag ends in a pointerup on the button, which the browser also reports
+  // as a click. Without this flag that click fired `nudge()` and flung a
+  // just-dropped bubble 60-130px in a random direction.
+  const dragged = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -70,6 +74,10 @@ function Bubble({
   }, [controls, index]);
 
   function nudge() {
+    if (dragged.current) {
+      dragged.current = false;
+      return;
+    }
     const kick = 60 + Math.random() * 70;
     const angle = Math.random() * Math.PI * 2;
     controls.start({
@@ -83,6 +91,12 @@ function Bubble({
     <motion.button
       type="button"
       onClick={nudge}
+      onPointerDown={() => {
+        dragged.current = false;
+      }}
+      onDragStart={() => {
+        dragged.current = true;
+      }}
       animate={controls}
       drag
       dragConstraints={containerRef}

@@ -58,6 +58,7 @@
 | 050 | 050-ai-dlc-external-evidence | AI-DLC external evidence: does the practice pay for itself | complete | 2026-09-06 | 2026-09-06 | none | branch `docs/ai-dlc-evidence-study` |
 | 051 | 051-winners-and-new-projects | Winner label on SAAKSHI; three new case studies | complete | 2026-11-15 | 2026-11-15 | none | branch `content/winners-and-new-projects` |
 | 052 | 052-saakshya-replaces-saakshi | SAAKSHYA (Code Cubicle 6.0 winner) replaces SAAKSHI | complete | 2026-11-16 | 2026-11-16 | none | branch `content/saakshya` |
+| 053 | 053-winner-ribbon-verdict-taaza-hawa | Winner ribbon; VERDICT and Taaza Hawa; bubble-drag test fixed | complete | 2026-11-22 | 2026-11-22 | none | branch `content/winner-ribbon` |
 
 ## Status summary
 
@@ -82,7 +83,7 @@ Effort 026 (ADR 0015, AI-crawler access policy) landed via PR #31 while effort 0
 a separate branch; effort 027 (skills bubble) merged before effort 028 (story tools interactive)
 started this rebase; all rows are now present above in effort-number order.
 
-Next effort number: 053
+Next effort number: 054
 
 (Effort 040 was allocated to a concurrent sibling-worktree effort not yet merged at the time
 this row was written; effort 041 is this reversion. The integrator reconciles 040 as it merges.

@@ -1,0 +1,51 @@
+---
+title: "Taaza Hawa — Delhi's air-quality number, with its age"
+publishedAt: "2026-10-11"
+summary: "Can I go outside right now? A Delhi air app that says how old every reading is, gives a calibrated range when it's stale, and grades that range in public. Scored 27/30 at WeMakeDevs × AWS Environmental Hacks 2026."
+images:
+  - "/img/projects/taaza-hawa.webp"
+link: "https://github.com/Cubix33/taaza-hawa"
+---
+
+## Status
+
+Built for **WeMakeDevs × AWS Environmental Hacks 2026** (Air track), during the 8–11 Oct 2026 hack
+window. **Scored 27/30.**
+
+## The problem
+
+Every October morning a Delhi resident checks one number before a run, a walk or a ride. That number
+has no age, no source and no error bar, and it is often old: on 4 Oct 2026 the mirror most people use
+showed one station 31 hours stale and another 56 hours stale. Last season's loudest complaint was not
+*"what is the AQI?"* but *"can I trust it?"*
+
+## What it does
+
+- **One plain answer** in Hindi or English: go ahead, wait for the air to improve, or stay in, from a
+  fixed, published rule on the CPCB AQI bands.
+- **The age of every number.** Each answer says how many hours ago the station measured it, and where
+  it came from.
+- **An honest range when it is old.** Past 3 hours, the app shows *"AQI probably 232–264"*: a
+  split-conformal interval from the 3 nearest live stations plus bias-corrected CAMS. Advice uses the
+  top of the range.
+- **Hold me to this.** One tap starts an AWS Step Functions execution that waits, at no compute cost,
+  until that station reports again, then shows whether the real number landed inside the range.
+- **A public track record.** Every station, every morning: right or missed, with misses shown as
+  plainly as hits against an 80% coverage target.
+- **For schools**, a 06:30 plan for assembly, PE and recess from the school's nearest station.
+
+## Measured
+
+A backtest replaying the Oct–Nov 2025 smog season from the OpenAQ archive, simulating 1–6 hour silent
+outages across 14 stations: 55,944 evaluations, **80.3%** empirical coverage against the 80% target,
+and a mean absolute error of **12.8** for the range's estimate against **25.8** for "same as the last
+reading", a 50.4% reduction. The backend carries 88 tests.
+
+The stack is serverless on AWS: EventBridge Scheduler, Lambda, DynamoDB, Step Functions, Polly for a
+spoken Hindi answer, and an hourly zero-shot Chronos-Bolt forecast that never changes the verdict.
+
+**The limits, as the repository states them.** It is station air, not your street, and an estimate,
+not the truth. No school has used the school plan yet; what it would change is described, not
+measured.
+
+A [demo video](https://www.youtube.com/watch?v=OW2FaWJGFAA) walks through the loop end to end.

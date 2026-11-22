@@ -80,6 +80,14 @@
       "kind": "rank",
       "phrase": "Status Hackathon in progress — top 10 so far. This is a running entry in the TigerGraph Agentic G…",
       "reason": "True but not in the README. The standing (top 10 so far, hackathon still in progress) was supplied by the owner in chat on 2026-11-15; the repository README records the benchmark and a post-submission reviewer note but no leaderboard position, and the hackathon has not closed. This is an interim claim: update or remove it when results are announced, and replace this reason with a public link if one becomes available."
+    },
+    {
+      "file": "content/projects/Taaza-Hawa.mdx",
+      "claim": "27",
+      "value": "27",
+      "kind": "count",
+      "phrase": "…6 (Air track), during the 8–11 Oct 2026 hack window. Scored 27/30. The problem Every October morning a Delhi resident che…",
+      "reason": "True but not in the README. The 27/30 score at WeMakeDevs × AWS Environmental Hacks 2026 was supplied by the owner in chat on 2026-11-22 (effort 053); the repository README describes the build and its backtest but records no judging result. Replace this reason with a public results link if one becomes available."
     }
   ]
 }
